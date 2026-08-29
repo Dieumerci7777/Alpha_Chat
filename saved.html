@@ -1,0 +1,2173 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Alpha — Saved</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&display=swap" rel="stylesheet">
+    <script src="alpha-common.js"></script>
+    <style>
+        /* ============================================================
+           RESET & VARIABLES
+           ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --bg: #f0f2f6;
+            --surface: #ffffff;
+            --surface-hover: #f4f6fa;
+            --surface-raised: #ffffff;
+            --text-primary: #0b0d12;
+            --text-secondary: #565e70;
+            --text-muted: #8e96a8;
+            --border: #e4e8ef;
+            --border-light: #edf0f5;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.08);
+            --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.12);
+            --radius-sm: 10px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-xl: 32px;
+            --radius-full: 99px;
+            --primary: #4f46e5;
+            --primary-light: #818cf8;
+            --primary-dark: #3730a3;
+            --primary-bg: var(--primary-a08);
+            --primary-bg-hover: var(--primary-a16);
+            --green: #22c55e;
+            --green-bg: rgba(34, 197, 94, 0.12);
+            --red: #ef4444;
+            --red-bg: rgba(239, 68, 68, 0.10);
+            --orange: #f59e0b;
+            --orange-bg: rgba(245, 158, 11, 0.12);
+            --purple: #8b5cf6;
+            --purple-bg: rgba(139, 92, 246, 0.12);
+            --gradient-primary: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --nav-width: 220px;
+            --right-width: 260px;
+        }
+
+        [data-theme="dark"] {
+            --bg: #0c0e15;
+            --surface: #161920;
+            --surface-hover: #1e222b;
+            --surface-raised: #1a1d26;
+            --text-primary: #f1f3f7;
+            --text-secondary: #9aa2b5;
+            --text-muted: #6e768a;
+            --border: #262b36;
+            --border-light: #1e222b;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.5);
+            --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.6);
+            --primary-bg: var(--primary-a15);
+            --primary-bg-hover: var(--primary-a25);
+            --green-bg: rgba(34, 197, 94, 0.15);
+            --red-bg: rgba(239, 68, 68, 0.15);
+            --orange-bg: rgba(245, 158, 11, 0.15);
+            --purple-bg: rgba(139, 92, 246, 0.18);
+        }
+
+        html, body { height: 100%; }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text-primary);
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        button, input, textarea { font-family: inherit; font-size: inherit; }
+        button { color: inherit; cursor: pointer; border: none; background: none; }
+        *:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: 6px; }
+
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+        i[class*="fa-"] { line-height: 1; font-size: 1em; }
+
+        /* ============================================================
+           APP SHELL
+           ============================================================ */
+        .app {
+            height: 100vh;
+            display: grid;
+            grid-template-columns: var(--nav-width) minmax(400px, 720px) var(--right-width);
+            gap: 16px;
+            max-width: 1480px;
+            margin: 0 auto;
+            padding: 14px 18px 14px 18px;
+        }
+
+        /* ============================================================
+           LEFT NAVIGATION
+           ============================================================ */
+        .left {
+            display: flex;
+            flex-direction: column;
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            padding: 10px 8px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-light);
+            overflow: hidden;
+            height: calc(100vh - 28px);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 4px 10px 18px 10px;
+            cursor: pointer;
+            background: none;
+            border: 0;
+            text-align: left;
+            color: inherit;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            font-weight: 800;
+            box-shadow: 0 6px 18px var(--primary-a30);
+            flex-shrink: 0;
+        }
+
+        .brand-name-wrap { line-height: 1.2; }
+        .brand-name {
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .brand-tag {
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            -webkit-text-fill-color: var(--text-muted);
+        }
+
+        .nav {
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            flex: 1;
+            padding: 2px 2px 6px;
+            mask-image: linear-gradient(to bottom, #000 calc(100% - 20px), transparent 100%);
+        }
+        .nav::-webkit-scrollbar { width: 0; }
+
+        .nav-section-label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            padding: 14px 12px 6px;
+        }
+        .nav-section-label:first-child { padding-top: 2px; }
+
+        .nav button {
+            position: relative;
+            border: 0;
+            background: transparent;
+            color: var(--text-secondary);
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13.5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: left;
+            flex-shrink: 0;
+            margin-bottom: 1px;
+        }
+
+        .nav button:hover {
+            background: var(--surface-hover);
+            color: var(--text-primary);
+        }
+
+        .nav button.active {
+            color: var(--primary);
+            background: var(--primary-bg);
+            font-weight: 700;
+        }
+        .nav button.active .nav-icon {
+            color: var(--primary);
+            background: var(--primary-bg);
+        }
+
+        .nav-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            color: var(--text-muted);
+            flex-shrink: 0;
+            transition: var(--transition);
+            font-size: 15px;
+        }
+        .nav button:hover .nav-icon {
+            background: var(--surface-hover);
+            color: var(--text-primary);
+        }
+
+        .nav-badge {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--red);
+            margin-left: auto;
+            flex-shrink: 0;
+            box-shadow: 0 0 0 2px var(--surface);
+        }
+
+        .profile-mini {
+            margin-top: 6px;
+            background: var(--surface-hover);
+            border-radius: var(--radius-md);
+            padding: 8px 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+            transition: var(--transition);
+        }
+        .profile-mini:hover { background: var(--border-light); }
+        .profile-mini .name-wrap { flex: 1; min-width: 0; cursor: pointer; }
+        .profile-mini .name {
+            font-size: 13px;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .profile-mini small {
+            color: var(--text-muted);
+            font-size: 10.5px;
+        }
+        .profile-mini .logout-btn {
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text-muted);
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            transition: var(--transition);
+        }
+        .profile-mini .logout-btn:hover {
+            background: var(--red-bg);
+            color: var(--red);
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+            overflow: hidden;
+            color: #fff;
+            font-size: 13px;
+            background: var(--gradient-primary);
+        }
+        .avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+        .avatar.g1 { background: linear-gradient(135deg, #f59e0b, #ef4444); }
+        .avatar.g2 { background: linear-gradient(135deg, #4f46e5, #7c3aed); }
+        .avatar.g3 { background: linear-gradient(135deg, #22c55e, #06b6d4); }
+        .avatar.g4 { background: linear-gradient(135deg, #ec4899, #f43f5e); }
+        .avatar.g5 { background: linear-gradient(135deg, #8b5cf6, #d946ef); }
+        .avatar.g6 { background: linear-gradient(135deg, #14b8a6, #22c55e); }
+
+        /* ============================================================
+           CENTER
+           ============================================================ */
+        .center {
+            overflow-y: auto;
+            padding: 2px 2px 80px 2px;
+            scrollbar-width: none;
+            height: calc(100vh - 28px);
+        }
+        .center::-webkit-scrollbar { display: none; }
+
+        /* --- HEADER --- */
+        .top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            gap: 10px;
+            background: var(--surface);
+            padding: 10px 20px;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+        }
+        .top::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-primary);
+            opacity: 0.6;
+        }
+
+        .top-left-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 0;
+        }
+
+        .top-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+            border: 0;
+            background: none;
+            cursor: pointer;
+            text-align: left;
+            color: inherit;
+            padding: 4px 2px;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+            position: relative;
+            z-index: 1;
+        }
+        .top-left:hover { opacity: 0.7; }
+
+        .top-icon-wrap {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-sm);
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+            font-weight: 800;
+            box-shadow: 0 4px 12px var(--primary-a25);
+            flex-shrink: 0;
+        }
+
+        .top-title-wrap { line-height: 1.2; }
+        .top-title {
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 40vw;
+        }
+        .top-sub {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            -webkit-text-fill-color: var(--text-muted);
+        }
+
+        .top-actions {
+            display: flex;
+            gap: 6px;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .circle-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            flex-shrink: 0;
+            font-size: 15px;
+            position: relative;
+        }
+        .circle-btn:hover {
+            color: var(--primary);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        .circle-btn.active {
+            color: var(--primary);
+            background: var(--primary-bg);
+            border-color: var(--primary);
+        }
+
+        /* ============================================================
+           SAVED PAGE CONTENT
+           ============================================================ */
+
+        /* Search */
+        .saved-search {
+            position: relative;
+            margin-bottom: 16px;
+        }
+        .saved-search input {
+            width: 100%;
+            padding: 10px 16px 10px 42px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-md);
+            background: var(--surface);
+            color: var(--text-primary);
+            font-size: 13px;
+            transition: var(--transition);
+            outline: none;
+        }
+        .saved-search input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-bg);
+        }
+        .saved-search .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+            padding: 14px 16px;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+        .stat-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .stat-card .stat-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+        .stat-card .stat-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .stat-card .stat-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+        }
+        .stat-card .stat-icon.blue { background: var(--primary-bg); color: var(--primary); }
+        .stat-card .stat-icon.green { background: var(--green-bg); color: var(--green); }
+        .stat-card .stat-icon.orange { background: var(--orange-bg); color: var(--orange); }
+        .stat-card .stat-icon.purple { background: var(--purple-bg); color: var(--purple); }
+
+        .stat-card .stat-number {
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+        .stat-card .stat-sub {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* Filters */
+        .saved-filters {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            margin-bottom: 18px;
+            padding-bottom: 2px;
+        }
+        .saved-filters::-webkit-scrollbar { display: none; }
+
+        .filter-btn {
+            padding: 6px 16px;
+            border-radius: var(--radius-full);
+            border: 1.5px solid var(--border);
+            background: var(--surface);
+            color: var(--text-muted);
+            font-size: 12px;
+            font-weight: 600;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+        .filter-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        .filter-btn.active {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+
+        /* Saved Grid */
+        .saved-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .saved-card {
+            background: var(--surface);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        .saved-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--border);
+        }
+
+        .saved-card .card-media {
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+            background: var(--surface-hover);
+        }
+        .saved-card .card-media img,
+        .saved-card .card-media video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .saved-card .card-media .media-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: var(--text-muted);
+            background: var(--surface-hover);
+            flex-direction: column;
+            gap: 8px;
+        }
+        .saved-card .card-media .media-placeholder span {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .saved-card .card-media .media-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 4px 10px;
+            border-radius: var(--radius-full);
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            color: #fff;
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .saved-card .card-media .favorite-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+        .saved-card .card-media .favorite-btn:hover { transform: scale(1.1); }
+        .saved-card .card-media .favorite-btn.active { color: var(--orange); background: rgba(0, 0, 0, 0.6); }
+
+        .saved-card .card-body {
+            padding: 14px 16px;
+        }
+
+        .saved-card .card-author {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .saved-card .card-author .author-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 700;
+            overflow: hidden;
+        }
+        .saved-card .card-author .author-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .saved-card .card-author .author-info .name {
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .saved-card .card-author .author-info .time {
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        .saved-card .card-title {
+            font-size: 14px;
+            font-weight: 700;
+            margin-top: 10px;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .saved-card .card-description {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .saved-card .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-top: 8px;
+        }
+        .saved-card .card-tags .tag {
+            padding: 2px 8px;
+            border-radius: var(--radius-full);
+            background: var(--primary-bg);
+            color: var(--primary);
+            font-size: 9px;
+            font-weight: 700;
+        }
+
+        .saved-card .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 10px;
+            margin-top: 10px;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .saved-card .card-footer .collection-label {
+            font-size: 10px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .saved-card .card-footer .collection-label:hover {
+            color: var(--primary);
+        }
+        .saved-card .card-footer .collection-label .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--primary);
+        }
+
+        .saved-card .card-footer .card-actions {
+            display: flex;
+            gap: 2px;
+        }
+        .saved-card .card-footer .card-actions button {
+            width: 28px;
+            height: 28px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            transition: var(--transition);
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        .saved-card .card-footer .card-actions button:hover {
+            background: var(--surface-hover);
+            color: var(--text-primary);
+        }
+        .saved-card .card-footer .card-actions button.danger:hover {
+            background: var(--red-bg);
+            color: var(--red);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+            display: none;
+        }
+        .empty-state i { font-size: 48px; display: block; margin-bottom: 16px; opacity: 0.4; }
+        .empty-state .title { font-size: 18px; font-weight: 700; color: var(--text-primary); }
+        .empty-state .sub { font-size: 13px; margin-top: 4px; }
+
+        /* Loading State */
+        .loading-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+            display: none;
+        }
+        .loading-state i { font-size: 32px; display: block; margin-bottom: 12px; opacity: 0.4; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ============================================================
+           RIGHT PANEL
+           ============================================================ */
+        .right {
+            padding-top: 2px;
+            overflow-y: auto;
+            scrollbar-width: none;
+            height: calc(100vh - 28px);
+        }
+        .right::-webkit-scrollbar { display: none; }
+
+        .panel {
+            background: var(--surface);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: 16px 18px;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow-sm);
+        }
+        .panel-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+        .panel-title span {
+            color: var(--primary);
+            font-size: 10.5px;
+            text-transform: none;
+            letter-spacing: 0;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        .panel-title span:hover { opacity: 0.7; }
+
+        .trend {
+            padding: 8px 6px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .trend:hover { background: var(--surface-hover); }
+        .trend small {
+            color: var(--text-muted);
+            font-size: 9.5px;
+            font-weight: 600;
+        }
+        .trend strong {
+            display: block;
+            font-size: 13px;
+            margin-top: 2px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        .trend em {
+            display: block;
+            color: var(--text-muted);
+            font-size: 10px;
+            font-style: normal;
+            margin-top: 2px;
+        }
+
+        /* ============================================================
+           TOAST
+           ============================================================ */
+        .toast-wrap {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 1200;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            pointer-events: none;
+            max-width: 380px;
+        }
+        .toast {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--surface-raised);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--primary);
+            border-radius: var(--radius-md);
+            padding: 11px 18px;
+            font-size: 13px;
+            color: var(--text-primary);
+            box-shadow: var(--shadow-lg);
+            pointer-events: auto;
+            animation: toastIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: var(--transition);
+        }
+        .toast i { font-size: 15px; flex-shrink: 0; }
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateX(30px) scale(0.95); }
+            to { opacity: 1; transform: none; }
+        }
+        .toast-close {
+            background: none;
+            border: 0;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0 4px;
+            margin-left: auto;
+            display: flex;
+            font-size: 13px;
+            transition: var(--transition);
+        }
+        .toast-close:hover { color: var(--red); }
+
+        /* ============================================================
+           MODAL
+           ============================================================ */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(12px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        .modal-overlay.open { display: flex; }
+
+        .modal {
+            background: var(--surface-raised);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            width: 100%;
+            max-width: 420px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: var(--shadow-xl);
+            animation: modalIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        @keyframes modalIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.96); }
+            to { opacity: 1; transform: none; }
+        }
+
+        .modal-title {
+            font-size: 19px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+            letter-spacing: -0.02em;
+        }
+        .modal-sub {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 32px;
+            height: 32px;
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            background: var(--surface);
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            font-size: 14px;
+        }
+        .modal-close:hover {
+            background: var(--red);
+            color: #fff;
+            border-color: var(--red);
+            transform: rotate(90deg);
+        }
+
+        .form-group { margin-bottom: 14px; }
+        .form-group label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 4px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--surface);
+            color: var(--text-primary);
+            font-size: 13px;
+            transition: var(--transition);
+            outline: none;
+        }
+        .form-group input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-bg);
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-light);
+            margin-top: 4px;
+        }
+        .btn {
+            padding: 9px 20px;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            font-weight: 700;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+        .btn-secondary {
+            background: var(--surface-hover);
+            color: var(--text-secondary);
+        }
+        .btn-secondary:hover { background: var(--border); }
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: #fff;
+            box-shadow: 0 4px 12px var(--primary-a30);
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px var(--primary-a40); }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        .collection-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+        .collection-chip {
+            padding: 6px 12px;
+            border-radius: var(--radius-full);
+            border: 1.5px solid var(--border);
+            background: var(--surface);
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        .collection-chip:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* ============================================================
+           MOBILE NAV
+           ============================================================ */
+        .mobile-nav {
+            display: none;
+        }
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 1100px) {
+            .app {
+                grid-template-columns: 180px minmax(400px, 1fr);
+            }
+            .right { display: none; }
+            :root {
+                --nav-width: 180px;
+                --right-width: 0px;
+            }
+        }
+
+        @media (max-width: 820px) {
+            .saved-grid {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            }
+        }
+
+        @media (max-width: 760px) {
+            body { overflow: hidden; }
+            .app { display: block; padding: 0; height: 100vh; }
+            .left { display: none; }
+            .center {
+                height: 100vh;
+                padding: 10px 12px 80px 12px;
+                overflow-y: auto;
+            }
+            .top { padding: 8px 14px; border-radius: var(--radius-md); }
+            .top-title { font-size: 17px; }
+            .top-icon-wrap { width: 30px; height: 30px; font-size: 13px; }
+            .top-sub { font-size: 9px; }
+
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .stat-card .stat-number { font-size: 22px; }
+
+            .saved-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            .saved-card .card-media { height: 180px; }
+
+            .mobile-nav {
+                position: fixed;
+                left: 10px;
+                right: 10px;
+                bottom: 10px;
+                height: 58px;
+                display: flex;
+                align-items: center;
+                justify-content: space-around;
+                background: var(--surface-raised);
+                border: 1px solid var(--border);
+                backdrop-filter: blur(25px);
+                border-radius: var(--radius-lg);
+                z-index: 1000;
+                box-shadow: var(--shadow-lg);
+            }
+            .mobile-nav button {
+                border: 0;
+                background: none;
+                color: var(--text-muted);
+                width: 46px;
+                height: 46px;
+                border-radius: var(--radius-sm);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                font-size: 16px;
+                transition: var(--transition);
+            }
+            .mobile-nav button.active {
+                color: var(--primary);
+                background: var(--primary-bg);
+            }
+            .mobile-nav .create {
+                background: var(--gradient-primary);
+                color: #fff;
+                box-shadow: 0 4px 16px var(--primary-a35);
+            }
+            .mobile-nav .create:hover { transform: scale(1.05); }
+
+            .toast-wrap {
+                bottom: 80px;
+                right: 12px;
+                left: 12px;
+                max-width: 100%;
+            }
+
+            .modal { padding: 18px; max-width: 100%; margin: 10px; }
+        }
+
+        @media (max-width: 430px) {
+            .stats-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+            .stat-card { padding: 10px 12px; }
+            .stat-card .stat-number { font-size: 20px; }
+            .top-title { font-size: 16px; }
+            .saved-card .card-media { height: 160px; }
+            .saved-card .card-title { font-size: 13px; }
+        }
+
+        /* ============================================================
+           UTILITY
+           ============================================================ */
+        .fade-in { animation: postAppear 0.3s ease both; }
+        @keyframes postAppear {
+            from { opacity: 0; transform: translateY(12px) scale(0.98); }
+            to { opacity: 1; transform: none; }
+        }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+<div class="app">
+
+    <!-- ============================================================
+    LEFT NAV
+    ============================================================ -->
+    <aside class="left">
+
+        <button class="brand" onclick="goHome()">
+            <div class="logo">A</div>
+            <div class="brand-name-wrap">
+                <div class="brand-name">Alpha</div>
+                <div class="brand-tag">Social</div>
+            </div>
+        </button>
+
+        <nav class="nav">
+            <div class="nav-section-label">Main</div>
+            <button onclick="goHome()">
+                <span class="nav-icon"><i class="fa-solid fa-house"></i></span> Home
+            </button>
+            <button onclick="goToExplore()">
+                <span class="nav-icon"><i class="fa-solid fa-compass"></i></span> Explore
+            </button>
+            <button onclick="goToReels()">
+                <span class="nav-icon"><i class="fa-solid fa-film"></i></span> Reels
+            </button>
+            <button onclick="goToChat()">
+                <span class="nav-icon"><i class="fa-solid fa-comment-dots"></i></span> Messages
+                <span class="nav-badge" id="nav-msg-badge" style="display:none"></span>
+            </button>
+           
+            <div class="nav-section-label">Activity</div>
+            <button onclick="goToCalls()">
+                <span class="nav-icon"><i class="fa-solid fa-phone"></i></span> Calls
+            </button>
+            <button onclick="goToStatus()">
+                <span class="nav-icon"><i class="fa-solid fa-circle-dot"></i></span> Status
+            </button>
+            <button onclick="goToEvents()">
+                <span class="nav-icon"><i class="fa-solid fa-calendar-days"></i></span> Events
+            </button>
+            <button class="active" onclick="goToSaved()">
+                <span class="nav-icon"><i class="fa-solid fa-bookmark"></i></span> Saved
+            </button>
+
+            <div class="nav-section-label">Workspace</div>
+            <button onclick="goToAI()">
+                <span class="nav-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></span> AI
+            </button>
+            <button onclick="goToVault()">
+                <span class="nav-icon"><i class="fa-solid fa-shield-halved"></i></span> Vault
+            </button>
+            <button onclick="goToSettings()">
+                <span class="nav-icon"><i class="fa-solid fa-gear"></i></span> Settings
+            </button>
+        </nav>
+
+        <div class="profile-mini">
+            <div class="avatar" id="me-mini-avatar">?</div>
+            <div class="name-wrap" onclick="goToSettings()">
+                <div class="name" id="me-mini-name">You</div>
+                <small id="me-mini-handle">@you</small>
+            </div>
+            <button class="logout-btn" title="Sign out" onclick="doLogout()">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            </button>
+        </div>
+
+    </aside>
+
+    <!-- ============================================================
+    CENTER
+    ============================================================ -->
+    <main class="center">
+
+        <!-- HEADER -->
+        <div class="top">
+            <div class="top-left-group">
+                <button class="circle-btn" id="page-back-btn" onclick="goBack()" title="Back" style="display:none;">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
+                <button class="top-left" onclick="goHome()">
+                    <div class="top-icon-wrap"><i class="fa-solid fa-bolt"></i></div>
+                    <div class="top-title-wrap">
+                        <div class="top-title">Saved</div>
+                        <div class="top-sub">Your Collection</div>
+                    </div>
+                </button>
+            </div>
+            <div class="top-actions">
+                <button class="circle-btn" onclick="toggleTheme()" id="theme-toggle">
+                    <i class="fa-regular fa-circle-half-stroke"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- SAVED CONTENT -->
+        <div class="saved-content">
+
+            <!-- Search -->
+            <div class="saved-search">
+                <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+                <input id="searchInput" type="search" placeholder="Search saved items…">
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-label">Saved</span>
+                        <span class="stat-icon blue"><i class="fa-regular fa-bookmark"></i></span>
+                    </div>
+                    <div class="stat-number" id="totalCount">0</div>
+                    <div class="stat-sub">Items</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-label">Posts</span>
+                        <span class="stat-icon green"><i class="fa-regular fa-file-lines"></i></span>
+                    </div>
+                    <div class="stat-number" id="postsCount">0</div>
+                    <div class="stat-sub">Saved</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-label">Reels</span>
+                        <span class="stat-icon orange"><i class="fa-regular fa-film"></i></span>
+                    </div>
+                    <div class="stat-number" id="reelsCount">0</div>
+                    <div class="stat-sub">Saved</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-label">Favorites</span>
+                        <span class="stat-icon purple"><i class="fa-solid fa-star"></i></span>
+                    </div>
+                    <div class="stat-number" id="favoritesCount">0</div>
+                    <div class="stat-sub">Starred</div>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="saved-filters">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="post">Posts</button>
+                <button class="filter-btn" data-filter="reel">Reels</button>
+                <button class="filter-btn" data-filter="favorite">Favorites</button>
+            </div>
+
+            <!-- Grid -->
+            <div class="saved-grid" id="savedGrid"></div>
+
+            <!-- Loading -->
+            <div class="loading-state" id="loadingState">
+                <i class="fa-solid fa-spinner"></i>
+                <div class="title">Loading your saved items…</div>
+                <div class="sub">Please wait</div>
+            </div>
+
+            <!-- Empty -->
+            <div class="empty-state" id="emptyState">
+                <i class="fa-regular fa-bookmark"></i>
+                <div class="title">Nothing saved yet</div>
+                <div class="sub">Tap the bookmark icon on any post or reel to keep it here.</div>
+            </div>
+
+            <!-- Login Required -->
+            <div class="empty-state" id="loginRequiredState" style="display:none;">
+                <i class="fa-solid fa-lock"></i>
+                <div class="title">Sign in to see your saved items</div>
+                <div class="sub">Your saved posts and reels are tied to your Alpha account.</div>
+                <button class="btn btn-primary" style="margin-top:16px;" onclick="window.location.href='login.html'">
+                    <i class="fa-solid fa-arrow-right-to-bracket"></i> Go to Login
+                </button>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- ============================================================
+    RIGHT PANEL
+    ============================================================ -->
+    <aside class="right">
+
+        <div class="panel">
+            <div class="panel-title">Trending <span onclick="goToExplore()">See all</span></div>
+            <div class="trend" onclick="searchPosts('#Alpha')">
+                <small>1 · Community</small><strong>#Alpha</strong><em>2.4K posts</em>
+            </div>
+            <div class="trend" onclick="searchPosts('#Kigali')">
+                <small>2 · Rwanda</small><strong>#Kigali</strong><em>890 posts</em>
+            </div>
+            <div class="trend" onclick="searchPosts('#Rwanda')">
+                <small>3 · Rwanda</small><strong>#Rwanda</strong><em>543 posts</em>
+            </div>
+            <div class="trend" onclick="searchPosts('#Tech')">
+                <small>4 · Technology</small><strong>#Tech</strong><em>421 posts</em>
+            </div>
+            <div class="trend" onclick="searchPosts('#AlphaLaunch')">
+                <small>5 · Alpha</small><strong>#AlphaLaunch</strong><em>312 posts</em>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-title">Quick Actions</div>
+            <div style="display:flex;flex-direction:column;gap:6px;">
+                <button class="filter-btn" style="width:100%;justify-content:center;" onclick="goHome()">
+                    <i class="fa-solid fa-house" style="margin-right:6px;"></i> Go Home
+                </button>
+                <button class="filter-btn" style="width:100%;justify-content:center;" onclick="openCreateCollection()">
+                    <i class="fa-solid fa-folder-plus" style="margin-right:6px;"></i> New Collection
+                </button>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-title">Alpha</div>
+            <div style="font-size:11.5px;color:var(--text-muted);line-height:1.7">
+                Your personal content library. Everything you save in one place.
+                <br><br>
+                © 2026 Alpha
+            </div>
+        </div>
+
+    </aside>
+
+</div>
+
+<!-- Mobile Nav -->
+<nav class="mobile-nav">
+    <button onclick="goHome()"><i class="fa-solid fa-house"></i></button>
+    <button onclick="goToExplore()"><i class="fa-solid fa-compass"></i></button>
+    <button class="create" onclick="goHome()"><i class="fa-solid fa-plus"></i></button>
+    <button onclick="goToChat()"><i class="fa-solid fa-comment-dots"></i></button>
+    <button class="active" onclick="goToSaved()"><i class="fa-solid fa-bookmark"></i></button>
+</nav>
+
+<!-- Toast -->
+<div class="toast-wrap" id="toast-wrap"></div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+        <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+        <div class="modal-title" id="modalTitle">Create Collection</div>
+        <div class="modal-sub" id="modalSub">Organize your saved items</div>
+        <div id="modalBody">
+            <div class="collection-chips" id="collectionChips"></div>
+            <div class="form-group">
+                <label>Collection name</label>
+                <input id="collectionInput" placeholder="e.g. My Inspiration" maxlength="50">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+            <button class="btn btn-primary" id="modalSaveBtn">Create</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ============================================================
+    // BACKEND CONFIG
+    // ============================================================
+    const API_BASE = 'https://alpha-auth.murwanashyakadieumerci540.workers.dev';
+    let CF_TOKEN = localStorage.getItem('alpha_token') || null;
+    let CU = null;
+    let UP = { display_name: '', avatar_url: null };
+    let allUsers = {};
+
+    // ============================================================
+    // API HELPERS
+    // ============================================================
+    async function cfApi(endpoint, method = 'GET', body = null) {
+        const opts = { method, headers: { 'Content-Type': 'application/json' } };
+        if (CF_TOKEN) opts.headers['Authorization'] = `Bearer ${CF_TOKEN}`;
+        if (body) opts.body = JSON.stringify(body);
+
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), 15000);
+        opts.signal = controller.signal;
+
+        let res;
+        try {
+            res = await fetch(`${API_BASE}${endpoint}`, opts);
+        } catch (e) {
+            throw new Error(e.name === 'AbortError' ? 'Request timed out' : e.message);
+        } finally {
+            clearTimeout(timer);
+        }
+
+        let data = {};
+        try { data = await res.json(); } catch (e) { data = {}; }
+        if (!res.ok) throw new Error(data.error || data.message || `Error ${res.status}`);
+        return data;
+    }
+
+    // ============================================================
+    // HELPERS
+    // ============================================================
+    function toast(msg, type = 'success') {
+        const wrap = document.getElementById('toast-wrap');
+        if (!wrap) return;
+        const t = document.createElement('div');
+        t.className = 'toast';
+        const icons = { success: 'fa-circle-check', error: 'fa-circle-xmark', info: 'fa-circle-info' };
+        t.innerHTML = `<i class="fa-solid ${icons[type] || 'fa-wand-magic-sparkles'}"></i>
+            <span>${msg}</span>
+            <button class="toast-close" onclick="this.parentElement.remove()"><i class="fa-solid fa-xmark"></i></button>`;
+        wrap.appendChild(t);
+        setTimeout(() => {
+            t.style.opacity = '0';
+            t.style.transform = 'translateX(16px)';
+            setTimeout(() => t.remove(), 300);
+        }, 3000);
+    }
+
+    function escapeHTML(text) {
+        const div = document.createElement('div');
+        div.textContent = text == null ? '' : String(text);
+        return div.innerHTML;
+    }
+
+    function relTime(ts) {
+        if (!ts) return 'just now';
+        const s = (Date.now() - new Date(ts).getTime()) / 1000;
+        if (s < 60) return 'just now';
+        if (s < 3600) return Math.floor(s / 60) + 'm ago';
+        if (s < 86400) return Math.floor(s / 3600) + 'h ago';
+        if (s < 604800) return Math.floor(s / 86400) + 'd ago';
+        return new Date(ts).toLocaleDateString();
+    }
+
+    function initials(n) {
+        return (n || '?').split(' ').map(w => w[0] || '').join('').toUpperCase().slice(0, 2) || '?';
+    }
+
+    function isSelf(uid) {
+        return uid && CU?.id && String(uid).trim().toLowerCase() === String(CU.id).trim().toLowerCase();
+    }
+
+    function avatarSrc(user) {
+        if (user && user.avatar_url) return user.avatar_url;
+        const name = encodeURIComponent((user && user.display_name) || 'Alpha User');
+        return `https://ui-avatars.com/api/?background=4f46e5&color=fff&bold=true&name=${name}`;
+    }
+
+    function decodeMeta(raw) {
+        const META_MARK = '\u2063ALPHA_META\u2063';
+        if (!raw) return { text: '', meta: null };
+        const idx = raw.indexOf(META_MARK);
+        if (idx === -1) return { text: raw, meta: null };
+        const text = raw.slice(0, idx);
+        let meta = null;
+        try { meta = JSON.parse(raw.slice(idx + META_MARK.length)); } catch (e) {}
+        return { text, meta };
+    }
+
+    function parsePostMedia(raw) {
+        if (!raw) return [];
+        try {
+            const parsed = JSON.parse(raw);
+            if (Array.isArray(parsed)) return parsed.filter(m => m && m.url);
+        } catch (e) {}
+        return [{ type: 'image', url: raw }];
+    }
+
+    function extractTags(text) {
+        if (!text) return [];
+        const matches = text.match(/#(\w+)/g) || [];
+        return [...new Set(matches.map(t => t.slice(1)))].slice(0, 4);
+    }
+
+    // ============================================================
+    // NAVIGATION
+    // ============================================================
+    function goHome() { window.location.href = 'index.html'; }
+    function goBack() { if (history.length > 1) history.back(); else goHome(); }
+    function goToExplore() { window.location.href = 'explore.html'; }
+    function goToReels() { window.location.href = 'reels.html'; }
+    function goToChat() { window.location.href = 'chat.html'; }
+    function goToCalls() { window.location.href = 'calls.html'; }
+    function goToStatus() { window.location.href = 'status.html'; }
+    function goToEvents() { window.location.href = 'events.html'; }
+    function goToSaved() { window.location.href = 'saved.html'; }
+    function goToAI() { window.location.href = 'ai.html'; }
+    function goToVault() { window.location.href = 'vaults.html'; }
+    function goToSettings() { window.location.href = 'settings.html'; }
+    function searchPosts(q) { window.location.href = 'index.html?search=' + encodeURIComponent(q); }
+
+    function doLogout() {
+        if (confirm('Sign out?')) {
+            localStorage.removeItem('alpha_token');
+            localStorage.removeItem('alpha_user');
+            window.location.href = 'login.html';
+        }
+    }
+
+    function toggleTheme() {
+        const cur = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        AlphaCommon.applyTheme(cur);
+        localStorage.setItem('alpha_theme', cur);
+    }
+
+    // ============================================================
+    // UPDATE MINI PROFILE
+    // ============================================================
+    function updateMeMini() {
+        const nm = UP.display_name || CU?.id || 'User';
+        const avEl = document.getElementById('me-mini-avatar');
+        if (avEl) {
+            if (UP.avatar_url) {
+                avEl.innerHTML = `<img src="${UP.avatar_url}" alt="">`;
+                avEl.className = 'avatar';
+            } else {
+                avEl.className = 'avatar g2';
+                avEl.textContent = (nm || 'U')[0].toUpperCase();
+            }
+        }
+        const nameEl = document.getElementById('me-mini-name');
+        if (nameEl) nameEl.textContent = nm;
+        const handleEl = document.getElementById('me-mini-handle');
+        if (handleEl) handleEl.textContent = '@' + (CU?.id || 'user').split('@')[0];
+    }
+
+    // ============================================================
+    // LOAD USERS
+    // ============================================================
+    async function loadUsers() {
+        try {
+            const data = await cfApi('/users');
+            data.forEach(u => allUsers[u.email] = u);
+        } catch (e) {
+            console.warn('Load users error:', e);
+        }
+    }
+
+    // ============================================================
+    // SAVED POSTS (localStorage)
+    // ============================================================
+    function savedPostsKey() { return 'alpha_saved_' + (CU?.id || 'guest'); }
+
+    function loadSavedPostIds() {
+        try { return JSON.parse(localStorage.getItem(savedPostsKey()) || '[]'); }
+        catch (e) { return []; }
+    }
+
+    function saveSavedPostIds(list) {
+        localStorage.setItem(savedPostsKey(), JSON.stringify(list));
+    }
+
+    function unsavePostLocally(postId) {
+        const list = loadSavedPostIds().filter(id => id !== postId);
+        saveSavedPostIds(list);
+    }
+
+    // ============================================================
+    // META STORE (favorites, collections)
+    // ============================================================
+    function metaKey() { return 'alpha_saved_meta_' + (CU?.id || 'guest'); }
+
+    function loadMetaStore() {
+        try { return JSON.parse(localStorage.getItem(metaKey()) || '{}'); }
+        catch (e) { return {}; }
+    }
+
+    function saveMetaStore(store) {
+        localStorage.setItem(metaKey(), JSON.stringify(store));
+    }
+
+    function itemKey(type, id) { return type + ':' + id; }
+
+    function getItemMeta(type, id) {
+        const store = loadMetaStore();
+        const key = itemKey(type, id);
+        if (!store[key]) {
+            store[key] = { savedAt: new Date().toISOString(), favorite: false, collection: null };
+            saveMetaStore(store);
+        }
+        return store[key];
+    }
+
+    function updateItemMeta(type, id, patch) {
+        const store = loadMetaStore();
+        const key = itemKey(type, id);
+        store[key] = { ...(store[key] || { savedAt: new Date().toISOString(), favorite: false, collection: null }),
+            ...patch };
+        saveMetaStore(store);
+        return store[key];
+    }
+
+    function removeItemMeta(type, id) {
+        const store = loadMetaStore();
+        delete store[itemKey(type, id)];
+        saveMetaStore(store);
+    }
+
+    // ============================================================
+    // COLLECTIONS
+    // ============================================================
+    function collectionsKey() { return 'alpha_collections_' + (CU?.id || 'guest'); }
+
+    function loadCollections() {
+        try { return JSON.parse(localStorage.getItem(collectionsKey()) || '[]'); }
+        catch (e) { return []; }
+    }
+
+    function saveCollections(list) {
+        localStorage.setItem(collectionsKey(), JSON.stringify(list));
+    }
+
+    function addCollection(name) {
+        const list = loadCollections();
+        if (!list.includes(name)) {
+            list.push(name);
+            saveCollections(list);
+        }
+    }
+
+    function removeCollection(name) {
+        let list = loadCollections();
+        list = list.filter(c => c !== name);
+        saveCollections(list);
+    }
+
+    // ============================================================
+    // LOAD SAVED DATA
+    // ============================================================
+    let allSavedPosts = [];
+    let allSavedReels = [];
+    let savedItems = [];
+    let currentFilter = 'all';
+    let currentCollectionFilter = null;
+
+    async function loadSavedPosts() {
+        const savedIds = new Set(loadSavedPostIds());
+        if (!savedIds.size) { allSavedPosts = []; return; }
+        try {
+            const posts = await cfApi('/posts');
+            allSavedPosts = (posts || []).filter(p => savedIds.has(p.id));
+        } catch (e) {
+            console.warn('Load saved posts error:', e);
+            allSavedPosts = [];
+        }
+    }
+
+    async function loadSavedReels() {
+        try {
+            const qs = new URLSearchParams({ sort: 'foryou', uid: CU.id });
+            const reels = await cfApi('/reels?' + qs.toString());
+            allSavedReels = (reels || []).filter(r => (r.saved_by || []).includes(CU.id));
+        } catch (e) {
+            console.warn('Load saved reels error:', e);
+            allSavedReels = [];
+        }
+    }
+
+    function buildSavedItems() {
+        const posts = allSavedPosts.map(p => ({
+            type: 'post',
+            id: p.id,
+            data: p,
+            meta: getItemMeta('post', p.id)
+        }));
+        const reels = allSavedReels.map(r => ({
+            type: 'reel',
+            id: r.id,
+            data: r,
+            meta: getItemMeta('reel', r.id)
+        }));
+        savedItems = [...posts, ...reels];
+        savedItems.sort((a, b) => new Date(b.meta.savedAt) - new Date(a.meta.savedAt));
+    }
+
+    async function loadAllSavedData() {
+        showLoading(true);
+        try {
+            await Promise.all([loadUsers(), loadSavedPosts(), loadSavedReels()]);
+            buildSavedItems();
+        } finally {
+            showLoading(false);
+        }
+        renderGrid();
+    }
+
+    // ============================================================
+    // RENDER GRID
+    // ============================================================
+    function renderGrid() {
+        if (!CU) {
+            document.getElementById('loginRequiredState').style.display = 'block';
+            document.getElementById('savedGrid').style.display = 'none';
+            document.getElementById('emptyState').style.display = 'none';
+            return;
+        }
+
+        const query = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+
+        let visible = savedItems.filter(item => {
+            if (currentFilter === 'all') return true;
+            if (currentFilter === 'favorite') return item.meta.favorite;
+            return item.type === currentFilter;
+        });
+
+        if (currentCollectionFilter) {
+            visible = visible.filter(item => item.meta.collection === currentCollectionFilter);
+        }
+
+        if (query) {
+            visible = visible.filter(item => {
+                if (item.type === 'post') {
+                    const { text } = decodeMeta(item.data.content);
+                    const user = allUsers[item.data.uid] || {};
+                    return ((text || '') + ' ' + (user.display_name || '')).toLowerCase().includes(query);
+                }
+                const user = allUsers[item.data.uid] || {};
+                return ((item.data.caption || '') + ' ' + (item.data.author || user.display_name || '')).toLowerCase()
+                    .includes(query);
+            });
+        }
+
+        // Update stats
+        document.getElementById('totalCount').textContent = savedItems.length;
+        document.getElementById('postsCount').textContent = savedItems.filter(i => i.type === 'post').length;
+        document.getElementById('reelsCount').textContent = savedItems.filter(i => i.type === 'reel').length;
+        document.getElementById('favoritesCount').textContent = savedItems.filter(i => i.meta.favorite).length;
+
+        const grid = document.getElementById('savedGrid');
+        const empty = document.getElementById('emptyState');
+
+        if (!visible.length) {
+            grid.innerHTML = '';
+            empty.style.display = 'block';
+            const title = empty.querySelector('.title');
+            const sub = empty.querySelector('.sub');
+            if (!savedItems.length) {
+                title.textContent = 'Nothing saved yet';
+                sub.textContent = 'Tap the bookmark icon on any post or reel to keep it here.';
+            } else {
+                title.textContent = 'Nothing matches';
+                sub.textContent = 'Try a different filter or search term.';
+            }
+            return;
+        }
+
+        empty.style.display = 'none';
+        grid.innerHTML = visible.map(item => buildCard(item)).join('');
+    }
+
+    // ============================================================
+    // BUILD CARD
+    // ============================================================
+    function buildCard(item) {
+        if (item.type === 'post') {
+            return buildPostCard(item);
+        } else {
+            return buildReelCard(item);
+        }
+    }
+
+    function buildPostCard(item) {
+        const p = item.data;
+        const { text } = decodeMeta(p.content);
+        const media = parsePostMedia(p.image_url);
+        const first = media[0];
+        const user = allUsers[p.uid] || { display_name: p.author || 'User' };
+        const tags = extractTags(text);
+        const favorite = item.meta.favorite;
+        const collection = item.meta.collection;
+
+        let mediaHTML;
+        if (first && first.type === 'video') {
+            mediaHTML = `<video src="${first.url}" muted preload="metadata"></video>`;
+        } else if (first) {
+            mediaHTML = `<img src="${first.url}" loading="lazy" alt="">`;
+        } else {
+            mediaHTML = `<div class="media-placeholder">
+                <i class="fa-regular fa-file-lines"></i>
+                <span>${escapeHTML((text || 'Text post').slice(0, 40))}</span>
+            </div>`;
+        }
+
+        return `
+            <div class="saved-card fade-in" data-type="post" data-id="${p.id}">
+                <div class="card-media">
+                    ${mediaHTML}
+                    <span class="media-badge"><i class="fa-regular fa-file-lines"></i> Post</span>
+                    <button class="favorite-btn ${favorite ? 'active' : ''}" onclick="event.stopPropagation();toggleFavorite('post','${p.id}')">
+                        <i class="fa-solid ${favorite ? 'fa-star' : 'fa-star'}"></i>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-author">
+                        <div class="author-avatar"><img src="${avatarSrc(user)}" alt=""></div>
+                        <div class="author-info">
+                            <div class="name">${escapeHTML(user.display_name || 'User')}</div>
+                            <div class="time">Saved ${relTime(item.meta.savedAt)}</div>
+                        </div>
+                    </div>
+                    <div class="card-title">${escapeHTML((text || 'Untitled post').slice(0, 90))}</div>
+                    ${text && text.length > 90 ? `<div class="card-description">${escapeHTML(text.slice(90, 200))}${text.length > 200 ? '…' : ''}</div>` : ''}
+                    ${tags.length ? `<div class="card-tags">${tags.map(t => `<span class="tag">#${escapeHTML(t)}</span>`).join('')}</div>` : ''}
+                    <div class="card-footer">
+                        <span class="collection-label" onclick="openCollectionModal('post','${p.id}')">
+                            <span class="dot"></span>
+                            ${collection ? escapeHTML(collection) : 'No collection'}
+                        </span>
+                        <div class="card-actions">
+                            <button onclick="window.open('index.html?post=${encodeURIComponent(p.id)}','_blank')"><i class="fa-solid fa-arrow-up-right-from-square"></i></button>
+                            <button class="danger" onclick="removeSaved('post','${p.id}')"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function buildReelCard(item) {
+        const r = item.data;
+        const user = allUsers[r.uid] || { display_name: r.author || 'User' };
+        const favorite = item.meta.favorite;
+        const collection = item.meta.collection;
+
+        return `
+            <div class="saved-card fade-in" data-type="reel" data-id="${r.id}">
+                <div class="card-media">
+                    <video src="${r.video_url}" muted preload="metadata"></video>
+                    <span class="media-badge"><i class="fa-regular fa-film"></i> Reel</span>
+                    <button class="favorite-btn ${favorite ? 'active' : ''}" onclick="event.stopPropagation();toggleFavorite('reel','${r.id}')">
+                        <i class="fa-solid ${favorite ? 'fa-star' : 'fa-star'}"></i>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-author">
+                        <div class="author-avatar"><img src="${avatarSrc(user)}" alt=""></div>
+                        <div class="author-info">
+                            <div class="name">${escapeHTML(user.display_name || r.author || 'User')}</div>
+                            <div class="time">Saved ${relTime(item.meta.savedAt)}</div>
+                        </div>
+                    </div>
+                    <div class="card-title">${escapeHTML((r.caption || 'Untitled reel').slice(0, 90))}</div>
+                    <div class="card-tags">
+                        <span class="tag">❤️ ${r.likes || 0}</span>
+                        <span class="tag">💬 ${r.comments_count || 0}</span>
+                    </div>
+                    <div class="card-footer">
+                        <span class="collection-label" onclick="openCollectionModal('reel','${r.id}')">
+                            <span class="dot"></span>
+                            ${collection ? escapeHTML(collection) : 'No collection'}
+                        </span>
+                        <div class="card-actions">
+                            <button onclick="window.open('reels.html?id=${encodeURIComponent(r.id)}','_blank')"><i class="fa-solid fa-play"></i></button>
+                            <button class="danger" onclick="removeSaved('reel','${r.id}')"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // ============================================================
+    // ACTIONS
+    // ============================================================
+    function showLoading(show) {
+        document.getElementById('loadingState').style.display = show ? 'block' : 'none';
+        document.getElementById('savedGrid').style.display = show ? 'none' : '';
+    }
+
+    // Toggle favorite
+    function toggleFavorite(type, id) {
+        const item = savedItems.find(i => i.type === type && String(i.id) === String(id));
+        if (!item) return;
+        const nowFavorite = !item.meta.favorite;
+        item.meta = updateItemMeta(type, id, { favorite: nowFavorite });
+        toast(nowFavorite ? 'Added to favorites ⭐' : 'Removed from favorites');
+        renderGrid();
+    }
+
+    // Remove saved item
+    async function removeSaved(type, id) {
+        if (!confirm('Remove this from your saved items?')) return;
+
+        try {
+            if (type === 'post') {
+                unsavePostLocally(id);
+                allSavedPosts = allSavedPosts.filter(p => p.id !== id);
+            } else {
+                await cfApi(`/reels/${id}/save`, 'POST', { uid: CU.id });
+                allSavedReels = allSavedReels.filter(r => r.id !== id);
+            }
+            removeItemMeta(type, id);
+            savedItems = savedItems.filter(i => !(i.type === type && String(i.id) === String(id)));
+            toast('Removed from saved');
+            renderGrid();
+        } catch (err) {
+            toast('Could not remove: ' + err.message, 'error');
+        }
+    }
+
+    // ============================================================
+    // FILTERS
+    // ============================================================
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            currentFilter = this.dataset.filter;
+            renderGrid();
+        });
+    });
+
+    document.getElementById('searchInput').addEventListener('input', renderGrid);
+
+    // ============================================================
+    // COLLECTION MODAL
+    // ============================================================
+    let modalContext = null; // { type, id } or null
+
+    function openCollectionModal(type, id) {
+        modalContext = { type, id };
+        const item = savedItems.find(i => i.type === type && String(i.id) === String(id));
+        const collections = loadCollections();
+
+        document.getElementById('modalTitle').textContent = 'Move to Collection';
+        document.getElementById('modalSub').textContent = item ? `"${item.data.title || item.data.caption || 'Item'}"` :
+            'Organize your saved items';
+
+        const chips = document.getElementById('collectionChips');
+        if (collections.length) {
+            chips.innerHTML = collections.map(name => `
+                <button class="collection-chip" onclick="assignToCollection('${escapeHTML(name)}')">${escapeHTML(name)}</button>
+            `).join('');
+            chips.style.display = 'flex';
+        } else {
+            chips.style.display = 'none';
+            chips.innerHTML = '';
+        }
+
+        document.getElementById('collectionInput').value = '';
+        document.getElementById('modalSaveBtn').textContent = 'Create Collection';
+        document.getElementById('modalSaveBtn').onclick = () => createAndAssign();
+
+        document.getElementById('modalOverlay').classList.add('open');
+        setTimeout(() => document.getElementById('collectionInput').focus(), 100);
+    }
+
+    function openCreateCollection() {
+        modalContext = null;
+        document.getElementById('modalTitle').textContent = 'Create Collection';
+        document.getElementById('modalSub').textContent = 'Organize your saved items';
+        document.getElementById('collectionChips').style.display = 'none';
+        document.getElementById('collectionInput').value = '';
+        document.getElementById('modalSaveBtn').textContent = 'Create';
+        document.getElementById('modalSaveBtn').onclick = () => createOnly();
+
+        document.getElementById('modalOverlay').classList.add('open');
+        setTimeout(() => document.getElementById('collectionInput').focus(), 100);
+    }
+
+    function assignToCollection(name) {
+        if (!modalContext) return;
+        const { type, id } = modalContext;
+        const item = savedItems.find(i => i.type === type && String(i.id) === String(id));
+        if (item) {
+            item.meta = updateItemMeta(type, id, { collection: name });
+        }
+        addCollection(name);
+        closeModal();
+        renderGrid();
+        toast(`Moved to "${name}"`);
+    }
+
+    function createAndAssign() {
+        const input = document.getElementById('collectionInput');
+        const name = input.value.trim();
+        if (!name) { toast('Enter a collection name', 'error'); return; }
+
+        if (!modalContext) {
+            createOnly();
+            return;
+        }
+
+        addCollection(name);
+        assignToCollection(name);
+        closeModal();
+    }
+
+    function createOnly() {
+        const input = document.getElementById('collectionInput');
+        const name = input.value.trim();
+        if (!name) { toast('Enter a collection name', 'error'); return; }
+
+        addCollection(name);
+        closeModal();
+        renderGrid();
+        toast(`Collection "${name}" created`);
+    }
+
+    function closeModal() {
+        document.getElementById('modalOverlay').classList.remove('open');
+        modalContext = null;
+    }
+
+    document.getElementById('modalOverlay').addEventListener('click', function(e) {
+        if (e.target === this) closeModal();
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeModal();
+    });
+
+    // ============================================================
+    // KEYBOARD SHORTCUTS
+    // ============================================================
+    document.addEventListener('keydown', function(e) {
+        if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+            e.preventDefault();
+            document.getElementById('searchInput').focus();
+        }
+    });
+
+    // ============================================================
+    // INIT
+    // ============================================================
+    async function init() {
+        // Theme
+        const savedTheme = localStorage.getItem('alpha_theme') || 'light';
+        AlphaCommon.applyTheme(savedTheme);
+
+        // Auth
+        CF_TOKEN = localStorage.getItem('alpha_token') || null;
+        const savedUser = localStorage.getItem('alpha_user');
+
+        if (!CF_TOKEN || !savedUser) {
+            document.getElementById('loginRequiredState').style.display = 'block';
+            document.getElementById('savedGrid').style.display = 'none';
+            return;
+        }
+
+        try {
+            const parsed = JSON.parse(savedUser);
+            CU = parsed.CU || parsed;
+            UP = parsed.UP || {};
+        } catch (e) {}
+
+        updateMeMini();
+        await loadAllSavedData();
+
+        // Back button
+        const ref = document.referrer;
+        const cameFromAlpha = ref && ref.indexOf(location.origin) === 0 && !/\/saved\.html([?#]|$)/.test(ref);
+        const backBtn = document.getElementById('page-back-btn');
+        if (backBtn) backBtn.style.display = cameFromAlpha ? 'flex' : 'none';
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+</script>
+
+</body>
+</html>

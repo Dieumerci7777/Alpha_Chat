@@ -1,0 +1,2052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+>
+
+<title>Alpha — Groups</title>
+
+<style>
+
+/* =========================================================
+   ALPHA GROUPS
+   MATCHES chat.html'S DESIGN SYSTEM
+   ========================================================= */
+
+:root{
+    --alpha:#0071e3;
+    --alpha-light:#3b96ff;
+    --alpha-dark:#0059b3;
+
+    --bg:#f5f6f8;
+    --surface:#ffffff;
+    --surface-2:#f0f2f5;
+
+    --text:#111318;
+    --muted:#737780;
+    --line:#e4e6ea;
+
+    --white:#fff;
+    --danger:#ff3040;
+    --success:#25c768;
+
+    --shadow:
+        0 10px 35px rgba(0,0,0,.08);
+
+    --safe-top:env(safe-area-inset-top);
+    --safe-bottom:env(safe-area-inset-bottom);
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+
+    -webkit-tap-highlight-color:transparent;
+}
+
+html,
+body{
+    width:100%;
+    height:100%;
+
+    overflow:hidden;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Display",
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+    color:var(--text);
+    background:var(--bg);
+}
+
+button,
+input,
+textarea{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+button:active{
+    transform:scale(.96);
+}
+
+body.dark{
+    --bg:#090a0c;
+    --surface:#111317;
+    --surface-2:#1b1d22;
+
+    --text:#f5f5f7;
+    --muted:#92959d;
+    --line:#292c32;
+}
+
+.app{
+    width:100%;
+    height:100dvh;
+
+    display:flex;
+    flex-direction:column;
+
+    overflow:hidden;
+}
+
+
+/* =========================================================
+   SHARED COMPONENTS (icon-button, avatar, toast, modal, contact)
+   ========================================================= */
+
+.icon-button{
+    width:40px;
+    height:40px;
+
+    border:0;
+    border-radius:50%;
+
+    background:transparent;
+
+    color:var(--text);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    flex-shrink:0;
+}
+
+.icon-button:hover{
+    background:var(--surface-2);
+}
+
+.icon-button svg{
+    width:19px;
+    height:19px;
+}
+
+.avatar-wrap{
+    position:relative;
+    width:50px;
+    height:50px;
+    flex-shrink:0;
+}
+
+.avatar{
+    width:100%;
+    height:100%;
+    border-radius:50%;
+    object-fit:cover;
+    background:var(--surface-2);
+}
+
+.group-avatar-fallback{
+    width:100%;
+    height:100%;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--alpha);
+    color:#fff;
+    font-weight:850;
+    font-size:16px;
+}
+
+.toast{
+    position:fixed;
+    left:50%;
+    bottom:calc(30px + var(--safe-bottom));
+    transform:translate(-50%,15px);
+    z-index:1000;
+    padding:10px 16px;
+    border-radius:22px;
+    background:rgba(20,20,20,.92);
+    color:#fff;
+    font-size:11px;
+    font-weight:750;
+    opacity:0;
+    visibility:hidden;
+    transition:.22s;
+    white-space:nowrap;
+    max-width:90vw;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.toast.show{
+    opacity:1;
+    visibility:visible;
+    transform:translate(-50%,0);
+}
+
+.modal-overlay{
+    position:fixed;
+    inset:0;
+    z-index:800;
+    background:rgba(0,0,0,.55);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.modal-overlay.open{
+    display:flex;
+}
+
+.modal{
+    width:430px;
+    max-width:100%;
+    max-height:85vh;
+    background:var(--surface);
+    border-radius:22px;
+    overflow:hidden;
+    overflow-y:auto;
+    box-shadow:0 25px 80px rgba(0,0,0,.25);
+}
+
+.modal-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:17px;
+    border-bottom:1px solid var(--line);
+}
+
+.modal-title{
+    font-size:15px;
+    font-weight:900;
+}
+
+.modal-close{
+    border:0;
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    background:var(--surface-2);
+    color:var(--text);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.modal-close svg{
+    width:16px;
+    height:16px;
+}
+
+.contact-search{
+    margin:13px;
+    width:calc(100% - 26px);
+    height:42px;
+    border:1px solid var(--line);
+    border-radius:21px;
+    background:var(--surface-2);
+    color:var(--text);
+    outline:0;
+    padding:0 14px;
+    font-size:12px;
+}
+
+.contacts{
+    padding:0 9px 12px;
+    overflow:auto;
+    max-height:55vh;
+}
+
+.contact{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:11px;
+    border-radius:12px;
+}
+
+.contact:hover{
+    background:var(--surface-2);
+}
+
+.contact-info{
+    flex:1;
+    min-width:0;
+}
+
+.contact-name{
+    font-size:12px;
+    font-weight:850;
+}
+
+.contact-handle{
+    margin-top:3px;
+    font-size:10px;
+    color:var(--muted);
+}
+
+.contact.pickable{
+    cursor:pointer;
+}
+
+.contact-checkbox{
+    width:20px;
+    height:20px;
+    flex-shrink:0;
+    accent-color:var(--alpha);
+    cursor:pointer;
+}
+
+.group-form{
+    padding:14px 17px 4px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.group-form input[type="text"],
+.group-form textarea{
+    width:100%;
+    border:1px solid var(--line);
+    border-radius:14px;
+    background:var(--surface-2);
+    color:var(--text);
+    outline:0;
+    padding:11px 14px;
+    font-size:13px;
+    font-family:inherit;
+    resize:none;
+}
+
+.group-form label{
+    font-size:11px;
+    font-weight:800;
+    color:var(--muted);
+    text-transform:uppercase;
+    letter-spacing:.4px;
+}
+
+.group-members-title{
+    padding:10px 17px 2px;
+    font-size:11px;
+    font-weight:800;
+    color:var(--muted);
+    text-transform:uppercase;
+    letter-spacing:.4px;
+}
+
+.group-create-footer{
+    padding:12px 17px 17px;
+}
+
+.group-create-footer button{
+    width:100%;
+    border:0;
+    border-radius:16px;
+    background:var(--alpha);
+    color:#fff;
+    padding:13px;
+    font-size:13px;
+    font-weight:850;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+}
+
+.group-create-footer button:disabled{
+    opacity:.5;
+}
+
+.gs-avatar-row{
+    display:flex;
+    justify-content:center;
+    padding:22px 17px 6px;
+}
+
+.gs-avatar-wrap{
+    position:relative;
+    width:88px;
+    height:88px;
+    cursor:pointer;
+}
+
+.gs-avatar-wrap img,
+.gs-avatar-wrap .group-avatar-fallback{
+    width:88px;
+    height:88px;
+    border-radius:50%;
+    object-fit:cover;
+    font-size:28px;
+}
+
+.gs-avatar-edit{
+    position:absolute;
+    right:-2px;
+    bottom:-2px;
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    background:var(--alpha);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:3px solid var(--surface);
+}
+
+.gs-avatar-edit svg{
+    width:13px;
+    height:13px;
+}
+
+.gs-section{
+    padding:14px 17px 4px;
+}
+
+.gs-section-title{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    font-size:11px;
+    font-weight:800;
+    color:var(--muted);
+    text-transform:uppercase;
+    letter-spacing:.4px;
+    padding:10px 0 8px;
+}
+
+.gs-section-title button{
+    border:0;
+    background:color-mix(in srgb,var(--alpha) 12%,transparent);
+    color:var(--alpha);
+    border-radius:14px;
+    padding:6px 11px;
+    font-size:10.5px;
+    font-weight:800;
+    text-transform:none;
+    letter-spacing:0;
+
+    display:flex;
+    align-items:center;
+    gap:5px;
+}
+
+.gs-section-title button svg{
+    width:12px;
+    height:12px;
+}
+
+.gs-save-btn{
+    width:100%;
+    border:0;
+    border-radius:16px;
+    background:var(--alpha);
+    color:#fff;
+    padding:13px;
+    font-size:13px;
+    font-weight:850;
+    margin-top:4px;
+}
+
+.gs-save-btn:disabled{
+    opacity:.5;
+}
+
+.gs-member-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:9px 4px;
+}
+
+.gs-member-row .avatar-wrap{
+    width:38px;
+    height:38px;
+    flex-shrink:0;
+}
+
+.gs-member-info{
+    flex:1;
+    min-width:0;
+}
+
+.gs-member-name{
+    font-size:12px;
+    font-weight:800;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    flex-wrap:wrap;
+}
+
+.gs-role-tag{
+    font-size:9px;
+    font-weight:800;
+    padding:2px 7px;
+    border-radius:8px;
+    background:color-mix(in srgb,var(--alpha) 14%,transparent);
+    color:var(--alpha);
+}
+
+.gs-remove-btn{
+    border:0;
+    width:28px;
+    height:28px;
+    border-radius:50%;
+    background:var(--surface-2);
+    color:var(--danger);
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.gs-remove-btn svg{
+    width:13px;
+    height:13px;
+}
+
+.gs-remove-btn:hover{
+    background:color-mix(in srgb,var(--danger) 14%,transparent);
+}
+
+.contact-button{
+    border:0;
+    background:var(--alpha);
+    color:#fff;
+    border-radius:18px;
+    padding:7px 12px;
+    font-size:10px;
+    font-weight:800;
+    flex-shrink:0;
+}
+
+.gs-danger-zone{
+    padding:14px 17px 28px;
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+    border-top:1px solid var(--line);
+    margin-top:8px;
+}
+
+.gs-danger-btn{
+    width:100%;
+    border:1px solid var(--line);
+    border-radius:16px;
+    background:var(--surface);
+    color:var(--danger);
+    padding:12px;
+    font-size:12.5px;
+    font-weight:800;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+}
+
+.gs-danger-btn svg{
+    width:15px;
+    height:15px;
+}
+
+.gs-danger-btn:hover{
+    background:color-mix(in srgb,var(--danger) 8%,transparent);
+}
+
+.gs-danger-btn.neutral{
+    color:var(--text);
+}
+
+
+/* =========================================================
+   GROUPS PAGE — SCREENS
+   ========================================================= */
+
+.g-topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    gap:10px;
+
+    padding:
+        calc(14px + var(--safe-top))
+        10px
+        14px
+        14px;
+
+    border-bottom:1px solid var(--line);
+    background:var(--surface);
+
+    flex-shrink:0;
+}
+
+.g-topbar-title{
+    font-size:17px;
+    font-weight:900;
+    flex:1;
+}
+
+.g-body{
+    flex:1;
+    min-height:0;
+    position:relative;
+
+    max-width:620px;
+    width:100%;
+    margin:0 auto;
+}
+
+.g-screen{
+    position:absolute;
+    inset:0;
+
+    display:none;
+    flex-direction:column;
+
+    overflow-y:auto;
+    background:var(--bg);
+}
+
+.g-screen.active{
+    display:flex;
+}
+
+.g-screen-header{
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    padding:
+        calc(14px + var(--safe-top))
+        10px
+        14px
+        10px;
+
+    border-bottom:1px solid var(--line);
+    background:var(--surface);
+
+    position:sticky;
+    top:0;
+    z-index:5;
+
+    flex-shrink:0;
+}
+
+.g-screen-title{
+    font-size:15px;
+    font-weight:900;
+    flex:1;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+/* -- list screen -- */
+
+.g-search-wrap{
+    padding:14px 16px 6px;
+    flex-shrink:0;
+}
+
+.g-search{
+    height:44px;
+    display:flex;
+    align-items:center;
+    gap:9px;
+    padding:0 13px;
+    border-radius:23px;
+    background:var(--surface-2);
+    color:var(--muted);
+}
+
+.g-search svg{
+    width:17px;
+    height:17px;
+    flex-shrink:0;
+}
+
+.g-search input{
+    flex:1;
+    min-width:0;
+    border:0;
+    outline:0;
+    background:transparent;
+    color:var(--text);
+    font-size:13px;
+}
+
+.g-list{
+    flex:1;
+    padding:6px 12px 110px;
+}
+
+.g-list-item{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:11px 8px;
+    border-radius:15px;
+    cursor:pointer;
+}
+
+.g-list-item:hover{
+    background:var(--surface-2);
+}
+
+.g-list-info{
+    flex:1;
+    min-width:0;
+}
+
+.g-list-name{
+    font-size:13.5px;
+    font-weight:850;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.g-list-sub{
+    font-size:11px;
+    color:var(--muted);
+    margin-top:2px;
+}
+
+.g-list-chevron{
+    flex-shrink:0;
+    color:var(--muted);
+    display:flex;
+}
+
+.g-list-chevron svg{
+    width:16px;
+    height:16px;
+}
+
+.g-empty{
+    padding:70px 34px;
+    text-align:center;
+    color:var(--muted);
+    font-size:12.5px;
+    line-height:1.7;
+}
+
+.g-empty-icon{
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    background:var(--surface-2);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:0 auto 16px;
+    color:var(--muted);
+}
+
+.g-empty-icon svg{
+    width:26px;
+    height:26px;
+}
+
+.fab{
+    position:absolute;
+    right:20px;
+    bottom:calc(24px + var(--safe-bottom));
+
+    width:56px;
+    height:56px;
+    border-radius:50%;
+
+    border:0;
+    background:var(--alpha);
+    color:#fff;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    box-shadow:0 12px 30px color-mix(in srgb,var(--alpha) 45%,transparent);
+
+    z-index:20;
+}
+
+.fab svg{
+    width:24px;
+    height:24px;
+}
+
+/* -- detail screen hero -- */
+
+.gd-hero{
+    padding:28px 22px 8px;
+    text-align:center;
+    flex-shrink:0;
+}
+
+.gd-hero .gs-avatar-wrap{
+    margin:0 auto 14px;
+}
+
+.gd-name{
+    font-size:19px;
+    font-weight:900;
+}
+
+.gd-sub{
+    font-size:12px;
+    color:var(--muted);
+    margin-top:4px;
+}
+
+.gd-desc{
+    font-size:12.5px;
+    color:var(--muted);
+    margin-top:10px;
+    padding:0 12px;
+    line-height:1.55;
+}
+
+.role-pill{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    margin-top:12px;
+    padding:6px 13px;
+    border-radius:20px;
+    background:color-mix(in srgb,var(--alpha) 14%,transparent);
+    color:var(--alpha);
+    font-size:10.5px;
+    font-weight:800;
+}
+
+.role-pill svg{
+    width:12px;
+    height:12px;
+}
+
+.role-pill[hidden]{
+    display:none;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media(min-width:760px){
+
+    .app{
+        padding:24px;
+        align-items:center;
+    }
+
+    .g-body{
+        border:1px solid var(--line);
+        border-radius:24px;
+        overflow:hidden;
+        box-shadow:var(--shadow);
+        height:100%;
+        max-height:900px;
+    }
+
+}
+
+</style>
+</head>
+<body>
+
+<div class="app">
+
+    <!-- =====================================================
+         SCREEN 1 — GROUP LIST
+         ===================================================== -->
+
+    <div class="g-screen active" id="screenList">
+
+        <header class="g-topbar">
+
+            <button class="icon-button" id="backToChat" title="Back to chat">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+
+            <div class="g-topbar-title">Groups</div>
+
+            <button class="icon-button" id="themeButtonG" title="Theme">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9Z"/></svg>
+            </button>
+
+        </header>
+
+        <div class="g-search-wrap">
+            <div class="g-search">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+                <input id="groupListSearch" type="search" placeholder="Search groups..." autocomplete="off">
+            </div>
+        </div>
+
+        <div class="g-list" id="groupListBody">
+            <div class="g-empty">Loading groups…</div>
+        </div>
+
+        <button class="fab" id="fabCreateGroup" title="Create group">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+
+    </div>
+
+
+    <!-- =====================================================
+         SCREEN 2 — CREATE GROUP
+         ===================================================== -->
+
+    <div class="g-screen" id="screenCreate">
+
+        <header class="g-screen-header">
+
+            <button class="icon-button" id="backFromCreate" title="Back">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+
+            <div class="g-screen-title">New group</div>
+
+        </header>
+
+        <div class="gs-avatar-row">
+
+            <div class="gs-avatar-wrap" id="createAvatarWrap" title="Add group photo">
+                <img id="createAvatarImg" style="display:none;" alt="">
+                <div class="group-avatar-fallback" id="createAvatarFallback">
+                    <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8a2 2 0 0 1 2-2h1.2l1.4-2h6.8l1.4 2H18a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><circle cx="12" cy="13" r="3.4"/></svg>
+                </div>
+                <div class="gs-avatar-edit">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8a2 2 0 0 1 2-2h1.2l1.4-2h6.8l1.4 2H18a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><circle cx="12" cy="13" r="3.4"/></svg>
+                </div>
+            </div>
+
+        </div>
+
+        <input type="file" id="createAvatarInput" accept="image/*" hidden>
+
+        <div class="group-form">
+
+            <div>
+                <label>Group name</label>
+                <input type="text" id="cgNameInput" maxlength="60" placeholder="e.g. Weekend Trip" autocomplete="off">
+            </div>
+
+            <div>
+                <label>Description (optional)</label>
+                <textarea id="cgDescInput" rows="2" maxlength="200" placeholder="What's this group about?"></textarea>
+            </div>
+
+        </div>
+
+        <div class="group-members-title" id="cgMembersCountLabel">Add members</div>
+
+        <input class="contact-search" id="cgMemberSearch" type="search" placeholder="Search people..." autocomplete="off">
+
+        <div class="contacts" id="cgMembersChecklist">
+            <div class="g-empty" style="padding:20px;">Loading contacts…</div>
+        </div>
+
+        <div class="group-create-footer">
+            <button type="button" id="cgSubmitBtn" disabled>
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                Create group
+            </button>
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         SCREEN 3 — GROUP DETAIL / MANAGE
+         ===================================================== -->
+
+    <div class="g-screen" id="screenDetail">
+
+        <header class="g-screen-header">
+
+            <button class="icon-button" id="backFromDetail" title="Back">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+
+            <div class="g-screen-title" id="detailHeaderTitle">Group</div>
+
+            <button class="icon-button" id="openChatFromDetail" title="Open chat">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-4.7 7.6 8.5 8.5 0 0 1-8.6-.6L3 20l1.5-4.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 8.5-8.5h.1a8.5 8.5 0 0 1 8.4 8.5Z"/></svg>
+            </button>
+
+        </header>
+
+        <div class="gd-hero">
+
+            <div class="gs-avatar-wrap" id="detailAvatarWrap" title="Change group photo">
+                <img id="detailAvatarImg" style="display:none;" alt="">
+                <div class="group-avatar-fallback" id="detailAvatarFallback">G</div>
+                <div class="gs-avatar-edit" id="detailAvatarEdit" style="display:none;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8a2 2 0 0 1 2-2h1.2l1.4-2h6.8l1.4 2H18a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><circle cx="12" cy="13" r="3.4"/></svg>
+                </div>
+            </div>
+
+            <input type="file" id="detailAvatarInput" accept="image/*" hidden>
+
+            <div class="gd-name" id="detailName">Group</div>
+            <div class="gd-sub" id="detailSub">0 members</div>
+            <div class="gd-desc" id="detailDesc"></div>
+
+            <div class="role-pill" id="detailRolePill" hidden>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/><path d="M12 15v6M8 21h8"/></svg>
+                <span id="detailRolePillText">You're the owner</span>
+            </div>
+
+        </div>
+
+        <div class="gs-section" id="editInfoSection">
+
+            <div class="gs-section-title">Group info</div>
+
+            <div class="group-form" style="padding:0 0 4px;">
+
+                <div>
+                    <label>Name</label>
+                    <input type="text" id="gdNameInput" maxlength="60" autocomplete="off">
+                </div>
+
+                <div>
+                    <label>Description</label>
+                    <textarea id="gdDescInput" rows="2" maxlength="200" placeholder="What's this group about?"></textarea>
+                </div>
+
+            </div>
+
+            <button type="button" class="gs-save-btn" id="gdSaveBtn">Save changes</button>
+
+        </div>
+
+        <div class="gs-section">
+
+            <div class="gs-section-title">
+                <span id="detailMembersCount">Members (0)</span>
+                <button type="button" id="detailAddMembersBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+                    Add
+                </button>
+            </div>
+
+            <div id="detailMembersList"></div>
+
+        </div>
+
+        <div class="gs-danger-zone">
+
+            <button type="button" class="gs-danger-btn neutral" id="detailLeaveBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+                Leave group
+            </button>
+
+            <button type="button" class="gs-danger-btn" id="detailDeleteBtn" hidden>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16"/><path d="M6 7l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13"/><path d="M9.5 7V4.5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1V7"/><path d="M10 11v6M14 11v6"/></svg>
+                Delete group
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     ADD MEMBERS MODAL
+     ===================================================== -->
+
+<div class="modal-overlay" id="addMembersModal">
+
+    <section class="modal">
+
+        <header class="modal-header">
+            <div class="modal-title">Add members</div>
+            <button class="modal-close" id="closeAddMembers">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 6-12 12M6 6l12 12"/></svg>
+            </button>
+        </header>
+
+        <input class="contact-search" id="addMembersSearch" type="search" placeholder="Search people..." autocomplete="off">
+
+        <div class="contacts" id="addMembersChecklist">
+            <div class="g-empty" style="padding:20px;">Loading contacts…</div>
+        </div>
+
+        <div class="group-create-footer">
+            <button type="button" id="addMembersSubmit" disabled>Add to group</button>
+        </div>
+
+    </section>
+
+</div>
+
+
+<div class="toast" id="toast"></div>
+
+
+<script>
+
+/* =========================================================
+   ALPHA GROUPS — standalone group management page.
+   Shares auth/session + backend with chat.html.
+   ========================================================= */
+
+const CF_API_BASE = "https://alpha-auth.murwanashyakadieumerci540.workers.dev";
+
+let CF_TOKEN = localStorage.getItem("alpha_token") || null;
+let CU       = null;
+let allUsers = {};
+let groups   = [];
+
+let createMemberSelection = new Set();
+let addMemberSelection    = new Set();
+let pendingCreateAvatarUrl = null;
+let pendingDetailAvatarUrl = null;
+let activeGroupId = null;
+
+let toastTimer;
+const toastEl = document.getElementById("toast");
+const body    = document.body;
+
+
+/* ---------------------------------------------------------
+   API HELPERS (same contract as chat.html)
+   --------------------------------------------------------- */
+
+async function cfApi(endpoint, method = "GET", payload = null){
+
+    const opts = {
+        method,
+        headers:{ "Content-Type":"application/json" }
+    };
+
+    if(CF_TOKEN){
+        opts.headers["Authorization"] = `Bearer ${CF_TOKEN}`;
+    }
+
+    if(payload){
+        opts.body = JSON.stringify(payload);
+    }
+
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(),15000);
+    opts.signal = controller.signal;
+
+    let res;
+
+    try{
+        res = await fetch(`${CF_API_BASE}${endpoint}`,opts);
+    }catch(e){
+        throw new Error(e.name === "AbortError" ? "Request timed out — check your connection" : e.message);
+    }finally{
+        clearTimeout(timer);
+    }
+
+    let data = {};
+    try{ data = await res.json(); }catch(e){ data = {}; }
+
+    if(!res.ok){
+        throw new Error(data.error || data.message || `Request failed (${res.status})`);
+    }
+
+    return data;
+
+}
+
+const MAX_UPLOAD_BYTES = 200 * 1024 * 1024; // 200MB
+
+function uploadFile(file){
+
+    return new Promise((resolve,reject) => {
+
+        if(!file){ reject(new Error("No file selected")); return; }
+
+        if(file.size > MAX_UPLOAD_BYTES){
+            reject(new Error(`"${file.name}" is over the ${MAX_UPLOAD_BYTES / (1024*1024)}MB limit`));
+            return;
+        }
+
+        try{
+
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST",`${CF_API_BASE}/upload`);
+
+            if(CF_TOKEN){
+                xhr.setRequestHeader("Authorization",`Bearer ${CF_TOKEN}`);
+            }
+
+            const secondsNeeded = 45 + (file.size / (256 * 1024));
+            xhr.timeout = Math.min(Math.max(secondsNeeded * 1000,60000),600000);
+
+            xhr.onload = () => {
+
+                let data = {};
+                try{ data = JSON.parse(xhr.responseText); }catch(e){ data = { error: xhr.responseText ? xhr.responseText.slice(0,200) : null }; }
+
+                if(xhr.status >= 200 && xhr.status < 300){
+                    if(!data || !data.url){ reject(new Error("Upload succeeded but no file URL was returned")); return; }
+                    resolve(data);
+                }else if(xhr.status === 413){
+                    reject(new Error("File too large for the server to accept"));
+                }else if(xhr.status === 415 || xhr.status === 400){
+                    reject(new Error(data.error || `The server rejected this file type (${file.type || "unknown type"})`));
+                }else{
+                    reject(new Error(data.error || `Upload failed (${xhr.status})`));
+                }
+
+            };
+
+            xhr.onerror = () => reject(new Error("Upload failed — check your connection or CORS settings on the upload endpoint"));
+            xhr.ontimeout = () => reject(new Error("Upload timed out — the file may be too large for the current connection"));
+
+            const fd = new FormData();
+            fd.append("file",file,file.name);
+            xhr.send(fd);
+
+        }catch(e){ reject(e); }
+
+    });
+
+}
+
+
+/* ---------------------------------------------------------
+   UTILITIES
+   --------------------------------------------------------- */
+
+function showToast(text){
+
+    toastEl.textContent = text;
+    toastEl.classList.add("show");
+
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toastEl.classList.remove("show"),2200);
+
+}
+
+function escapeHTML(value){
+    const div = document.createElement("div");
+    div.textContent = value == null ? "" : String(value);
+    return div.innerHTML;
+}
+
+function initials(name){
+    return (name || "?").split(" ").map(w => w[0] || "").join("").toUpperCase().slice(0,2) || "?";
+}
+
+function avatarSrc(user){
+    if(user && user.avatar_url){ return user.avatar_url; }
+    const name = encodeURIComponent((user && user.display_name) || "Alpha User");
+    return `https://ui-avatars.com/api/?background=0071e3&color=fff&bold=true&name=${name}`;
+}
+
+function groupAvatarSrc(g){
+    return (g && g.avatar_url) ? g.avatar_url : null;
+}
+
+function groupOwner(g){ return g && g.owner; }
+function groupAdmins(g){ return (g && g.admins) || []; }
+function isGroupOwner(g,uid){ return !!g && g.owner === uid; }
+function isGroupAdmin(g,uid){ return !!g && (g.owner === uid || groupAdmins(g).includes(uid)); }
+
+function myGroupRole(g){
+    if(!g){ return "member"; }
+    if(isGroupOwner(g,CU?.id)){ return "owner"; }
+    if(isGroupAdmin(g,CU?.id)){ return "admin"; }
+    return "member";
+}
+
+function roleLabel(g,uid){
+    if(isGroupOwner(g,uid)){ return "Owner"; }
+    if(isGroupAdmin(g,uid)){ return "Admin"; }
+    return "Member";
+}
+
+function findGroup(id){
+    return groups.find(g => String(g.id) === String(id));
+}
+
+
+/* ---------------------------------------------------------
+   SCREEN NAVIGATION
+   --------------------------------------------------------- */
+
+function showScreen(id){
+    document.querySelectorAll(".g-screen").forEach(s => s.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+}
+
+document.getElementById("backToChat").addEventListener("click",() => {
+    window.location.href = "chat.html";
+});
+
+document.getElementById("backFromCreate").addEventListener("click",() => showScreen("screenList"));
+document.getElementById("backFromDetail").addEventListener("click",() => { showScreen("screenList"); loadGroups(); });
+
+
+/* ---------------------------------------------------------
+   THEME (mirrors chat.html)
+   --------------------------------------------------------- */
+
+document.getElementById("themeButtonG").addEventListener("click",() => {
+    body.classList.toggle("dark");
+    localStorage.setItem("alpha-theme",body.classList.contains("dark") ? "dark" : "light");
+});
+
+
+/* ---------------------------------------------------------
+   AUTH / INIT
+   --------------------------------------------------------- */
+
+async function init(){
+
+    if(localStorage.getItem("alpha-theme") === "dark"){
+        body.classList.add("dark");
+    }
+
+    const savedUser = localStorage.getItem("alpha_user");
+
+    if(CF_TOKEN && savedUser){
+        try{
+            const parsed = JSON.parse(savedUser);
+            CU = parsed.CU;
+        }catch(e){}
+    }
+
+    if(!CF_TOKEN || !CU){
+        showToast("Please sign in to manage groups");
+        setTimeout(() => { window.location.href = "index.html"; },900);
+        return;
+    }
+
+    try{
+
+        await loadUsers();
+        await loadGroups();
+
+        // deep link support: groups.html?open=<id> or ?create=1
+        const params = new URLSearchParams(window.location.search);
+
+        if(params.get("create") === "1"){
+            openCreateScreen();
+        }else if(params.get("open")){
+            openGroupDetail(params.get("open"));
+        }
+
+    }catch(e){
+        document.getElementById("groupListBody").innerHTML =
+            `<div class="g-empty">Couldn't load groups.<br>${escapeHTML(e.message)}</div>`;
+    }
+
+}
+
+async function loadUsers(){
+    const data = await cfApi("/users");
+    (data || []).forEach(u => { allUsers[u.email] = u; });
+}
+
+async function loadGroups(){
+
+    try{
+        const data = await cfApi("/groups");
+        groups = (data || []).filter(g => (g.members || []).includes(CU?.id));
+    }catch(e){
+        groups = [];
+    }
+
+    renderGroupList(document.getElementById("groupListSearch").value);
+
+}
+
+
+/* ---------------------------------------------------------
+   SCREEN 1 — GROUP LIST
+   --------------------------------------------------------- */
+
+function renderGroupList(query){
+
+    query = (query || "").toLowerCase().trim();
+
+    const list = groups
+        .filter(g => (g.name || "").toLowerCase().includes(query))
+        .sort((a,b) => new Date(b.updated_at || b.created_at || 0) - new Date(a.updated_at || a.created_at || 0));
+
+    const el = document.getElementById("groupListBody");
+
+    if(!list.length){
+        el.innerHTML = `
+            <div class="g-empty">
+                <div class="g-empty-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
+                ${query ? "No groups match your search." : "You're not in any groups yet.<br>Tap the + button to create one."}
+            </div>`;
+        return;
+    }
+
+    el.innerHTML = list.map(g => {
+
+        const avatarUrl = groupAvatarSrc(g);
+        const role = roleLabel(g,CU?.id);
+        const memberCount = (g.members || []).length;
+
+        return `
+        <div class="g-list-item" onclick="openGroupDetail('${escapeHTML(g.id)}')">
+
+            <div class="avatar-wrap">
+                ${avatarUrl
+                    ? `<img class="avatar" src="${avatarUrl}">`
+                    : `<div class="group-avatar-fallback">${initials(g.name)}</div>`}
+            </div>
+
+            <div class="g-list-info">
+                <div class="g-list-name">${escapeHTML(g.name)}</div>
+                <div class="g-list-sub">${memberCount} member${memberCount === 1 ? "" : "s"} · ${role}</div>
+            </div>
+
+            <div class="g-list-chevron">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            </div>
+
+        </div>`;
+
+    }).join("");
+
+}
+
+document.getElementById("groupListSearch").addEventListener("input",() => {
+    renderGroupList(document.getElementById("groupListSearch").value);
+});
+
+document.getElementById("fabCreateGroup").addEventListener("click",openCreateScreen);
+
+
+/* ---------------------------------------------------------
+   SCREEN 2 — CREATE GROUP
+   --------------------------------------------------------- */
+
+function openCreateScreen(){
+
+    createMemberSelection = new Set();
+    pendingCreateAvatarUrl = null;
+
+    document.getElementById("cgNameInput").value = "";
+    document.getElementById("cgDescInput").value = "";
+    document.getElementById("cgMemberSearch").value = "";
+
+    document.getElementById("createAvatarImg").style.display = "none";
+    document.getElementById("createAvatarFallback").style.display = "flex";
+
+    renderCreateMemberChecklist("");
+    updateCreateSubmitState();
+
+    showScreen("screenCreate");
+
+}
+
+document.getElementById("cgNameInput").addEventListener("input",updateCreateSubmitState);
+
+document.getElementById("cgMemberSearch").addEventListener("input",() => {
+    renderCreateMemberChecklist(document.getElementById("cgMemberSearch").value);
+});
+
+function updateCreateSubmitState(){
+
+    const name = document.getElementById("cgNameInput").value.trim();
+    document.getElementById("cgSubmitBtn").disabled = !name || createMemberSelection.size < 1;
+
+    document.getElementById("cgMembersCountLabel").textContent =
+        createMemberSelection.size ? `Add members (${createMemberSelection.size} selected)` : "Add members";
+
+}
+
+function renderCreateMemberChecklist(query){
+
+    const el = document.getElementById("cgMembersChecklist");
+    query = (query || "").toLowerCase().trim();
+
+    const users = Object.values(allUsers).filter(u =>
+        u.email !== CU?.id && (u.display_name || "").toLowerCase().includes(query));
+
+    if(!users.length){
+        el.innerHTML = `<div class="g-empty" style="padding:20px;">No people found</div>`;
+        return;
+    }
+
+    el.innerHTML = users.map(u => `
+        <label class="contact pickable">
+            <div class="avatar-wrap" style="width:38px;height:38px;">
+                <img class="avatar" src="${avatarSrc(u)}">
+            </div>
+            <div class="contact-info">
+                <div class="contact-name">${escapeHTML(u.display_name)}</div>
+                <div class="contact-handle">@${escapeHTML((u.email || "").split("@")[0])}</div>
+            </div>
+            <input
+                type="checkbox"
+                class="contact-checkbox"
+                ${createMemberSelection.has(u.email) ? "checked" : ""}
+                onchange="toggleCreateMember('${escapeHTML(u.email)}',this.checked)">
+        </label>
+    `).join("");
+
+}
+
+window.toggleCreateMember = function(email,checked){
+    if(checked){ createMemberSelection.add(email); }
+    else{ createMemberSelection.delete(email); }
+    updateCreateSubmitState();
+};
+
+document.getElementById("createAvatarWrap").addEventListener("click",() => {
+    document.getElementById("createAvatarInput").click();
+});
+
+document.getElementById("createAvatarInput").addEventListener("change",async () => {
+
+    const f = document.getElementById("createAvatarInput").files[0];
+    document.getElementById("createAvatarInput").value = "";
+    if(!f){ return; }
+
+    showToast("Uploading photo…");
+
+    try{
+
+        const data = await uploadFile(f);
+        pendingCreateAvatarUrl = data.url;
+
+        const img = document.getElementById("createAvatarImg");
+        img.src = data.url;
+        img.style.display = "";
+        document.getElementById("createAvatarFallback").style.display = "none";
+
+        showToast("Photo ready");
+
+    }catch(e){
+        showToast("Photo upload failed: " + e.message);
+    }
+
+});
+
+document.getElementById("cgSubmitBtn").addEventListener("click",async () => {
+
+    const name = document.getElementById("cgNameInput").value.trim();
+    const description = document.getElementById("cgDescInput").value.trim();
+
+    if(!name || createMemberSelection.size < 1){ return; }
+
+    const members = Array.from(new Set([ CU.id, ...createMemberSelection ]));
+
+    const btn = document.getElementById("cgSubmitBtn");
+    btn.disabled = true;
+    btn.textContent = "Creating…";
+
+    try{
+
+        const payload = { name, description, members, owner:CU.id, admins:[ CU.id ] };
+        if(pendingCreateAvatarUrl){ payload.avatar_url = pendingCreateAvatarUrl; }
+
+        const newGroup = await cfApi("/groups","POST",payload);
+
+        showToast("Group created");
+
+        await loadGroups();
+
+        const gid = (newGroup && (newGroup.id || newGroup.group_id)) || null;
+
+        if(gid){ openGroupDetail(gid); }
+        else{ showScreen("screenList"); }
+
+    }catch(e){
+        showToast("Couldn't create group: " + e.message);
+    }finally{
+        btn.disabled = false;
+        btn.innerHTML = `<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Create group`;
+    }
+
+});
+
+
+/* ---------------------------------------------------------
+   SCREEN 3 — GROUP DETAIL / MANAGE (settings + privileges)
+   --------------------------------------------------------- */
+
+async function openGroupDetail(id){
+
+    activeGroupId = String(id);
+    pendingDetailAvatarUrl = null;
+
+    showScreen("screenDetail");
+    renderGroupDetail(findGroup(activeGroupId) || { id:activeGroupId, name:"Loading…", members:[] });
+
+    try{
+
+        const fresh = await cfApi(`/groups/${activeGroupId}`);
+        const idx = groups.findIndex(g => String(g.id) === activeGroupId);
+
+        if(idx >= 0){ groups[idx] = fresh; } else { groups.push(fresh); }
+
+        renderGroupDetail(fresh);
+
+    }catch(e){
+        showToast("Couldn't load group: " + e.message);
+    }
+
+}
+
+function renderGroupDetail(g){
+
+    const myRole = myGroupRole(g);
+    const canManage = myRole === "owner" || myRole === "admin";
+    const members = g.members || [];
+
+    document.getElementById("detailHeaderTitle").textContent = g.name || "Group";
+    document.getElementById("detailName").textContent = g.name || "Group";
+    document.getElementById("detailSub").textContent = `${members.length} member${members.length === 1 ? "" : "s"}`;
+    document.getElementById("detailDesc").textContent = g.description || "";
+
+    const rolePill = document.getElementById("detailRolePill");
+    if(myRole !== "member"){
+        rolePill.hidden = false;
+        document.getElementById("detailRolePillText").textContent = myRole === "owner" ? "You're the owner" : "You're an admin";
+    }else{
+        rolePill.hidden = true;
+    }
+
+    const avatarUrl = groupAvatarSrc(g);
+    const img = document.getElementById("detailAvatarImg");
+    const fallback = document.getElementById("detailAvatarFallback");
+
+    if(avatarUrl){
+        img.src = avatarUrl;
+        img.style.display = "";
+        fallback.style.display = "none";
+    }else{
+        img.style.display = "none";
+        fallback.style.display = "flex";
+        fallback.textContent = initials(g.name);
+    }
+
+    document.getElementById("detailAvatarEdit").style.display = canManage ? "flex" : "none";
+
+    document.getElementById("editInfoSection").hidden = !canManage;
+    document.getElementById("gdNameInput").value = g.name || "";
+    document.getElementById("gdDescInput").value = g.description || "";
+
+    document.getElementById("detailAddMembersBtn").hidden = !canManage;
+    document.getElementById("detailMembersCount").textContent = `Members (${members.length})`;
+
+    document.getElementById("detailDeleteBtn").hidden = myRole !== "owner";
+
+    renderDetailMembers(g);
+
+}
+
+function renderDetailMembers(g){
+
+    const list = document.getElementById("detailMembersList");
+    const members = g.members || [];
+    const myRole = myGroupRole(g);
+    const canManage = myRole === "owner" || myRole === "admin";
+
+    if(!members.length){
+        list.innerHTML = `<div class="g-empty" style="padding:14px;">No members</div>`;
+        return;
+    }
+
+    list.innerHTML = members.map(uid => {
+
+        const u = allUsers[uid] || { display_name:uid };
+        const role = roleLabel(g,uid);
+        const isMe = uid === CU?.id;
+
+        const canRemove = canManage && !isMe && uid !== groupOwner(g) && (myRole === "owner" || role === "Member");
+        const canTogglePrivilege = myRole === "owner" && !isMe && uid !== groupOwner(g);
+
+        return `
+        <div class="gs-member-row">
+
+            <div class="avatar-wrap">
+                <img class="avatar" src="${avatarSrc(u)}">
+            </div>
+
+            <div class="gs-member-info">
+                <div class="gs-member-name">
+                    ${escapeHTML(u.display_name || uid)}${isMe ? " (you)" : ""}
+                    ${role !== "Member" ? `<span class="gs-role-tag">${role}</span>` : ""}
+                </div>
+            </div>
+
+            ${canTogglePrivilege ? `
+                <button
+                    type="button"
+                    class="contact-button"
+                    style="background:${role === "Admin" ? "var(--surface-2)" : "var(--alpha)"};color:${role === "Admin" ? "var(--text)" : "#fff"};"
+                    onclick="toggleGroupAdmin('${escapeHTML(uid)}',${role === "Admin" ? "false" : "true"})">
+                    ${role === "Admin" ? "Revoke admin" : "Make admin"}
+                </button>` : ""}
+
+            ${canRemove ? `
+                <button
+                    type="button"
+                    class="gs-remove-btn"
+                    title="Remove from group"
+                    onclick="removeGroupMember('${escapeHTML(uid)}')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 6-12 12M6 6l12 12"/></svg>
+                </button>` : ""}
+
+        </div>`;
+
+    }).join("");
+
+}
+
+document.getElementById("openChatFromDetail").addEventListener("click",() => {
+    if(!activeGroupId){ return; }
+    window.location.href = `chat.html?group=${encodeURIComponent(activeGroupId)}`;
+});
+
+/* -- avatar upload on detail screen -- */
+
+document.getElementById("detailAvatarWrap").addEventListener("click",() => {
+    const g = findGroup(activeGroupId);
+    if(!g || myGroupRole(g) === "member"){ return; }
+    document.getElementById("detailAvatarInput").click();
+});
+
+document.getElementById("detailAvatarInput").addEventListener("change",async () => {
+
+    const f = document.getElementById("detailAvatarInput").files[0];
+    document.getElementById("detailAvatarInput").value = "";
+    if(!f || !activeGroupId){ return; }
+
+    showToast("Uploading photo…");
+
+    try{
+
+        const data = await uploadFile(f);
+
+        await cfApi(`/groups/${activeGroupId}`,"PATCH",{ avatar_url:data.url });
+
+        const g = findGroup(activeGroupId);
+        if(g){ g.avatar_url = data.url; }
+
+        renderGroupDetail(g);
+        renderGroupList(document.getElementById("groupListSearch").value);
+
+        showToast("Group photo updated");
+
+    }catch(e){
+        showToast("Photo upload failed: " + e.message);
+    }
+
+});
+
+/* -- save name/description -- */
+
+document.getElementById("gdSaveBtn").addEventListener("click",async () => {
+
+    const g = findGroup(activeGroupId);
+    if(!g){ return; }
+
+    const name = document.getElementById("gdNameInput").value.trim();
+    const description = document.getElementById("gdDescInput").value.trim();
+
+    if(!name){
+        showToast("Group name can't be empty");
+        return;
+    }
+
+    const btn = document.getElementById("gdSaveBtn");
+    btn.disabled = true;
+    btn.textContent = "Saving…";
+
+    try{
+
+        await cfApi(`/groups/${g.id}`,"PATCH",{ name, description });
+
+        Object.assign(g,{ name, description });
+
+        renderGroupDetail(g);
+        renderGroupList(document.getElementById("groupListSearch").value);
+
+        showToast("Group updated");
+
+    }catch(e){
+        showToast("Couldn't save: " + e.message);
+    }finally{
+        btn.disabled = false;
+        btn.textContent = "Save changes";
+    }
+
+});
+
+/* -- privileges: promote / demote admin -- */
+
+window.toggleGroupAdmin = async function(uid,makeAdmin){
+
+    const g = findGroup(activeGroupId);
+    if(!g){ return; }
+
+    if(myGroupRole(g) !== "owner"){
+        showToast("Only the group owner can change roles");
+        return;
+    }
+
+    let admins = new Set(groupAdmins(g));
+    if(makeAdmin){ admins.add(uid); } else { admins.delete(uid); }
+    admins = Array.from(admins);
+
+    try{
+
+        await cfApi(`/groups/${g.id}`,"PATCH",{ admins });
+        g.admins = admins;
+
+        renderDetailMembers(g);
+        showToast(makeAdmin ? "Made admin" : "Admin privileges revoked");
+
+    }catch(e){
+        showToast("Couldn't update role: " + e.message);
+    }
+
+};
+
+/* -- remove member -- */
+
+window.removeGroupMember = async function(uid){
+
+    const g = findGroup(activeGroupId);
+    if(!g){ return; }
+
+    const u = allUsers[uid] || { display_name:uid };
+    if(!confirm(`Remove ${u.display_name || uid} from the group?`)){ return; }
+
+    const members = (g.members || []).filter(m => m !== uid);
+    const admins = groupAdmins(g).filter(a => a !== uid);
+
+    try{
+
+        await cfApi(`/groups/${g.id}`,"PATCH",{ members, admins });
+
+        g.members = members;
+        g.admins = admins;
+
+        renderGroupDetail(g);
+        renderGroupList(document.getElementById("groupListSearch").value);
+
+        showToast("Member removed");
+
+    }catch(e){
+        showToast("Couldn't remove member: " + e.message);
+    }
+
+};
+
+/* -- leave group -- */
+
+document.getElementById("detailLeaveBtn").addEventListener("click",async () => {
+
+    const g = findGroup(activeGroupId);
+    if(!g){ return; }
+
+    if(!confirm(`Leave "${g.name}"?`)){ return; }
+
+    if(isGroupOwner(g,CU?.id) && (g.members || []).length > 1){
+        showToast("Transfer ownership before leaving, or delete the group instead");
+        return;
+    }
+
+    const members = (g.members || []).filter(m => m !== CU.id);
+    const admins = groupAdmins(g).filter(a => a !== CU.id);
+
+    try{
+
+        await cfApi(`/groups/${g.id}`,"PATCH",{ members, admins });
+
+        showToast("Left the group");
+
+        showScreen("screenList");
+        activeGroupId = null;
+
+        await loadGroups();
+
+    }catch(e){
+        showToast("Couldn't leave group: " + e.message);
+    }
+
+});
+
+/* -- delete group (owner only) -- */
+
+document.getElementById("detailDeleteBtn").addEventListener("click",async () => {
+
+    const g = findGroup(activeGroupId);
+    if(!g){ return; }
+
+    if(myGroupRole(g) !== "owner"){
+        showToast("Only the group owner can delete this group");
+        return;
+    }
+
+    if(!confirm(`Delete "${g.name}" for everyone? This can't be undone.`)){ return; }
+
+    try{
+
+        await cfApi(`/groups/${g.id}`,"DELETE");
+
+        showToast("Group deleted");
+
+        showScreen("screenList");
+        activeGroupId = null;
+
+        await loadGroups();
+
+    }catch(e){
+        showToast("Couldn't delete group: " + e.message);
+    }
+
+});
+
+
+/* ---------------------------------------------------------
+   ADD MEMBERS MODAL
+   --------------------------------------------------------- */
+
+function openAddMembersModal(){
+
+    const g = findGroup(activeGroupId);
+    if(!g){ return; }
+
+    addMemberSelection = new Set();
+
+    document.getElementById("addMembersSearch").value = "";
+    document.getElementById("addMembersSubmit").disabled = true;
+
+    renderAddMembersChecklist("",g);
+
+    document.getElementById("addMembersModal").classList.add("open");
+    document.getElementById("addMembersSearch").focus();
+
+}
+
+function closeAddMembersModal(){
+    document.getElementById("addMembersModal").classList.remove("open");
+}
+
+document.getElementById("detailAddMembersBtn").addEventListener("click",openAddMembersModal);
+document.getElementById("closeAddMembers").addEventListener("click",closeAddMembersModal);
+
+document.getElementById("addMembersModal").addEventListener("click",event => {
+    if(event.target.id === "addMembersModal"){ closeAddMembersModal(); }
+});
+
+document.getElementById("addMembersSearch").addEventListener("input",() => {
+    renderAddMembersChecklist(document.getElementById("addMembersSearch").value,findGroup(activeGroupId));
+});
+
+function renderAddMembersChecklist(query,g){
+
+    const el = document.getElementById("addMembersChecklist");
+    query = (query || "").toLowerCase().trim();
+
+    const existing = new Set((g && g.members) || []);
+
+    const users = Object.values(allUsers).filter(u =>
+        u.email !== CU?.id && !existing.has(u.email) && (u.display_name || "").toLowerCase().includes(query));
+
+    if(!users.length){
+        el.innerHTML = `<div class="g-empty" style="padding:20px;">No results found</div>`;
+        return;
+    }
+
+    el.innerHTML = users.map(u => `
+        <label class="contact pickable">
+            <div class="avatar-wrap" style="width:38px;height:38px;">
+                <img class="avatar" src="${avatarSrc(u)}">
+            </div>
+            <div class="contact-info">
+                <div class="contact-name">${escapeHTML(u.display_name)}</div>
+                <div class="contact-handle">@${escapeHTML((u.email || "").split("@")[0])}</div>
+            </div>
+            <input
+                type="checkbox"
+                class="contact-checkbox"
+                ${addMemberSelection.has(u.email) ? "checked" : ""}
+                onchange="toggleAddMemberSelection('${escapeHTML(u.email)}',this.checked)">
+        </label>
+    `).join("");
+
+}
+
+window.toggleAddMemberSelection = function(email,checked){
+    if(checked){ addMemberSelection.add(email); }
+    else{ addMemberSelection.delete(email); }
+    document.getElementById("addMembersSubmit").disabled = addMemberSelection.size < 1;
+};
+
+document.getElementById("addMembersSubmit").addEventListener("click",async () => {
+
+    const g = findGroup(activeGroupId);
+    if(!g || addMemberSelection.size < 1){ return; }
+
+    const members = Array.from(new Set([ ...(g.members || []), ...addMemberSelection ]));
+
+    const btn = document.getElementById("addMembersSubmit");
+    btn.disabled = true;
+    btn.textContent = "Adding…";
+
+    try{
+
+        await cfApi(`/groups/${g.id}`,"PATCH",{ members });
+
+        g.members = members;
+
+        closeAddMembersModal();
+
+        renderGroupDetail(g);
+        renderGroupList(document.getElementById("groupListSearch").value);
+
+        showToast("Members added");
+
+    }catch(e){
+        showToast("Couldn't add members: " + e.message);
+    }finally{
+        btn.disabled = false;
+        btn.textContent = "Add to group";
+    }
+
+});
+
+
+/* ---------------------------------------------------------
+   MISC
+   --------------------------------------------------------- */
+
+document.addEventListener("keydown",event => {
+    if(event.key === "Escape"){ closeAddMembersModal(); }
+});
+
+init();
+
+</script>
+</body>
+</html>

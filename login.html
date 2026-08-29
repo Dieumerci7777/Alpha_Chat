@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alpha — Sign In</title>
+
+    <!-- Google Fonts (Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome 6 (Icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        /* ============================================================
+           ROOT & RESET — simplified, no extra backgrounds
+           ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #080C16;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A1B0CC;
+            --text-muted: #64748B;
+
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+
+            --input-bg: #131A26;
+            --input-border: #2A3442;
+            --input-focus: #818CF8;
+
+            --gradient-primary: linear-gradient(135deg, #4F46E5, #7C3AED);
+            --gradient-secondary: linear-gradient(135deg, #06B6D4, #3B82F6);
+            --gradient-accent: linear-gradient(135deg, #EC4899, #8B5CF6);
+
+            --radius-card: 28px;
+            --radius-input: 14px;
+            --radius-button: 14px;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            /* single subtle gradient glow, no animated orbs */
+            background-image: radial-gradient(ellipse at 20% 50%, rgba(79, 70, 229, 0.15) 0%, transparent 60%),
+                              radial-gradient(ellipse at 80% 50%, rgba(236, 72, 153, 0.10) 0%, transparent 60%);
+        }
+
+        /* ============================================================
+           AUTH PAGE LAYOUT — two‑column glass card
+           ============================================================ */
+        .auth-page {
+            width: 100%;
+            max-width: 1280px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-card);
+            padding: 40px;
+            box-shadow: var(--glass-shadow);
+        }
+
+        /* ============================================================
+           LEFT HERO
+           ============================================================ */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 20px 30px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 48px;
+        }
+
+        .brand-icon {
+            width: 52px;
+            height: 52px;
+            display: grid;
+            place-items: center;
+            font-size: 28px;
+            font-weight: 800;
+            color: #fff;
+            background: var(--gradient-primary);
+            border-radius: 16px;
+            box-shadow: 0 12px 30px -8px rgba(79, 70, 229, 0.4);
+        }
+
+        .brand-name {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            background: var(--gradient-secondary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero h1 {
+            font-size: clamp(38px, 5vw, 64px);
+            font-weight: 900;
+            line-height: 1.05;
+            letter-spacing: -2px;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 .highlight {
+            background: var(--gradient-accent);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero p {
+            font-size: 16px;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            max-width: 480px;
+            margin-bottom: 32px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            max-width: 420px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: background 0.2s ease;
+        }
+
+        .feature-item i {
+            font-size: 16px;
+            color: #818CF8;
+            width: 20px;
+            text-align: center;
+        }
+
+        .feature-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        /* ============================================================
+           RIGHT AUTH CARD
+           ============================================================ */
+        .auth-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 440px;
+            padding: 36px 32px;
+            background: rgba(16, 24, 39, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-card);
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.6);
+        }
+
+        .auth-header {
+            margin-bottom: 28px;
+        }
+
+        .auth-header h2 {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+        }
+
+        .auth-header p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* ============================================================
+           FORM ELEMENTS
+           ============================================================ */
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+
+        .input-wrap {
+            position: relative;
+        }
+
+        .input {
+            width: 100%;
+            height: 50px;
+            padding: 0 16px;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: var(--radius-input);
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            transition: border 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .input:focus {
+            border-color: var(--input-focus);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 18px;
+            padding: 6px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .password-toggle:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .form-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 6px 0 24px;
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .remember input[type="checkbox"] {
+            accent-color: #4F46E5;
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .forgot {
+            font-size: 13px;
+            font-weight: 600;
+            color: #818CF8;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .forgot:hover {
+            color: #A5B4FC;
+        }
+
+        /* ============================================================
+           PRIMARY BUTTON
+           ============================================================ */
+        .primary-button {
+            width: 100%;
+            height: 52px;
+            border: none;
+            border-radius: var(--radius-button);
+            background: var(--gradient-primary);
+            color: #fff;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            box-shadow: 0 8px 24px -6px rgba(79, 70, 229, 0.4);
+            transition: transform 0.15s ease, box-shadow 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .primary-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px -8px rgba(79, 70, 229, 0.5);
+        }
+
+        .primary-button:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .primary-button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .primary-button .spinner {
+            display: none;
+        }
+
+        .primary-button.loading .spinner {
+            display: inline-block;
+            animation: spin 0.8s linear infinite;
+        }
+
+        .primary-button.loading .btn-text {
+            display: none;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ============================================================
+           DIVIDER & SOCIAL
+           ============================================================ */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 28px 0 20px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--glass-border);
+        }
+
+        .divider span {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .social-login {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .social-button {
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: var(--radius-input);
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 600;
+            transition: background 0.2s, border-color 0.2s, color 0.2s;
+            cursor: pointer;
+        }
+
+        .social-button i {
+            font-size: 18px;
+        }
+
+        .social-button:hover {
+            background: #1F293F;
+            border-color: #4B5563;
+            color: #fff;
+        }
+
+        .register-text {
+            text-align: center;
+            margin-top: 28px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .register-text a {
+            color: #818CF8;
+            font-weight: 700;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .register-text a:hover {
+            color: #A5B4FC;
+        }
+
+        /* ============================================================
+           MESSAGES
+           ============================================================ */
+        .form-message {
+            display: none;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 13px;
+            margin-bottom: 18px;
+            border: 1px solid transparent;
+        }
+
+        .form-message.error {
+            display: block;
+            color: #FCA5A5;
+            background: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.2);
+        }
+
+        .form-message.success {
+            display: block;
+            color: #6EE7B7;
+            background: rgba(16, 185, 129, 0.1);
+            border-color: rgba(16, 185, 129, 0.2);
+        }
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 1024px) {
+            .auth-page {
+                padding: 30px;
+                gap: 30px;
+            }
+            .hero {
+                padding: 10px 10px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .auth-page {
+                grid-template-columns: 1fr;
+                padding: 24px;
+                gap: 20px;
+                border-radius: 24px;
+            }
+
+            .hero {
+                display: none;
+            }
+
+            .auth-card {
+                max-width: 420px;
+                margin: 0 auto;
+                padding: 32px 24px;
+            }
+
+            .brand {
+                display: none;
+            }
+            /* Mobile brand fallback inside card */
+            .auth-card .mobile-brand {
+                display: flex !important;
+                align-items: center;
+                gap: 12px;
+                margin-bottom: 24px;
+            }
+            .auth-card .mobile-brand .brand-icon {
+                width: 44px;
+                height: 44px;
+                font-size: 22px;
+            }
+            .auth-card .mobile-brand .brand-name {
+                font-size: 22px;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .auth-page {
+                padding: 16px;
+                border-radius: 20px;
+            }
+            .auth-card {
+                padding: 24px 16px;
+                border-radius: 20px;
+            }
+            .auth-header h2 {
+                font-size: 24px;
+            }
+            .social-login {
+                grid-template-columns: 1fr;
+            }
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ============================================================
+           HIDE MOBILE BRAND BY DEFAULT
+           ============================================================ */
+        .auth-card .mobile-brand {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ============================================================
+    AUTH PAGE (no extra backgrounds, just a clean glass card)
+    ============================================================ -->
+    <div class="auth-page">
+
+        <!-- LEFT HERO -->
+        <section class="hero">
+
+            <div class="brand">
+                <div class="brand-icon">A</div>
+                <span class="brand-name">ALPHA</span>
+            </div>
+
+            <h1>
+                Your world.<br>
+                Your people.<br>
+                <span class="highlight">Your Alpha.</span>
+            </h1>
+
+            <p>
+                Connect, share, discover, and manage your life
+                — all in one powerful platform.
+            </p>
+
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <i class="fas fa-globe"></i> Social Universe
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-lock"></i> Private Vaults
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-robot"></i> AI Assistant
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-calendar-check"></i> Smart Events
+                </div>
+            </div>
+
+        </section>
+
+        <!-- RIGHT AUTH CARD -->
+        <main class="auth-container">
+
+            <section class="auth-card">
+
+                <!-- Mobile Brand (visible on small screens) -->
+                <div class="mobile-brand">
+                    <div class="brand-icon">A</div>
+                    <span class="brand-name">ALPHA</span>
+                </div>
+
+                <div class="auth-header">
+                    <h2>Welcome back</h2>
+                    <p>Sign in to continue to your Alpha account.</p>
+                </div>
+
+                <!-- Form Message -->
+                <div class="form-message" id="message"></div>
+
+                <!-- Login Form -->
+                <form id="loginForm" novalidate>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input
+                            class="input"
+                            id="email"
+                            type="email"
+                            placeholder="you@example.com"
+                            autocomplete="username"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="input-wrap">
+                            <input
+                                class="input"
+                                id="password"
+                                type="password"
+                                placeholder="Enter your password"
+                                autocomplete="current-password"
+                                required
+                            >
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                id="passwordToggle"
+                                aria-label="Toggle password visibility"
+                            >
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="remember">
+                            <input type="checkbox" id="remember">
+                            Remember me
+                        </label>
+                        <a href="#" class="forgot" id="forgotLink">Forgot password?</a>
+                    </div>
+
+                    <button class="primary-button" id="loginButton" type="submit">
+                        <span class="btn-text">Sign in</span>
+                        <i class="fas fa-spinner spinner"></i>
+                    </button>
+
+                </form>
+
+                <!-- Divider -->
+                <div class="divider">
+                    <span>Or continue with</span>
+                </div>
+
+                <!-- Social Login -->
+                <div class="social-login">
+                    <button class="social-button" id="googleLogin">
+                        <i class="fab fa-google"></i> Google
+                    </button>
+                    <button class="social-button" id="appleLogin">
+                        <i class="fab fa-apple"></i> Apple
+                    </button>
+                </div>
+
+                <!-- Register Link -->
+                <div class="register-text">
+                    Don't have an account?
+                    <a href="register.html">Create account</a>
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+<script>
+    /* ============================================================
+       CONFIG & STATE
+       ============================================================ */
+    const API_BASE = 'https://alpha-auth.murwanashyakadieumerci540.workers.dev';
+    const TOKEN_KEY = 'alpha_token';
+    const USER_KEY = 'alpha_user';  // ✅ same key used in index.html
+
+    // DOM refs
+    const loginForm = document.getElementById('loginForm');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const rememberCheck = document.getElementById('remember');
+    const loginButton = document.getElementById('loginButton');
+    const messageEl = document.getElementById('message');
+    const passwordToggle = document.getElementById('passwordToggle');
+
+    /* ============================================================
+       CHECK EXISTING SESSION — redirect to index if already logged in
+       ============================================================ */
+    if (localStorage.getItem(TOKEN_KEY) && localStorage.getItem(USER_KEY)) {
+        window.location.href = 'Shell.html';
+    }
+
+    /* ============================================================
+       REMEMBER ME
+       ============================================================ */
+    const rememberedEmail = localStorage.getItem('alphaRemember');
+    if (rememberedEmail) {
+        emailInput.value = rememberedEmail;
+        rememberCheck.checked = true;
+    }
+
+    /* ============================================================
+       API HELPER
+       ============================================================ */
+    async function api(path, opts = {}) {
+        const headers = {
+            'Content-Type': 'application/json',
+            ...(opts.headers || {})
+        };
+        const res = await fetch(API_BASE + path, { ...opts, headers });
+        let data = null;
+        try { data = await res.json(); } catch {}
+        if (!res.ok) {
+            throw new Error((data && data.error) || 'Request failed');
+        }
+        return data;
+    }
+
+    /* ============================================================
+       UI HELPERS
+       ============================================================ */
+    function showMessage(text, type) {
+        messageEl.textContent = text;
+        messageEl.className = 'form-message ' + type;
+    }
+
+    function setLoading(isLoading) {
+        if (isLoading) {
+            loginButton.classList.add('loading');
+            loginButton.disabled = true;
+        } else {
+            loginButton.classList.remove('loading');
+            loginButton.disabled = false;
+        }
+    }
+
+    /* ============================================================
+       PASSWORD TOGGLE
+       ============================================================ */
+    passwordToggle.addEventListener('click', function() {
+        const isPassword = passwordInput.type === 'password';
+        passwordInput.type = isPassword ? 'text' : 'password';
+        const icon = this.querySelector('i');
+        icon.className = isPassword ? 'fas fa-eye-slash' : 'fas fa-eye';
+    });
+
+    /* ============================================================
+       FORGOT PASSWORD
+       ============================================================ */
+    document.getElementById('forgotLink').addEventListener('click', function(e) {
+        e.preventDefault();
+        showMessage(
+            'Password reset is not configured yet. Please contact support.',
+            'success'
+        );
+    });
+
+    /* ============================================================
+       SOCIAL LOGIN (PLACEHOLDER)
+       ============================================================ */
+    document.getElementById('googleLogin').addEventListener('click', function() {
+        showMessage(
+            'Google sign‑in is coming soon. Please use email & password.',
+            'success'
+        );
+    });
+
+    document.getElementById('appleLogin').addEventListener('click', function() {
+        showMessage(
+            'Apple sign‑in is coming soon. Please use email & password.',
+            'success'
+        );
+    });
+
+    /* ============================================================
+       FORM SUBMIT — ✅ FIXED: store token AND user data
+       ============================================================ */
+    loginForm.addEventListener('submit', async function(event) {
+        event.preventDefault();
+
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
+        const remember = rememberCheck.checked;
+
+        // Simple validation
+        if (!email) {
+            showMessage('Please enter your email address.', 'error');
+            return;
+        }
+        if (password.length < 6) {
+            showMessage('Password must be at least 6 characters.', 'error');
+            return;
+        }
+
+        setLoading(true);
+        showMessage('', '');
+
+        try {
+            const data = await api('/login', {
+                method: 'POST',
+                body: JSON.stringify({ email, password })
+            });
+
+            // ✅ Store token
+            localStorage.setItem(TOKEN_KEY, data.token);
+
+            // ✅ Store user data (same format as registration)
+            // The API must return a user object – adjust if your endpoint returns different keys.
+            const user = data.user || data; // fallback to entire data if user not nested
+            const userData = {
+                CU: { id: user.email || email, email: user.email || email },
+                UP: {
+                    display_name: user.display_name || user.name || email.split('@')[0],
+                    bio: user.bio || '',
+                    avatar_color: user.avatar_color || 'g2',
+                    avatar_url: user.avatar_url || null
+                }
+            };
+            localStorage.setItem(USER_KEY, JSON.stringify(userData));
+
+            // Handle "Remember me"
+            if (remember) {
+                localStorage.setItem('alphaRemember', email);
+            } else {
+                localStorage.removeItem('alphaRemember');
+            }
+
+            showMessage('Welcome back! Redirecting…', 'success');
+
+            setTimeout(() => {
+                window.location.href = 'Shell.html';
+            }, 600);
+
+        } catch (error) {
+            showMessage(
+                error.message || 'Invalid credentials. Please try again.',
+                'error'
+            );
+            setLoading(false);
+        }
+    });
+
+    /* ============================================================
+       KEYBOARD SHORTCUT: ESC to blur focus
+       ============================================================ */
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            if (document.activeElement) document.activeElement.blur();
+        }
+    });
+</script>
+
+</body>
+</html>

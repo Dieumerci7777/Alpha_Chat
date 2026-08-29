@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Alpha</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<script src="alpha-common.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/livekit-client/dist/livekit-client.umd.min.js"></script>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html, body { height:100%; overflow:hidden; }
+  body { font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; }
+
+  /* ---- the persistent frame that hosts every existing page ---- */
+  #appFrame {
+    position:fixed; inset:0; width:100%; height:100%;
+    border:0; display:block; background:#f0f2f6;
+  }
+
+  /* ============================================================
+     CALL STAGE (ported from calls.html — 1:1 voice/video only)
+     ============================================================ */
+  :root {
+    --primary:#4f46e5; --primary-light:#818cf8;
+    --green:#22c55e; --red:#ef4444;
+    --stage-void:#0b0d12; --stage-line:rgba(255,255,255,0.07);
+    --stage-text:#f0f4fa; --stage-muted:#94a3b8;
+  }
+
+  .stage-overlay {
+    position:fixed; inset:0; z-index:2000; display:none; background:var(--stage-void);
+  }
+  .stage-overlay.show { display:block; }
+  .stage-overlay.minimized { display:none; }
+
+  .stage-root {
+    position:absolute; inset:0; display:flex; flex-direction:column;
+    background:
+      radial-gradient(circle at 20% 10%, rgba(79,70,229,0.18), transparent 50%),
+      radial-gradient(circle at 80% 90%, rgba(34,211,238,0.10), transparent 50%),
+      var(--stage-void);
+    color:var(--stage-text); overflow:hidden;
+  }
+
+  .stage-topbar {
+    position:absolute; top:0; left:0; right:0; z-index:40;
+    display:flex; align-items:flex-start; justify-content:space-between;
+    padding:calc(14px + env(safe-area-inset-top)) 20px 40px;
+    background:linear-gradient(to bottom, rgba(3,4,6,0.7) 0%, rgba(3,4,6,0.2) 60%, transparent 100%);
+    pointer-events:none;
+  }
+  .stage-topbar > * { pointer-events:auto; }
+
+  .stage-pill {
+    display:inline-flex; align-items:center; gap:7px; padding:5px 14px; border-radius:20px;
+    background:rgba(20,25,35,0.7); border:1px solid var(--stage-line);
+    font-size:12px; font-weight:600; backdrop-filter:blur(10px);
+  }
+  .stage-pill .timer { font-variant-numeric:tabular-nums; font-weight:700; display:none; }
+  .stage-pill .timer.show { display:inline-flex; }
+
+  .stage-icon-btn {
+    width:36px; height:36px; border-radius:10px; background:rgba(20,25,35,0.6);
+    border:1px solid var(--stage-line); color:var(--stage-text);
+    display:grid; place-items:center; font-size:15px; backdrop-filter:blur(10px); transition:0.15s;
+  }
+  .stage-icon-btn:hover { background:rgba(255,255,255,0.12); }
+
+  .stage-view { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
+
+  .stage-hero { display:flex; flex-direction:column; align-items:center; text-align:center; gap:6px; }
+  .stage-hero .hero-avatar { width:110px; height:110px; margin-bottom:14px; position:relative; }
+  .stage-hero .hero-avatar::before {
+    content:""; position:absolute; inset:-12px; border-radius:50%;
+    background:linear-gradient(135deg, #22d3ee, var(--primary)); opacity:0.3; filter:blur(24px);
+  }
+  .stage-hero .hero-avatar img {
+    width:100%; height:100%; border-radius:50%; object-fit:cover; position:relative;
+    border:3px solid rgba(255,255,255,0.08); background:#151b24;
+  }
+  .stage-hero h2 { font-size:26px; letter-spacing:-0.3px; }
+  .stage-hero p { color:var(--stage-muted); font-size:14px; }
+  .stage-hero .ring-badge {
+    display:inline-block; margin-top:8px; padding:4px 14px; border-radius:20px;
+    background:rgba(245,185,66,0.14); color:#f5b942; font-size:11.5px; font-weight:700;
+    border:1px solid rgba(245,185,66,0.3);
+  }
+
+  .stage-video-wrap { position:absolute; inset:0; display:none; background:#000; }
+  .stage-video-wrap video { width:100%; height:100%; object-fit:cover; }
+  .stage-video-wrap .solo-name {
+    position:absolute; left:20px; bottom:22px; padding:6px 16px; border-radius:10px;
+    background:rgba(6,7,10,0.6); backdrop-filter:blur(8px); font-weight:700; font-size:14px; z-index:3;
+  }
+  .stage-video-wrap .local-pip {
+    position:absolute; bottom:22px; right:20px; width:160px; aspect-ratio:3/4; max-height:28vh;
+    border-radius:14px; overflow:hidden; background:#111; border:2px solid rgba(255,255,255,0.2); z-index:3;
+  }
+  .stage-video-wrap .local-pip video { width:100%; height:100%; object-fit:cover; transform:scaleX(-1); }
+
+  .stage-ring-buttons {
+    position:absolute; left:0; right:0; bottom:calc(50px + env(safe-area-inset-bottom));
+    display:flex; justify-content:center; gap:26px; z-index:40;
+  }
+  .stage-call-btn {
+    width:58px; height:58px; border-radius:50%; display:grid; place-items:center;
+    font-size:20px; box-shadow:0 12px 30px rgba(0,0,0,0.4); transition:0.2s; color:#fff;
+  }
+  .stage-call-btn:hover { transform:scale(1.04); }
+  .stage-call-btn.cancel { background:var(--red); }
+  .stage-call-btn.accept { background:var(--green); animation:acceptPulse 1.6s ease-in-out infinite; }
+  @keyframes acceptPulse {
+    0%,100% { box-shadow:0 12px 30px rgba(0,0,0,0.4), 0 0 0 0 rgba(34,197,94,0.4); }
+    50% { box-shadow:0 12px 30px rgba(0,0,0,0.4), 0 0 0 14px rgba(34,197,94,0); }
+  }
+
+  .stage-dock-wrap {
+    position:absolute; left:0; right:0; bottom:0; z-index:40; display:none; justify-content:center;
+    padding:20px 16px calc(16px + env(safe-area-inset-bottom));
+    background:linear-gradient(to top, rgba(3,4,6,0.7) 0%, rgba(3,4,6,0.2) 60%, transparent 100%);
+    pointer-events:none;
+  }
+  .stage-dock-wrap.show { display:flex; }
+  .stage-dock {
+    pointer-events:auto; display:flex; align-items:center; gap:6px; padding:8px 14px; border-radius:30px;
+    background:rgba(18,24,34,0.8); border:1px solid var(--stage-line); backdrop-filter:blur(20px); flex-wrap:wrap;
+  }
+  .ctrl-wrap { display:flex; flex-direction:column; align-items:center; gap:2px; }
+  .ctrl-wrap span { font-size:9px; font-weight:600; color:var(--stage-muted); }
+  .ctrl-btn {
+    width:42px; height:42px; border-radius:12px; display:grid; place-items:center;
+    background:rgba(255,255,255,0.06); color:#fff; font-size:16px;
+    border:1px solid rgba(255,255,255,0.04); transition:0.15s; flex-shrink:0;
+  }
+  .ctrl-btn:hover { background:rgba(255,255,255,0.12); }
+  .ctrl-btn.active { background:var(--red); border-color:var(--red); }
+  .ctrl-btn.leave {
+    width:auto; min-width:56px; padding:0 14px; gap:6px; display:inline-flex;
+    background:rgba(255,255,255,0.08); font-weight:700; font-size:13px;
+  }
+  .ctrl-btn.leave:hover { background:rgba(255,255,255,0.18); }
+
+  /* ---- floating mini pill (minimized in-call state) ---- */
+  #callPill {
+    position:fixed; right:16px; bottom:calc(16px + env(safe-area-inset-bottom));
+    z-index:1900; display:none; align-items:center; gap:10px;
+    background:rgba(15,19,27,0.94); color:#fff; border:1px solid var(--stage-line);
+    border-radius:99px; padding:8px 16px 8px 8px; box-shadow:0 12px 30px rgba(0,0,0,0.3);
+    backdrop-filter:blur(14px); cursor:pointer; max-width:min(320px, calc(100vw - 32px));
+  }
+  #callPill.show { display:flex; }
+  #callPill img { width:34px; height:34px; border-radius:50%; object-fit:cover; flex-shrink:0; }
+  #callPill .pill-text { display:flex; flex-direction:column; overflow:hidden; }
+  #callPill .pill-name { font-size:13px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  #callPill .pill-sub { font-size:11px; color:var(--stage-muted); font-variant-numeric:tabular-nums; }
+  #callPill .pill-end {
+    width:30px; height:30px; border-radius:50%; background:var(--red); color:#fff;
+    display:grid; place-items:center; font-size:13px; flex-shrink:0; margin-left:4px;
+  }
+</style>
+</head>
+<body>
+
+<iframe id="appFrame" title="Alpha" src=""></iframe>
+<script>
+  // Whichever page handed off to us (or a direct link to Shell.html with
+  // ?page=...) is what we actually display; default to the home feed.
+  (function () {
+    var params = new URLSearchParams(window.location.search);
+    var initial = params.get('page') || 'index.html';
+    document.getElementById('appFrame').src = initial;
+  })();
+</script>
+
+<!-- Incoming/active call — full stage -->
+<div class="stage-overlay" id="stageOverlay">
+  <div class="stage-root">
+    <div class="stage-topbar">
+      <span class="stage-pill"><span class="timer" id="callTimer">00:00</span><span id="callStatusText">Calling…</span></span>
+      <button class="stage-icon-btn" onclick="AlphaCallShell.minimize()" title="Minimize"><i class="fa-solid fa-chevron-down"></i></button>
+    </div>
+
+    <div class="stage-view" id="callStage">
+      <div class="stage-hero" id="stageHero">
+        <div class="hero-avatar"><img id="callAvatar" src=""></div>
+        <h2 id="callName">—</h2>
+        <p id="callSub"></p>
+      </div>
+      <div class="stage-video-wrap" id="callVideoWrap">
+        <video id="remoteVideo" autoplay playsinline></video>
+        <span class="solo-name" id="soloName">—</span>
+        <div class="local-pip"><video id="localVideo" autoplay playsinline muted></video></div>
+      </div>
+      <audio id="remoteAudio" autoplay></audio>
+    </div>
+
+    <div class="stage-ring-buttons" id="ringButtons">
+      <button class="stage-call-btn cancel" onclick="AlphaCallShell.cancelCall()"><i class="fa-solid fa-xmark"></i></button>
+      <button class="stage-call-btn accept" id="acceptBtn" style="display:none" onclick="AlphaCallShell.acceptCall()"><i class="fa-solid fa-phone"></i></button>
+    </div>
+
+    <div class="stage-dock-wrap" id="stageDockWrap">
+      <div class="stage-dock">
+        <div class="ctrl-wrap"><button class="ctrl-btn" id="ctrlMic" onclick="AlphaCallShell.toggleMic()"><i class="fa-solid fa-microphone"></i></button><span>Mute</span></div>
+        <div class="ctrl-wrap"><button class="ctrl-btn" id="ctrlCam" onclick="AlphaCallShell.toggleCam()"><i class="fa-solid fa-video"></i></button><span>Camera</span></div>
+        <div class="ctrl-wrap"><button class="ctrl-btn leave" onclick="AlphaCallShell.endCall()"><i class="fa-solid fa-phone-slash"></i> Leave</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Minimized floating pill -->
+<div id="callPill" onclick="AlphaCallShell.expand()">
+  <img id="pillAvatar" src="">
+  <div class="pill-text">
+    <span class="pill-name" id="pillName">—</span>
+    <span class="pill-sub" id="pillSub">00:00</span>
+  </div>
+  <div class="pill-end" onclick="event.stopPropagation();AlphaCallShell.endCall()"><i class="fa-solid fa-phone-slash"></i></div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  // Mark this window as the shell so embedded pages (calls.html, chat.html)
+  // can detect it and hand call-initiation off to us via AlphaCallShell.
+  window.AlphaShell = true;
+
+  const API_BASE = 'https://alpha-auth.murwanashyakadieumerci540.workers.dev';
+  const LIVEKIT_URL = 'wss://alpha-chat-5bw21lfu.livekit.cloud';
+
+  function getToken() { return localStorage.getItem('alpha_token') || null; }
+  function getIdentity() {
+    try {
+      const raw = JSON.parse(localStorage.getItem('alpha_user') || 'null');
+      if (!raw) return null;
+      const cu = raw.CU || raw.cu || {};
+      const up = raw.UP || raw.up || {};
+      return { id: cu.id || cu.email, display_name: up.display_name || (cu.email ? cu.email.split('@')[0] : 'User') };
+    } catch (e) { return null; }
+  }
+
+  async function cfApi(endpoint, method, body) {
+    const opts = { method: method || 'GET', headers: { 'Content-Type': 'application/json' } };
+    const t = getToken();
+    if (t) opts.headers['Authorization'] = 'Bearer ' + t;
+    if (body) opts.body = JSON.stringify(body);
+    const res = await fetch(API_BASE + endpoint, opts);
+    let data = {};
+    try { data = await res.json(); } catch (e) {}
+    if (!res.ok) throw new Error(data.error || data.message || ('Error ' + res.status));
+    return data;
+  }
+
+  async function getLiveKitToken(room, identity) {
+    const data = await cfApi('/livekit-token', 'POST', { room, identity });
+    if (!data || !data.token) throw new Error('No token received');
+    return data.token;
+  }
+
+  function sendControlMsg(toUid, payload) {
+    const me = getIdentity();
+    if (!toUid || (me && String(toUid).toLowerCase() === String(me.id).toLowerCase())) return Promise.resolve();
+    return cfApi('/notifications', 'POST', {
+      to_uid: toUid,
+      from_name: me ? me.display_name : '',
+      text: JSON.stringify(payload)
+    }).catch(function () {});
+  }
+
+  function isSelf(uid) {
+    const me = getIdentity();
+    return !!(uid && me && me.id && String(uid).trim().toLowerCase() === String(me.id).trim().toLowerCase());
+  }
+
+  function avatarSrc(user) {
+    if (user && user.avatar_url) return user.avatar_url;
+    const name = encodeURIComponent((user && user.display_name) || 'Alpha User');
+    return 'https://ui-avatars.com/api/?background=4f46e5&color=fff&bold=true&name=' + name;
+  }
+
+  // ---------- shared call log (same storage key calls.html reads) ----------
+  function callsKey() {
+    const me = getIdentity();
+    return 'alpha_calls_' + (me && me.id ? me.id : 'guest');
+  }
+  function logCall(uid, type, dur, direction) {
+    try {
+      const list = JSON.parse(localStorage.getItem(callsKey()) || '[]');
+      list.unshift({ id: Date.now() + '-' + Math.random().toString(36).slice(2), uid, type, dur, direction, ts: Date.now() });
+      localStorage.setItem(callsKey(), JSON.stringify(list.slice(0, 200)));
+    } catch (e) {}
+  }
+
+  // ---------- state ----------
+  let lkRoom = null, localCamTrack = null;
+  let callInProgress = false, callState = 'idle', callDirection = 'out', callType = 'voice';
+  let chatPartner = null, currentCallRoom = null, incomingCallData = null;
+  let callSecs = 0, callTimer = null;
+  let ringtoneActive = false, ringtoneCtx = null, ringtoneTimer = null;
+  let minimized = false;
+  let knownUsers = {}; // uid -> {display_name, avatar_url}, filled in lazily from notifications payloads
+  const seenCallNotifIds = new Set();
+
+  function userInfo(uid) { return knownUsers[uid] || { display_name: 'User', avatar_url: null }; }
+
+  // ---------- ringtone ----------
+  function startRingtone() {
+    if (ringtoneActive) return;
+    ringtoneActive = true;
+    try {
+      ringtoneCtx = ringtoneCtx || new (window.AudioContext || window.webkitAudioContext)();
+      if (ringtoneCtx.state === 'suspended') ringtoneCtx.resume().catch(function () {});
+    } catch (e) { ringtoneActive = false; return; }
+    const burst = function () {
+      if (!ringtoneActive || !ringtoneCtx) return;
+      const now = ringtoneCtx.currentTime;
+      [0, 0.4].forEach(function (offset) {
+        const o1 = ringtoneCtx.createOscillator(), o2 = ringtoneCtx.createOscillator(), g = ringtoneCtx.createGain();
+        o1.type = 'sine'; o2.type = 'sine'; o1.frequency.value = 480; o2.frequency.value = 620;
+        g.gain.setValueAtTime(0, now + offset);
+        g.gain.linearRampToValueAtTime(0.18, now + offset + 0.05);
+        g.gain.setValueAtTime(0.18, now + offset + 0.32);
+        g.gain.linearRampToValueAtTime(0, now + offset + 0.38);
+        o1.connect(g); o2.connect(g); g.connect(ringtoneCtx.destination);
+        o1.start(now + offset); o2.start(now + offset);
+        o1.stop(now + offset + 0.4); o2.stop(now + offset + 0.4);
+      });
+    };
+    burst();
+    ringtoneTimer = setInterval(burst, 2000);
+  }
+  function stopRingtone() {
+    ringtoneActive = false;
+    if (ringtoneTimer) { clearInterval(ringtoneTimer); ringtoneTimer = null; }
+  }
+
+  // ---------- UI ----------
+  function el(id) { return document.getElementById(id); }
+
+  function showStage(state, name, avatar) {
+    callState = state;
+    el('stageOverlay').classList.remove('minimized');
+    el('stageOverlay').classList.add('show');
+    el('callPill').classList.remove('show');
+    minimized = false;
+
+    el('callName').textContent = name || '—';
+    el('soloName').textContent = name || '—';
+    el('callAvatar').src = avatar || '';
+    el('pillAvatar').src = avatar || '';
+    el('pillName').textContent = name || '—';
+    el('stageHero').style.display = 'flex';
+    el('callVideoWrap').style.display = 'none';
+
+    const ringBtns = el('ringButtons'), acceptBtn = el('acceptBtn');
+    if (state === 'ringing-out') {
+      el('callStatusText').textContent = callType === 'video' ? 'Starting video…' : 'Starting voice…';
+      el('callSub').innerHTML = '<span class="ring-badge">Ringing…</span>';
+      ringBtns.style.display = 'flex'; acceptBtn.style.display = 'none';
+      el('stageDockWrap').classList.remove('show');
+    } else if (state === 'ringing-in') {
+      el('callStatusText').textContent = (callType === 'video' ? '📹' : '📞') + ' Incoming call';
+      el('callSub').innerHTML = '<span class="ring-badge">Incoming ' + (callType === 'video' ? 'video' : 'voice') + ' call</span>';
+      ringBtns.style.display = 'flex'; acceptBtn.style.display = 'grid';
+      el('stageDockWrap').classList.remove('show');
+      startRingtone();
+    } else if (state === 'active') {
+      el('callStatusText').textContent = 'Connected ●';
+      el('callSub').innerHTML = '';
+      ringBtns.style.display = 'none';
+      el('stageDockWrap').classList.add('show');
+      el('ctrlMic').classList.remove('active');
+      el('ctrlCam').classList.remove('active');
+    }
+  }
+
+  function startTimer() {
+    callSecs = 0;
+    if (callTimer) clearInterval(callTimer);
+    el('callTimer').classList.add('show');
+    callTimer = setInterval(function () {
+      callSecs++;
+      const m = String(Math.floor(callSecs / 60)).padStart(2, '0');
+      const s = String(callSecs % 60).padStart(2, '0');
+      el('callTimer').textContent = m + ':' + s;
+      el('pillSub').textContent = m + ':' + s;
+    }, 1000);
+  }
+
+  function getCid(a, b) { return [a, b].sort().join('_'); }
+
+  // ---------- join ----------
+  async function joinLiveKitRoom(room, type) {
+    const LivekitClient = window.LivekitClient;
+    if (!LivekitClient) throw new Error('LiveKit library not loaded');
+    const me = getIdentity();
+    const token = await getLiveKitToken(room, me.id);
+    lkRoom = new LivekitClient.Room({ adaptiveStream: true, dynacast: true });
+
+    lkRoom.on(LivekitClient.RoomEvent.TrackSubscribed, function (track) {
+      if (track.kind === 'video') {
+        track.attach(el('remoteVideo'));
+        el('callVideoWrap').style.display = 'block';
+        el('stageHero').style.display = 'none';
+      } else if (track.kind === 'audio') {
+        track.attach(el('remoteAudio'));
+      }
+    });
+    lkRoom.on(LivekitClient.RoomEvent.TrackUnsubscribed, function (track) { track.detach(); });
+    lkRoom.on(LivekitClient.RoomEvent.Disconnected, function () { endCall(true); });
+
+    await lkRoom.connect(LIVEKIT_URL, token);
+    await lkRoom.localParticipant.setMicrophoneEnabled(true);
+
+    if (type === 'video') {
+      await lkRoom.localParticipant.setCameraEnabled(true);
+      const camPub = lkRoom.localParticipant.videoTrackPublications && lkRoom.localParticipant.videoTrackPublications.values().next().value;
+      if (camPub && camPub.track) {
+        localCamTrack = camPub.track;
+        camPub.track.attach(el('localVideo'));
+        el('callVideoWrap').style.display = 'block';
+        el('stageHero').style.display = 'none';
+      }
+    }
+
+    const partnerInfo = userInfo(chatPartner);
+    showStage('active', partnerInfo.display_name, avatarSrc(partnerInfo));
+    startTimer();
+  }
+
+  // ---------- public actions ----------
+  async function callUser(uid, type, name, avatarUrl) {
+    if (callInProgress) { AlphaCommon.toast('Already on a call'); return; }
+    if (isSelf(uid)) { AlphaCommon.toast("Can't call yourself"); return; }
+    const me = getIdentity();
+    if (!me || !me.id) { AlphaCommon.toast('Not signed in', 'error'); return; }
+
+    if (name) knownUsers[uid] = { display_name: name, avatar_url: avatarUrl };
+    chatPartner = uid; callType = type || 'voice'; callDirection = 'out'; callInProgress = true;
+    const room = 'call_' + getCid(me.id, uid) + '_' + Date.now();
+    currentCallRoom = room;
+
+    const info = userInfo(uid);
+    showStage('ringing-out', info.display_name, avatarSrc(info));
+
+    try {
+      await cfApi('/notifications', 'POST', {
+        to_uid: uid, from_name: me.display_name,
+        text: JSON.stringify({ type: 'call_invite', from_uid: me.id, from_name: me.display_name, action: 'invite', call_type: callType, room: room, host_uid: me.id })
+      });
+      await joinLiveKitRoom(room, callType);
+    } catch (e) {
+      AlphaCommon.toast('Call failed: ' + e.message, 'error');
+      resetCallState();
+    }
+  }
+
+  async function acceptCall() {
+    stopRingtone();
+    if (!incomingCallData) return;
+    const data = incomingCallData;
+    incomingCallData = null;
+    chatPartner = data.from_uid; callType = data.type || 'voice'; callInProgress = true; callDirection = 'in';
+    try {
+      await joinLiveKitRoom(data.room, callType);
+      currentCallRoom = data.room;
+    } catch (e) {
+      AlphaCommon.toast('Could not join: ' + e.message, 'error');
+      resetCallState();
+    }
+  }
+
+  function cancelCall() {
+    stopRingtone();
+    if (callState === 'ringing-in' && incomingCallData) {
+      const data = incomingCallData;
+      incomingCallData = null;
+      if (!isSelf(data.from_uid)) {
+        sendControlMsg(data.from_uid, { type: 'call_invite', from_uid: getIdentity().id, from_name: getIdentity().display_name, action: 'decline', room: data.room });
+      }
+      AlphaCommon.toast('Call declined');
+      resetCallState();
+      return;
+    }
+    endCall();
+  }
+
+  function showIncomingCall(data) {
+    if (isSelf(data.from_uid)) return;
+    incomingCallData = data;
+    knownUsers[data.from_uid] = { display_name: data.from_name || 'Unknown', avatar_url: null };
+    chatPartner = data.from_uid;
+    callType = data.type || 'voice';
+    showStage('ringing-in', data.from_name || 'Unknown', avatarSrc(userInfo(data.from_uid)));
+    setTimeout(function () {
+      if (callState === 'ringing-in' && incomingCallData === data) cancelCall();
+    }, 30000);
+  }
+
+  function toggleMic() {
+    if (!lkRoom) return;
+    const btn = el('ctrlMic');
+    const muted = btn.classList.contains('active');
+    lkRoom.localParticipant.setMicrophoneEnabled(muted);
+    btn.classList.toggle('active');
+    btn.innerHTML = muted ? '<i class="fa-solid fa-microphone"></i>' : '<i class="fa-solid fa-microphone-slash"></i>';
+  }
+  function toggleCam() {
+    if (!lkRoom) return;
+    const btn = el('ctrlCam');
+    const off = btn.classList.contains('active');
+    lkRoom.localParticipant.setCameraEnabled(off);
+    btn.classList.toggle('active');
+    btn.innerHTML = off ? '<i class="fa-solid fa-video"></i>' : '<i class="fa-solid fa-video-slash"></i>';
+    el('callVideoWrap').style.display = off ? 'block' : 'none';
+    el('stageHero').style.display = off ? 'none' : 'flex';
+  }
+
+  function endCall(fromRemote) {
+    const dur = callSecs, type = callType, dir = callDirection, partner = chatPartner;
+    if (lkRoom) { try { lkRoom.disconnect(); } catch (e) {} lkRoom = null; }
+    if (!fromRemote && partner && !isSelf(partner) && currentCallRoom) {
+      const me = getIdentity();
+      sendControlMsg(partner, { type: 'call_invite', from_uid: me.id, from_name: me.display_name, action: 'end', room: currentCallRoom });
+    }
+    if (partner && dur > 0 && !isSelf(partner)) logCall(partner, type, dur, dir);
+    resetCallState();
+    AlphaCommon.toast('Call ended');
+  }
+
+  function resetCallState() {
+    if (callTimer) { clearInterval(callTimer); callTimer = null; }
+    stopRingtone();
+    el('stageOverlay').classList.remove('show');
+    el('stageOverlay').classList.remove('minimized');
+    el('callPill').classList.remove('show');
+    el('callVideoWrap').style.display = 'none';
+    el('stageDockWrap').classList.remove('show');
+    el('callTimer').classList.remove('show');
+    minimized = false;
+    callInProgress = false; callSecs = 0; currentCallRoom = null;
+    localCamTrack = null; callDirection = 'out'; callState = 'idle';
+    chatPartner = null; incomingCallData = null;
+  }
+
+  // ---------- minimize / expand ----------
+  function minimize() {
+    if (!callInProgress) return;
+    minimized = true;
+    el('stageOverlay').classList.add('minimized');
+    el('stageOverlay').classList.remove('show');
+    el('callPill').classList.add('show');
+  }
+  function expand() {
+    if (!callInProgress) return;
+    minimized = false;
+    el('stageOverlay').classList.remove('minimized');
+    el('stageOverlay').classList.add('show');
+    el('callPill').classList.remove('show');
+  }
+
+  // ---------- global ringing: poll for invites on every page ----------
+  let pollInterval = null;
+  function startPolling() {
+    if (pollInterval) return;
+    pollInterval = setInterval(async function () {
+      if (!getToken()) return;
+      try {
+        const data = await cfApi('/notifications');
+        const relevant = (data || []).filter(function (n) {
+          if (!n.text || typeof n.text !== 'string' || n.text[0] !== '{') return false;
+          try { const d = JSON.parse(n.text); return d && d.type === 'call_invite'; } catch (e) { return false; }
+        });
+        for (const n of relevant) {
+          let payload;
+          try { payload = JSON.parse(n.text); } catch (e) { continue; }
+          if (isSelf(payload.from_uid)) continue;
+
+          const ageMs = Date.now() - new Date(n.created_at).getTime();
+          if (payload.action === 'invite' && ageMs > 30000) continue;
+
+          if ((payload.action === 'end' || payload.action === 'decline') && incomingCallData && payload.room === incomingCallData.room) {
+            stopRingtone(); resetCallState(); AlphaCommon.toast('Call cancelled');
+            continue;
+          }
+          if ((payload.action === 'end') && callInProgress && payload.room === currentCallRoom) {
+            endCall(true);
+            continue;
+          }
+
+          if (seenCallNotifIds.has(n.id)) continue;
+          seenCallNotifIds.add(n.id);
+
+          if (payload.action !== 'invite') continue;
+          if (callInProgress) continue;
+          if (payload.is_group) continue; // group calls: not handled by the shell yet — open Calls to join
+
+          showIncomingCall({ from_name: payload.from_name, from_uid: payload.from_uid, type: payload.call_type || 'voice', room: payload.room });
+          break;
+        }
+      } catch (e) { /* silent */ }
+    }, 3000);
+  }
+  function stopPolling() {
+    if (pollInterval) { clearInterval(pollInterval); pollInterval = null; }
+    seenCallNotifIds.clear();
+  }
+
+  if (getToken()) startPolling();
+  window.addEventListener('storage', function (e) {
+    if (e.key === 'alpha_token') { e.newValue ? startPolling() : stopPolling(); }
+  });
+
+  // ---------- bridge: pages embedded in the iframe ask us to start calls ----------
+  window.addEventListener('message', function (e) {
+    if (!e.data || typeof e.data !== 'object') return;
+    if (e.data.type === 'alpha:startCall') {
+      if (!e.data.uid) { console.warn('[Alpha Shell] startCall message missing uid', e.data); return; }
+      callUser(e.data.uid, e.data.callType || 'voice', e.data.name, e.data.avatarUrl);
+    }
+  });
+
+  window.AlphaCallShell = {
+    callUser: callUser,
+    acceptCall: acceptCall,
+    cancelCall: cancelCall,
+    endCall: endCall,
+    toggleMic: toggleMic,
+    toggleCam: toggleCam,
+    minimize: minimize,
+    expand: expand,
+    isCallInProgress: function () { return callInProgress; }
+  };
+})();
+</script>
+</body>
+</html>

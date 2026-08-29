@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Alpha — Status</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* ––– same base styles, with small additions ––– */
+    :root {
+      --bg: #f4f6fa;
+      --surface: #ffffff;
+      --surface-hover: #f0f2f7;
+      --surface-raised: #ffffff;
+      --text-primary: #0b0d12;
+      --text-secondary: #565e70;
+      --text-muted: #8e96a8;
+      --border: #e4e8ef;
+      --border-light: #edf0f5;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.06);
+      --shadow-lg: 0 12px 40px rgba(0,0,0,0.08);
+      --radius-sm: 10px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-full: 99px;
+      --primary: #7046d8;
+      --primary-light: #8d68e8;
+      --primary-dark: #5a35b8;
+      --primary-bg: rgba(112,70,216,0.08);
+      --primary-bg-hover: rgba(112,70,216,0.16);
+      --green: #22c55e;
+      --red: #ef4444;
+      --gradient-primary: linear-gradient(135deg, #7046d8, #8d68e8);
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --transition: 0.25s cubic-bezier(0.4,0,0.2,1);
+    }
+    [data-theme="dark"] {
+      --bg: #0c0e15;
+      --surface: #161920;
+      --surface-hover: #1e222b;
+      --surface-raised: #1a1d26;
+      --text-primary: #f1f3f7;
+      --text-secondary: #9aa2b5;
+      --text-muted: #6e768a;
+      --border: #262b36;
+      --border-light: #1e222b;
+      --primary-bg: rgba(112,70,216,0.15);
+      --primary-bg-hover: rgba(112,70,216,0.25);
+    }
+    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+    html,body{height:100%;font-family:var(--font);background:var(--bg);color:var(--text-primary);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+    button,input,textarea{font-family:inherit;font-size:inherit;}button{cursor:pointer;border:none;background:none;color:inherit;}
+    *:focus-visible{outline:2px solid var(--primary);outline-offset:2px;border-radius:6px;}
+    ::-webkit-scrollbar{width:4px;height:4px;}::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px;}
+    #app{min-height:100vh;display:flex;flex-direction:column;background:var(--bg);}
+    .header{height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;background:var(--surface);border-bottom:1px solid var(--border-light);box-shadow:var(--shadow-sm);position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);background:rgba(255,255,255,0.85);}
+    [data-theme="dark"] .header{background:rgba(22,25,32,0.85);}
+    .header-left{display:flex;align-items:center;gap:12px;}
+    .back-btn{width:40px;height:40px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface);color:var(--text-secondary);font-size:18px;cursor:pointer;transition:var(--transition);display:flex;align-items:center;justify-content:center;}
+    .back-btn:hover{background:var(--surface-hover);transform:translateX(-2px);color:var(--primary);border-color:var(--primary);}
+    .brand{display:flex;align-items:center;gap:10px;}
+    .brand-logo{width:36px;height:36px;border-radius:var(--radius-sm);background:var(--gradient-primary);display:grid;place-items:center;font-weight:800;font-size:16px;color:#fff;box-shadow:0 4px 12px rgba(112,70,216,0.25);}
+    .brand-name{font-weight:800;font-size:18px;letter-spacing:-0.02em;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .header-title{font-size:14px;font-weight:600;color:var(--text-secondary);position:absolute;left:50%;transform:translateX(-50%);}
+    .header-action{border:1px solid var(--border);background:var(--surface);color:var(--text-secondary);padding:8px 14px;border-radius:var(--radius-sm);font-size:12px;font-weight:600;cursor:pointer;transition:var(--transition);}
+    .header-action:hover{background:var(--surface-hover);color:var(--text-primary);border-color:var(--primary);}
+    .main{flex:1;max-width:880px;margin:0 auto;padding:24px 20px 100px;width:100%;}
+    .intro{text-align:center;max-width:520px;margin:0 auto 28px;}
+    .intro .badge{display:inline-flex;align-items:center;gap:6px;padding:4px 14px;border-radius:var(--radius-full);background:var(--primary-bg);color:var(--primary);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px;}
+    .intro h1{font-size:clamp(28px,4vw,38px);font-weight:800;letter-spacing:-0.02em;margin-bottom:6px;color:var(--text-primary);}
+    .intro h1 span{background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .intro p{color:var(--text-muted);font-size:14px;line-height:1.6;}
+    .creator{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface);border-radius:var(--radius-md);margin-bottom:18px;border:1px solid var(--border-light);box-shadow:var(--shadow-sm);}
+    .creator-avatar{width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid var(--primary);flex-shrink:0;}
+    .creator-info strong{display:block;font-size:14px;font-weight:700;}
+    .creator-info span{display:block;color:var(--text-muted);font-size:11px;margin-top:1px;}
+    .workspace{display:grid;grid-template-columns:1fr 340px;gap:20px;align-items:start;}
+    .workspace .controls{grid-row:1 / 3;}
+    @media(max-width:780px){.workspace{grid-template-columns:1fr;}.workspace .controls{grid-row:auto;}}
+    .queue-strip{grid-column:1;display:none;gap:8px;overflow-x:auto;padding:2px 2px 4px;}
+    .queue-strip.show{display:flex;}
+    .queue-tile{position:relative;flex:0 0 72px;width:72px;height:72px;border-radius:var(--radius-sm);overflow:hidden;background:var(--bg);border:2px solid var(--border);cursor:pointer;}
+    .queue-tile.active{border-color:var(--primary);}
+    .queue-tile img,.queue-tile video{width:100%;height:100%;object-fit:cover;}
+    .queue-tile .qt-remove{position:absolute;top:2px;right:2px;width:18px;height:18px;border-radius:50%;background:rgba(0,0,0,0.6);color:#fff;font-size:9px;display:flex;align-items:center;justify-content:center;}
+    .queue-tile .qt-video-badge{position:absolute;bottom:3px;left:3px;color:#fff;font-size:10px;text-shadow:0 1px 4px rgba(0,0,0,0.7);}
+    .queue-add-tile{flex:0 0 72px;width:72px;height:72px;border-radius:var(--radius-sm);border:2px dashed var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:18px;}
+    .queue-add-tile:hover{border-color:var(--primary);color:var(--primary);}
+    .status-engagement{display:flex;gap:10px;margin-top:2px;}
+    .status-engagement span{display:flex;align-items:center;gap:4px;}
+    .status-engagement .liked-count{color:#ef4444;}
+    .insights-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:2000;display:flex;align-items:center;justify-content:center;padding:16px;}
+    .insights-modal{width:100%;max-width:380px;max-height:78vh;background:var(--surface);border-radius:var(--radius-lg);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow-lg);}
+    .insights-head{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--border-light);}
+    .insights-head strong{font-size:14px;}
+    .insights-head button{width:28px;height:28px;border-radius:50%;background:var(--surface-hover);color:var(--text-secondary);display:flex;align-items:center;justify-content:center;font-size:12px;}
+    .insights-tabs{display:flex;gap:6px;padding:12px 14px;border-bottom:1px solid var(--border-light);}
+    .insights-tabs button{flex:1;padding:8px 10px;border-radius:var(--radius-sm);font-size:12px;font-weight:700;color:var(--text-secondary);background:var(--bg);}
+    .insights-tabs button.active{background:var(--primary-bg);color:var(--primary);}
+    .insights-list{overflow-y:auto;padding:8px 10px 16px;}
+    .insight-row{display:flex;align-items:center;gap:10px;padding:8px;border-radius:var(--radius-sm);}
+    .insight-row:hover{background:var(--surface-hover);}
+    .insight-row img{width:34px;height:34px;border-radius:50%;object-fit:cover;}
+    .insight-row .ir-name{flex:1;font-size:13px;font-weight:600;}
+    .insight-row .ir-time{font-size:11px;color:var(--text-muted);}
+    .status-actions .insights-btn:hover{background:var(--primary-bg);color:var(--primary);}
+    .preview-shell{position:relative;width:100%;min-height:420px;border-radius:var(--radius-lg);overflow:hidden;background:var(--surface);border:1px solid var(--border-light);box-shadow:var(--shadow-sm);transition:var(--transition);}
+    .preview-shell.dragging{border-color:var(--primary);box-shadow:0 0 0 4px var(--primary-bg),var(--shadow-lg);}
+    .preview-empty{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:30px;text-align:center;}
+    .upload-orb{width:72px;height:72px;border-radius:var(--radius-md);background:var(--primary-bg);border:1px solid var(--border);display:grid;place-items:center;font-size:28px;color:var(--primary);margin-bottom:16px;transition:var(--transition);}
+    .upload-orb:hover{border-color:var(--primary);background:var(--primary-bg-hover);}
+    .preview-empty h2{font-size:18px;font-weight:700;margin-bottom:4px;}
+    .preview-empty p{max-width:320px;color:var(--text-muted);font-size:13px;line-height:1.6;}
+    .upload-actions{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap;justify-content:center;}
+    .primary-btn,.secondary-btn{padding:10px 20px;border-radius:var(--radius-sm);font-weight:700;font-size:12px;transition:var(--transition);}
+    .primary-btn{background:var(--gradient-primary);color:#fff;box-shadow:0 4px 14px rgba(112,70,216,0.25);}
+    .primary-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(112,70,216,0.35);}
+    .secondary-btn{background:var(--surface);color:var(--text-secondary);border:1px solid var(--border);}
+    .secondary-btn:hover{background:var(--surface-hover);border-color:var(--primary);}
+    .media{width:100%;height:100%;min-height:420px;display:none;object-fit:cover;}
+    .preview-gradient{position:absolute;inset:0;pointer-events:none;background:linear-gradient(to bottom,rgba(0,0,0,0.4),transparent 30%,transparent 65%,rgba(0,0,0,0.5));display:none;}
+    .preview-top{position:absolute;top:16px;left:16px;right:16px;display:none;align-items:center;justify-content:space-between;z-index:5;}
+    .preview-profile{display:flex;align-items:center;gap:8px;}
+    .preview-profile img{width:32px;height:32px;border-radius:50%;border:2px solid rgba(255,255,255,0.3);}
+    .preview-profile strong{display:block;font-size:12px;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,0.4);}
+    .preview-profile span{display:block;font-size:10px;color:rgba(255,255,255,0.7);margin-top:1px;}
+    .preview-top-right{display:flex;align-items:center;gap:10px;}
+    .duration-badge{background:rgba(0,0,0,0.45);color:#fff;font-size:11px;font-weight:700;letter-spacing:0.02em;padding:5px 10px;border-radius:var(--radius-full);backdrop-filter:blur(4px);display:flex;align-items:center;gap:5px;}
+    .duration-badge i{font-size:9px;}
+    .preview-close{width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,0.4);color:#fff;font-size:16px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);transition:var(--transition);flex-shrink:0;}
+    .preview-close:hover{background:var(--red);transform:rotate(90deg);}
+    .preview-checking{position:absolute;inset:0;z-index:6;display:none;align-items:center;justify-content:center;gap:8px;background:rgba(11,13,18,0.55);color:#fff;font-size:13px;font-weight:600;backdrop-filter:blur(2px);}
+    .upload-hint{margin-top:16px;color:var(--text-muted);font-size:11px;display:flex;align-items:center;gap:6px;justify-content:center;}
+    .preview-caption{position:absolute;left:20px;right:20px;bottom:24px;display:none;z-index:5;font-size:15px;line-height:1.5;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,0.6);max-height:60px;overflow-y:auto;}
+    .controls{display:flex;flex-direction:column;gap:14px;}
+    .card{background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius-md);padding:16px 18px;box-shadow:var(--shadow-sm);}
+    .card-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+    .card-heading strong{font-size:13px;font-weight:700;color:var(--text-primary);}
+    .card-heading span{color:var(--text-muted);font-size:10.5px;}
+    textarea{width:100%;min-height:90px;resize:none;border:1.5px solid var(--border);background:var(--bg);color:var(--text-primary);border-radius:var(--radius-sm);outline:none;padding:12px 14px;font-size:13px;line-height:1.6;transition:var(--transition);}
+    textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-bg);}
+    .counter{text-align:right;color:var(--text-muted);font-size:10px;margin-top:4px;}
+    .tool-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+    .tool{min-height:56px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text-secondary);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:10px;font-weight:600;transition:var(--transition);}
+    .tool-icon{font-size:18px;}
+    .tool:hover,.tool.active{border-color:var(--primary);background:var(--primary-bg);color:var(--primary);transform:translateY(-1px);}
+    .privacy{display:flex;flex-direction:column;}
+    .privacy-item{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border-light);cursor:pointer;transition:var(--transition);}
+    .privacy-item:last-child{border-bottom:0;}
+    .privacy-item:hover{background:var(--surface-hover);margin:0 -6px;padding-left:6px;padding-right:6px;border-radius:var(--radius-sm);}
+    .privacy-main{display:flex;align-items:center;gap:10px;}
+    .privacy-icon{width:34px;height:34px;border-radius:var(--radius-sm);background:var(--bg);display:grid;place-items:center;font-size:15px;color:var(--text-secondary);}
+    .privacy-text strong{display:block;font-size:12px;font-weight:700;}
+    .privacy-text span{display:block;color:var(--text-muted);font-size:10px;margin-top:2px;}
+    .radio{width:18px;height:18px;border-radius:50%;border:2px solid var(--border);position:relative;flex-shrink:0;transition:var(--transition);}
+    .privacy-item.selected .radio{border-color:var(--primary);}
+    .privacy-item.selected .radio::after{content:'';position:absolute;width:8px;height:8px;left:3px;top:3px;border-radius:50%;background:var(--primary);}
+    .post-btn{width:100%;padding:14px;border-radius:var(--radius-sm);font-weight:800;font-size:14px;background:var(--gradient-primary);color:#fff;box-shadow:0 4px 16px rgba(112,70,216,0.25);transition:var(--transition);}
+    .post-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 6px 24px rgba(112,70,216,0.35);}
+    .post-btn:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
+    .expiry{display:flex;align-items:center;justify-content:center;gap:6px;color:var(--text-muted);font-size:10px;margin-top:6px;}
+    .toast-wrap{position:fixed;bottom:24px;right:24px;z-index:1200;display:flex;flex-direction:column;gap:8px;pointer-events:none;max-width:380px;}
+    .toast{display:flex;align-items:center;gap:10px;background:var(--surface-raised);border:1px solid var(--border);border-left:3px solid var(--primary);border-radius:var(--radius-md);padding:10px 16px;font-size:13px;color:var(--text-primary);box-shadow:var(--shadow-lg);pointer-events:auto;animation:toastIn 0.4s cubic-bezier(0.4,0,0.2,1);}
+    .toast i{font-size:15px;flex-shrink:0;}
+    @keyframes toastIn{from{opacity:0;transform:translateX(30px) scale(0.95);}to{opacity:1;transform:none;}}
+    .toast-close{background:none;border:0;color:var(--text-muted);cursor:pointer;padding:0 4px;margin-left:auto;font-size:13px;}
+    .toast-close:hover{color:var(--red);}
+
+    /* ----- new: status list ----- */
+    .statuses-section{margin-top:32px;}
+    .statuses-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+    .statuses-header h3{font-size:15px;font-weight:700;color:var(--text-primary);}
+    .statuses-header span{color:var(--text-muted);font-size:12px;}
+    .status-list{display:flex;flex-direction:column;gap:10px;}
+    .status-card{background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius-md);padding:14px 16px;display:flex;gap:14px;align-items:center;transition:var(--transition);}
+    .status-card:hover{box-shadow:var(--shadow-sm);}
+    .status-thumb{width:60px;height:60px;border-radius:var(--radius-sm);background:var(--bg);flex-shrink:0;overflow:hidden;display:grid;place-items:center;font-size:22px;color:var(--text-muted);position:relative;}
+    .status-thumb img{width:100%;height:100%;object-fit:cover;}
+    .status-thumb video{width:100%;height:100%;object-fit:cover;}
+    .thumb-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.15);color:#fff;font-size:14px;text-shadow:0 1px 4px rgba(0,0,0,0.5);pointer-events:none;}
+    .status-info{flex:1;min-width:0;}
+    .status-caption{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .status-meta{display:flex;gap:12px;font-size:11px;color:var(--text-muted);margin-top:4px;}
+    .status-actions{display:flex;gap:6px;flex-shrink:0;}
+    .status-actions button{width:34px;height:34px;border-radius:var(--radius-sm);background:var(--bg);color:var(--text-secondary);display:grid;place-items:center;transition:var(--transition);font-size:13px;}
+    .status-actions button:hover{background:var(--primary-bg);color:var(--primary);}
+    .status-actions .edit-btn:hover{color:var(--primary);}
+    .status-actions .delete-btn:hover{background:var(--red);color:#fff;}
+    .empty-status{text-align:center;padding:30px 10px;color:var(--text-muted);font-size:13px;}
+    .empty-status i{display:block;font-size:26px;margin-bottom:8px;color:var(--border);}
+
+    @media(max-width:600px){
+      .header{height:56px;padding:0 12px;}.header-title{display:none;}.header-action{padding:4px 12px;font-size:11px;}.main{padding:16px 12px 80px;}.preview-shell,.media{min-height:380px;}.upload-orb{width:60px;height:60px;font-size:22px;}.tool-grid{grid-template-columns:repeat(4,1fr);}.tool{min-height:48px;font-size:9px;}.tool-icon{font-size:15px;}.card{padding:12px 14px;}.toast-wrap{bottom:80px;right:12px;left:12px;max-width:100%;}.status-card{padding:10px 12px;}.status-thumb{width:48px;height:48px;}.status-actions button{width:30px;height:30px;font-size:12px;}
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <header class="header">
+      <div class="header-left">
+        <button class="back-btn" onclick="goBack()"><i class="fa-solid fa-arrow-left"></i></button>
+        <div class="brand"><div class="brand-logo">A</div><div class="brand-name">Alpha</div></div>
+      </div>
+      <div class="header-title">Status</div>
+      <button class="header-action" onclick="toast('Drafts coming soon')"><i class="fa-regular fa-file"></i> Drafts</button>
+    </header>
+    <main class="main">
+      <section class="intro">
+        <div class="badge"><i class="fa-regular fa-circle-dot"></i> Alpha Status</div>
+        <h1>Share your <span>moment.</span></h1>
+        
+      </section>
+      <div class="creator">
+        <img class="creator-avatar" id="creatorAvatar" src="https://ui-avatars.com/api/?background=7046d8&color=fff&name=U" alt="Profile">
+        <div class="creator-info"><strong id="creatorName">You</strong><span id="creatorHandle">Posting to your Alpha status</span></div>
+      </div>
+      <div class="workspace">
+        <section class="preview-shell" id="dropZone">
+          <div class="preview-empty" id="emptyState">
+            <div class="upload-orb"><i class="fa-solid fa-plus"></i></div>
+            <h2>Start your status</h2>
+            <p>Drop a photo or video here, or choose something from your device.</p>
+            <div class="upload-actions">
+              <button class="primary-btn" onclick="chooseFile()"><i class="fa-solid fa-plus"></i> Choose media</button>
+              <button class="secondary-btn" onclick="toast('Camera coming soon')"><i class="fa-solid fa-camera"></i> Camera</button>
+            </div>
+            <div class="upload-hint"><i class="fa-regular fa-clock"></i> Videos up to 3:30 · Photos up to 25 MB · Select several to post them all at once</div>
+          </div>
+          <div class="preview-checking" id="previewChecking">
+            <i class="fa-solid fa-spinner fa-spin"></i> Checking video length…
+          </div>
+          <img id="imagePreview" class="media" alt="Status preview">
+          <video id="videoPreview" class="media" playsinline controls></video>
+          <div class="preview-gradient" id="previewGradient"></div>
+          <div class="preview-top" id="previewTop">
+            <div class="preview-profile">
+              <img id="previewAvatar" src="https://ui-avatars.com/api/?background=7046d8&color=fff&name=U" alt="">
+              <div><strong id="previewName">You</strong><span id="previewTime">Just now</span></div>
+            </div>
+            <div class="preview-top-right">
+              <span class="duration-badge" id="durationBadge" style="display:none;"></span>
+              <button class="preview-close" onclick="removeMedia()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+          </div>
+          <div class="preview-caption" id="previewCaption"></div>
+        </section>
+        <div class="queue-strip" id="queueStrip"></div>
+        <section class="controls">
+          <div class="card"><div class="card-heading"><strong>Caption</strong><span>Optional</span></div>
+            <textarea id="captionInput" maxlength="180" placeholder="Write something…" oninput="updateCaption()"></textarea>
+            <div class="counter"><span id="charCount">0</span>/180</div>
+          </div>
+          <div class="card"><div class="card-heading"><strong>Creative tools</strong><span>Customize</span></div>
+            <div class="tool-grid">
+              <button class="tool" onclick="activateTool(this,'Text')"><span class="tool-icon"><i class="fa-solid fa-font"></i></span> Text</button>
+              <button class="tool" onclick="activateTool(this,'Music')"><span class="tool-icon"><i class="fa-solid fa-music"></i></span> Music</button>
+              <button class="tool" onclick="activateTool(this,'Sticker')"><span class="tool-icon"><i class="fa-regular fa-face-smile"></i></span> Sticker</button>
+              <button class="tool" onclick="activateTool(this,'Filter')"><span class="tool-icon"><i class="fa-regular fa-image"></i></span> Filter</button>
+            </div>
+          </div>
+          <div class="card"><div class="card-heading"><strong>Audience</strong><span>Privacy</span></div>
+            <div class="privacy">
+              <div class="privacy-item selected" onclick="selectPrivacy(this)" data-privacy="contacts">
+                <div class="privacy-main"><div class="privacy-icon"><i class="fa-solid fa-users"></i></div><div class="privacy-text"><strong>My Contacts</strong><span>Anyone in your contacts</span></div></div><div class="radio"></div>
+              </div>
+              <div class="privacy-item" onclick="selectPrivacy(this)" data-privacy="close">
+                <div class="privacy-main"><div class="privacy-icon"><i class="fa-solid fa-star"></i></div><div class="privacy-text"><strong>Close Friends</strong><span>Only selected friends</span></div></div><div class="radio"></div>
+              </div>
+              <div class="privacy-item" onclick="selectPrivacy(this)" data-privacy="me">
+                <div class="privacy-main"><div class="privacy-icon"><i class="fa-solid fa-lock"></i></div><div class="privacy-text"><strong>Only Me</strong><span>Keep this status private</span></div></div><div class="radio"></div>
+              </div>
+            </div>
+          </div>
+          <button class="post-btn" id="postButton" disabled onclick="publishStatus()"><i class="fa-regular fa-paper-plane"></i> Share Status</button>
+          <div class="expiry"><i class="fa-regular fa-clock"></i> Status disappears after 24 hours</div>
+        </section>
+      </div>
+
+      <!-- ===== MY STATUSES ===== -->
+      <section class="statuses-section" id="myStatuses">
+        <div class="statuses-header">
+          <h3>Your statuses</h3>
+          <span id="statusCount">0</span>
+        </div>
+        <div class="status-list" id="statusList">
+          <div class="empty-status"><i class="fa-regular fa-face-smile"></i> You haven't posted any status yet.</div>
+        </div>
+      </section>
+    </main>
+    <div class="toast-wrap" id="toastWrap"></div>
+  </div>
+
+  <script>
+    // ============================================================
+    // CONFIG: Set your Worker URL
+    // ============================================================
+    const API_BASE = 'https://alpha-auth.murwanashyakadieumerci540.workers.dev'; 
+
+    // ============================================================
+    // STATE
+    // ============================================================
+    let TOKEN = localStorage.getItem('alpha_token') || null;
+    let currentUser = null;
+    let selectedFile = null;
+    let selectedPrivacy = 'contacts';
+    let editingStatusId = null;   // if we are editing an existing status
+    let myStatuses = [];
+    let mediaQueue = [];          // [{file, duration}] — lets you queue several photos/videos and post them all as separate statuses in one go
+    let activeQueueIndex = 0;
+
+    // ---- DOM refs ----
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'image/*,video/*';
+    fileInput.multiple = true;
+    fileInput.style.display = 'none';
+    document.body.appendChild(fileInput);
+
+    const dropZone = document.getElementById('dropZone');
+    const emptyState = document.getElementById('emptyState');
+    const imagePreview = document.getElementById('imagePreview');
+    const videoPreview = document.getElementById('videoPreview');
+    const previewGradient = document.getElementById('previewGradient');
+    const previewTop = document.getElementById('previewTop');
+    const previewCaption = document.getElementById('previewCaption');
+    const previewChecking = document.getElementById('previewChecking');
+    const durationBadge = document.getElementById('durationBadge');
+    const postButton = document.getElementById('postButton');
+    const captionInput = document.getElementById('captionInput');
+    const charCount = document.getElementById('charCount');
+    const creatorAvatar = document.getElementById('creatorAvatar');
+    const creatorName = document.getElementById('creatorName');
+    const previewAvatar = document.getElementById('previewAvatar');
+    const previewName = document.getElementById('previewName');
+    const previewTime = document.getElementById('previewTime');
+    const toastWrap = document.getElementById('toastWrap');
+    const statusList = document.getElementById('statusList');
+    const statusCount = document.getElementById('statusCount');
+    const queueStrip = document.getElementById('queueStrip');
+
+    // ---- API Helpers ----
+    function headers() {
+      const h = { 'Content-Type': 'application/json' };
+      if (TOKEN) h['Authorization'] = 'Bearer ' + TOKEN;
+      return h;
+    }
+
+    async function api(method, path, body) {
+      const opts = { method, headers: headers() };
+      if (body) opts.body = JSON.stringify(body);
+      const res = await fetch(API_BASE + path, opts);
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || 'Request failed (' + res.status + ')');
+      return data;
+    }
+
+    async function uploadFile(file) {
+      const form = new FormData();
+      form.append('file', file);
+      const res = await fetch(API_BASE + '/upload', {
+        method: 'POST',
+        headers: TOKEN ? { 'Authorization': 'Bearer ' + TOKEN } : {},
+        body: form
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Upload failed');
+      return data.url;
+    }
+
+    // ---- Toast ----
+    function toast(msg, type) {
+      type = type || 'success';
+      const icons = { success: 'fa-circle-check', error: 'fa-circle-xmark', info: 'fa-circle-info' };
+      const t = document.createElement('div');
+      t.className = 'toast';
+      t.innerHTML = '<i class="fa-solid ' + (icons[type] || 'fa-wand-magic-sparkles') + '"></i>' +
+        '<span>' + msg + '</span>' +
+        '<button class="toast-close" onclick="this.parentElement.remove()"><i class="fa-solid fa-xmark"></i></button>';
+      toastWrap.appendChild(t);
+      setTimeout(function() {
+        t.style.opacity = '0';
+        t.style.transform = 'translateX(16px)';
+        setTimeout(function() { t.remove(); }, 300);
+      }, 3000);
+    }
+    window.toast = toast;
+
+    // ---- User Profile ----
+    async function loadUserProfile() {
+      TOKEN = localStorage.getItem('alpha_token') || null;
+      if (!TOKEN) {
+        window.location.href = 'index.html';
+        return;
+      }
+      try {
+        const data = await api('GET', '/verify');
+        currentUser = { email: data.email, display_name: data.display_name };
+        const users = await api('GET', '/users');
+        const u = users.find(function(x) { return x.email === currentUser.email; });
+        if (u) currentUser.avatar_url = u.avatar_url || null;
+        updateUI();
+        loadMyStatuses();
+      } catch (e) {
+        localStorage.removeItem('alpha_token');
+        window.location.href = 'index.html';
+      }
+    }
+
+    function updateUI() {
+      var name = currentUser?.display_name || 'You';
+      var avatar = currentUser?.avatar_url || 'https://ui-avatars.com/api/?background=7046d8&color=fff&name=' +
+        encodeURIComponent(name);
+      creatorAvatar.src = avatar;
+      creatorAvatar.alt = name;
+      creatorName.textContent = name;
+      previewAvatar.src = avatar;
+      previewAvatar.alt = name;
+      previewName.textContent = name;
+      previewTime.textContent = 'Just now';
+    }
+
+    // ---- Load my statuses ----
+    async function loadMyStatuses() {
+      try {
+        const all = await api('GET', '/status');
+        // filter only those authored by current user
+        myStatuses = all.filter(s => s.uid === currentUser.email);
+        renderStatuses();
+      } catch (e) {
+        toast('Failed to load statuses: ' + e.message, 'error');
+      }
+    }
+
+    // Reaction data written by index.html's story viewer (shared localStorage, same site)
+    function loadJSON(key) {
+      try { const v = JSON.parse(localStorage.getItem(key)); return v && typeof v === 'object' ? v : {}; }
+      catch (e) { return {}; }
+    }
+
+    function renderStatuses() {
+      statusCount.textContent = myStatuses.length;
+      if (myStatuses.length === 0) {
+        statusList.innerHTML = '<div class="empty-status"><i class="fa-regular fa-face-smile"></i> You haven\'t posted any status yet.</div>';
+        return;
+      }
+      const storyViews = loadJSON('alpha_story_views');
+      const storyLikes = loadJSON('alpha_story_likes');
+      statusList.innerHTML = myStatuses.map(s => {
+        const hasMedia = s.image_url && s.image_url.trim() !== '';
+        const isVideo = hasMedia && s.image_url.match(/\.(mp4|webm|ogg|mov)$/i);
+        const mediaHtml = hasMedia ?
+          (isVideo ?
+            `<video src="${s.image_url}" muted playsinline preload="metadata"></video><span class="thumb-play"><i class="fa-solid fa-play"></i></span>` :
+            `<img src="${s.image_url}" alt="">`) :
+          '<i class="fa-regular fa-file-lines"></i>';
+        const caption = s.text || 'No caption';
+        const createdAt = new Date(s.created_at).toLocaleString();
+        const viewCount = (storyViews[s.id] || []).length || (s.views ? s.views.length : 0);
+        const likeCount = (storyLikes[s.id] || []).length;
+        return `
+          <div class="status-card" data-id="${s.id}">
+            <div class="status-thumb">${mediaHtml}</div>
+            <div class="status-info">
+              <div class="status-caption">${caption}</div>
+              <div class="status-meta status-engagement">
+                <span>${createdAt}</span>
+                <span><i class="fa-regular fa-eye"></i> ${viewCount}</span>
+                <span class="liked-count"><i class="fa-solid fa-heart"></i> ${likeCount}</span>
+              </div>
+            </div>
+            <div class="status-actions">
+              <button class="insights-btn" onclick="openStatusInsights('${s.id}')" title="See who viewed & liked"><i class="fa-regular fa-chart-bar"></i></button>
+              <button class="edit-btn" onclick="editStatus('${s.id}')" title="Edit"><i class="fa-regular fa-pen-to-square"></i></button>
+              <button class="delete-btn" onclick="deleteStatus('${s.id}')" title="Delete"><i class="fa-regular fa-trash-can"></i></button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ---- Insights modal: who viewed / who liked this status ----
+    window.openStatusInsights = function(id) {
+      const storyViews = loadJSON('alpha_story_views')[id] || [];
+      const storyLikes = loadJSON('alpha_story_likes')[id] || [];
+      const likedUids = new Set(storyLikes.map(v => v.uid));
+      const rowsHtml = (list, emptyLabel) => {
+        if (!list.length) return `<div class="empty-status" style="padding:18px 10px;">${emptyLabel}</div>`;
+        return list.slice().reverse().map(v => {
+          const name = v.name || 'User';
+          const av = v.avatar || `https://ui-avatars.com/api/?background=7046d8&color=fff&name=${encodeURIComponent(name)}`;
+          const time = v.time ? new Date(v.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+          return `<div class="insight-row"><img src="${av}" alt=""><span class="ir-name">${name}</span>${likedUids.has(v.uid) ? '<i class="fa-solid fa-heart" style="color:#ef4444;font-size:12px;"></i>' : ''}<span class="ir-time">${time}</span></div>`;
+        }).join('');
+      };
+      const overlay = document.createElement('div');
+      overlay.className = 'insights-overlay';
+      overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+      overlay.innerHTML = `
+        <div class="insights-modal">
+          <div class="insights-head">
+            <strong>Status insights</strong>
+            <button onclick="this.closest('.insights-overlay').remove()"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+          <div class="insights-tabs">
+            <button class="active" data-tab="views" onclick="switchInsightsTab(this,'views')"><i class="fa-regular fa-eye"></i> Viewed by ${storyViews.length}</button>
+            <button data-tab="likes" onclick="switchInsightsTab(this,'likes')"><i class="fa-solid fa-heart"></i> Liked by ${storyLikes.length}</button>
+          </div>
+          <div class="insights-list" data-panel="views">${rowsHtml(storyViews, 'No views yet.')}</div>
+          <div class="insights-list" data-panel="likes" style="display:none;">${rowsHtml(storyLikes, 'No likes yet.')}</div>
+        </div>`;
+      document.body.appendChild(overlay);
+    };
+    window.switchInsightsTab = function(btn, tab) {
+      const modal = btn.closest('.insights-modal');
+      modal.querySelectorAll('.insights-tabs button').forEach(b => b.classList.toggle('active', b === btn));
+      modal.querySelectorAll('.insights-list').forEach(p => p.style.display = p.dataset.panel === tab ? 'block' : 'none');
+    };
+
+    // ---- Delete status ----
+    window.deleteStatus = async function(id) {
+      if (!confirm('Delete this status?')) return;
+      try {
+        await api('DELETE', '/status/' + id);
+        myStatuses = myStatuses.filter(s => s.id !== id);
+        renderStatuses();
+        toast('Status deleted', 'success');
+      } catch (e) {
+        toast('Delete failed: ' + e.message, 'error');
+      }
+    };
+
+    // ---- Edit status ----
+    window.editStatus = async function(id) {
+      const status = myStatuses.find(s => s.id === id);
+      if (!status) return;
+      // Load into the form
+      captionInput.value = status.text || '';
+      updateCaption();
+      // If there's media, show it
+      if (status.image_url) {
+        // We need to show the media in preview, but we can't edit the media (only caption) for simplicity.
+        // We'll show it as a preview.
+        // Since we can't re-upload, we'll just show the existing media in the preview.
+        // We'll set a flag to indicate we are editing.
+        editingStatusId = id;
+        // Display the media
+        const url = status.image_url;
+        if (url.match(/\.(mp4|webm|ogg|mov)$/i)) {
+          videoPreview.src = url;
+          videoPreview.style.display = 'block';
+          imagePreview.style.display = 'none';
+          videoPreview.onloadedmetadata = function() {
+            if (isFinite(videoPreview.duration)) {
+              durationBadge.innerHTML = '<i class="fa-solid fa-video"></i> ' + formatDuration(videoPreview.duration);
+              durationBadge.style.display = 'flex';
+            }
+          };
+        } else {
+          imagePreview.src = url;
+          imagePreview.style.display = 'block';
+          videoPreview.style.display = 'none';
+          durationBadge.style.display = 'none';
+        }
+        emptyState.style.display = 'none';
+        previewGradient.style.display = 'block';
+        previewTop.style.display = 'flex';
+        postButton.disabled = false;
+        postButton.innerHTML = '<i class="fa-regular fa-pen-to-square"></i> Update Status';
+        toast('Editing status — you can change the caption and media (re-upload to replace)', 'info');
+      } else {
+        // No media, just caption
+        editingStatusId = id;
+        postButton.innerHTML = '<i class="fa-regular fa-pen-to-square"></i> Update Status';
+        postButton.disabled = false;
+        // Clear media preview if any
+        removeMedia();
+        toast('Editing caption only', 'info');
+      }
+      // Scroll to form
+      document.querySelector('.workspace').scrollIntoView({ behavior: 'smooth' });
+    };
+
+    // ---- Media ----
+    function chooseFile() { fileInput.click(); }
+    window.chooseFile = chooseFile;
+
+    fileInput.addEventListener('change', function(e) {
+      var files = Array.from(e.target.files || []);
+      if (files.length) loadMediaBatch(files);
+      this.value = '';
+    });
+
+    var MAX_VIDEO_SECONDS = 210; // 3 minutes 30 seconds
+    var MAX_QUEUE_ITEMS = 10;
+
+    function formatDuration(totalSeconds) {
+      var s = Math.round(totalSeconds);
+      var m = Math.floor(s / 60);
+      var r = s % 60;
+      return m + ':' + (r < 10 ? '0' : '') + r;
+    }
+
+    // ---- Batch loader: validates each file, then queues it so several
+    // photos/videos can be posted as separate statuses in one go ----
+    async function loadMediaBatch(files) {
+      var room = MAX_QUEUE_ITEMS - mediaQueue.length;
+      if (room <= 0) { toast('You can queue up to ' + MAX_QUEUE_ITEMS + ' statuses at once', 'info'); return; }
+      var toProcess = files.slice(0, room);
+      if (files.length > toProcess.length) toast('Only added ' + toProcess.length + ' — max ' + MAX_QUEUE_ITEMS + ' per batch', 'info');
+      for (var i = 0; i < toProcess.length; i++) {
+        await loadMedia(toProcess[i], /*silent*/ toProcess.length > 1);
+      }
+      if (toProcess.length > 1) toast(toProcess.length + ' items added to your queue ✨');
+    }
+
+    function loadMedia(file, silent) {
+      if (file.type.startsWith('video/')) {
+        return checkVideoDuration(file, silent);
+      } else if (file.type.startsWith('image/')) {
+        queueMedia(file, null, silent);
+        return Promise.resolve();
+      } else {
+        toast('Unsupported file type — choose a photo or video', 'error');
+        return Promise.resolve();
+      }
+    }
+    window.loadMedia = loadMedia;
+
+    function checkVideoDuration(file, silent) {
+      return new Promise(function(resolve) {
+        var probeUrl = URL.createObjectURL(file);
+        var probe = document.createElement('video');
+        probe.preload = 'metadata';
+        previewChecking.style.display = 'flex';
+        probe.onloadedmetadata = function() {
+          URL.revokeObjectURL(probeUrl);
+          previewChecking.style.display = 'none';
+          var duration = probe.duration;
+          if (!isFinite(duration) || duration <= 0) {
+            toast('Could not read this video — please try another file', 'error');
+            resolve(); return;
+          }
+          if (duration > MAX_VIDEO_SECONDS) {
+            toast('That video is ' + formatDuration(duration) + ' — the limit is 3:30. Trim it and try again.', 'error');
+            resolve(); return;
+          }
+          queueMedia(file, duration, silent);
+          resolve();
+        };
+        probe.onerror = function() {
+          URL.revokeObjectURL(probeUrl);
+          previewChecking.style.display = 'none';
+          toast('Could not read this video — please try another file', 'error');
+          resolve();
+        };
+        probe.src = probeUrl;
+      });
+    }
+
+    // ---- Add a validated file to the queue and show it in the preview ----
+    function queueMedia(file, videoDuration, silent) {
+      mediaQueue.push({ file: file, duration: videoDuration });
+      activeQueueIndex = mediaQueue.length - 1;
+      renderQueueStrip();
+      showQueueItem(activeQueueIndex);
+      if (!silent) toast('Media added ✨');
+    }
+
+    function showQueueItem(idx) {
+      var item = mediaQueue[idx];
+      if (!item) return;
+      activeQueueIndex = idx;
+      selectedFile = item.file;
+      var url = URL.createObjectURL(item.file);
+      emptyState.style.display = 'none';
+      previewGradient.style.display = 'block';
+      previewTop.style.display = 'flex';
+      postButton.disabled = false;
+      updatePostButtonLabel();
+
+      if (item.file.type.startsWith('image/')) {
+        videoPreview.pause();
+        videoPreview.style.display = 'none';
+        imagePreview.src = url;
+        imagePreview.style.display = 'block';
+        durationBadge.style.display = 'none';
+      } else if (item.file.type.startsWith('video/')) {
+        imagePreview.style.display = 'none';
+        videoPreview.src = url;
+        videoPreview.style.display = 'block';
+        if (item.duration) {
+          durationBadge.innerHTML = '<i class="fa-solid fa-video"></i> ' + formatDuration(item.duration);
+          durationBadge.style.display = 'flex';
+        } else {
+          durationBadge.style.display = 'none';
+        }
+      }
+      renderQueueStrip();
+    }
+    window.showQueueItem = showQueueItem;
+
+    function renderQueueStrip() {
+      if (mediaQueue.length <= 1) { queueStrip.classList.remove('show'); queueStrip.innerHTML = ''; return; }
+      queueStrip.classList.add('show');
+      queueStrip.innerHTML = mediaQueue.map(function(item, i) {
+        var url = URL.createObjectURL(item.file);
+        var isVideo = item.file.type.startsWith('video/');
+        var inner = isVideo ?
+          '<video src="' + url + '" muted preload="metadata"></video><span class="qt-video-badge"><i class="fa-solid fa-video"></i></span>' :
+          '<img src="' + url + '" alt="">';
+        return '<div class="queue-tile' + (i === activeQueueIndex ? ' active' : '') + '" onclick="showQueueItem(' + i + ')">' + inner +
+          '<button class="qt-remove" onclick="event.stopPropagation();removeQueueItem(' + i + ')"><i class="fa-solid fa-xmark"></i></button></div>';
+      }).join('') + (mediaQueue.length < MAX_QUEUE_ITEMS ?
+        '<div class="queue-add-tile" onclick="chooseFile()"><i class="fa-solid fa-plus"></i></div>' : '');
+    }
+
+    window.removeQueueItem = function(idx) {
+      mediaQueue.splice(idx, 1);
+      if (!mediaQueue.length) { removeMedia(); return; }
+      showQueueItem(Math.min(idx, mediaQueue.length - 1));
+    };
+
+    function updatePostButtonLabel() {
+      var n = mediaQueue.length;
+      if (editingStatusId) {
+        postButton.innerHTML = '<i class="fa-regular fa-pen-to-square"></i> Update Status';
+      } else if (n > 1) {
+        postButton.innerHTML = '<i class="fa-regular fa-paper-plane"></i> Share ' + n + ' Statuses';
+      } else {
+        postButton.innerHTML = '<i class="fa-regular fa-paper-plane"></i> Share Status';
+      }
+    }
+
+    function removeMedia() {
+      selectedFile = null;
+      mediaQueue = [];
+      activeQueueIndex = 0;
+      queueStrip.classList.remove('show');
+      queueStrip.innerHTML = '';
+      imagePreview.src = '';
+      videoPreview.pause();
+      videoPreview.src = '';
+      imagePreview.style.display = 'none';
+      videoPreview.style.display = 'none';
+      previewGradient.style.display = 'none';
+      previewTop.style.display = 'none';
+      durationBadge.style.display = 'none';
+      previewCaption.textContent = '';
+      previewCaption.style.display = 'none';
+      emptyState.style.display = 'flex';
+      if (!editingStatusId) {
+        postButton.disabled = true;
+        postButton.innerHTML = '<i class="fa-regular fa-paper-plane"></i> Share Status';
+      } else {
+        // If editing, we may have no media but caption only
+        postButton.innerHTML = '<i class="fa-regular fa-pen-to-square"></i> Update Status';
+        postButton.disabled = false;
+      }
+      fileInput.value = '';
+    }
+    window.removeMedia = removeMedia;
+
+    // ---- Caption ----
+    function updateCaption() {
+      var val = captionInput.value;
+      charCount.textContent = val.length;
+      previewCaption.textContent = val;
+      previewCaption.style.display = val.trim() ? 'block' : 'none';
+    }
+    window.updateCaption = updateCaption;
+
+    // ---- Privacy ----
+    function selectPrivacy(el) {
+      document.querySelectorAll('.privacy-item').forEach(function(i) { i.classList.remove('selected'); });
+      el.classList.add('selected');
+      selectedPrivacy = el.dataset.privacy || 'contacts';
+    }
+    window.selectPrivacy = selectPrivacy;
+
+    // ---- Creative tools ----
+    function activateTool(el, tool) {
+      document.querySelectorAll('.tool').forEach(function(b) { b.classList.remove('active'); });
+      el.classList.add('active');
+      toast(tool + ' editor opened (demo)', 'info');
+    }
+    window.activateTool = activateTool;
+
+    // ---- Drag & Drop ----
+    ['dragenter', 'dragover'].forEach(function(ev) {
+      dropZone.addEventListener(ev, function(e) {
+        e.preventDefault();
+        dropZone.classList.add('dragging');
+      });
+    });
+    ['dragleave', 'drop'].forEach(function(ev) {
+      dropZone.addEventListener(ev, function(e) {
+        e.preventDefault();
+        dropZone.classList.remove('dragging');
+      });
+    });
+    dropZone.addEventListener('drop', function(e) {
+      var file = e.dataTransfer.files[0];
+      if (file && (file.type.startsWith('image/') || file.type.startsWith('video/'))) {
+        loadMedia(file);
+      } else {
+        toast('Please drop an image or video', 'info');
+      }
+    });
+
+    // ---- Publish a whole queue of media as separate, sequential statuses ----
+    async function publishQueueBatch(caption) {
+      if (!currentUser) { toast('Please log in first', 'error'); window.location.href = 'index.html'; return; }
+      const total = mediaQueue.length;
+      postButton.disabled = true;
+      let done = 0;
+      for (const item of mediaQueue) {
+        postButton.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Publishing ${done + 1}/${total}...`;
+        try {
+          const imageUrl = await uploadFile(item.file);
+          await api('POST', '/status', {
+            text: caption,
+            image_url: imageUrl,
+            uid: currentUser.email,
+            author: currentUser.display_name,
+            expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+            text_color: 'white',
+            background: 'default',
+            wallpaper: 'none'
+          });
+          done++;
+        } catch (e) {
+          toast(`Item ${done + 1} failed: ${e.message}`, 'error');
+        }
+      }
+      toast(`${done}/${total} statuses published 🎉`, done === total ? 'success' : 'info');
+      postButton.innerHTML = '<i class="fa-regular fa-check-circle"></i> Shared!';
+      setTimeout(function() {
+        loadMyStatuses();
+        removeMedia();
+        captionInput.value = '';
+        updateCaption();
+        postButton.disabled = true;
+        postButton.innerHTML = '<i class="fa-regular fa-paper-plane"></i> Share Status';
+      }, 1000);
+    }
+
+    // ---- Publish / Update ----
+    window.publishStatus = async function() {
+      if (postButton.disabled) return;
+      if (!currentUser) {
+        toast('Please log in first', 'error');
+        window.location.href = 'index.html';
+        return;
+      }
+
+      var caption = captionInput.value.trim();
+      if (!selectedFile && !caption && !editingStatusId) {
+        toast('Add a photo/video or write a caption', 'info');
+        return;
+      }
+
+      // Multiple items queued and not editing an existing status: publish each as its own status
+      if (!editingStatusId && mediaQueue.length > 1) {
+        return publishQueueBatch(caption);
+      }
+
+      postButton.disabled = true;
+      postButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Publishing...';
+
+      try {
+        let imageUrl = null;
+        if (selectedFile) {
+          imageUrl = await uploadFile(selectedFile);
+        }
+
+        if (editingStatusId) {
+          // Update existing status
+          const status = myStatuses.find(s => s.id === editingStatusId);
+          if (!status) throw new Error('Status not found');
+          // We allow updating image_url only if new file uploaded, else keep old
+          const finalImageUrl = imageUrl || status.image_url || null;
+          await api('PUT', '/status/' + editingStatusId, {
+            text: caption,
+            image_url: finalImageUrl,
+            text_color: 'white',
+            background: 'default',
+            wallpaper: 'none'
+          });
+          toast('Status updated ✅', 'success');
+          editingStatusId = null;
+          postButton.innerHTML = '<i class="fa-regular fa-paper-plane"></i> Share Status';
+          // Reset form
+          removeMedia();
+          captionInput.value = '';
+          updateCaption();
+          postButton.disabled = true;
+        } else {
+          // New status
+          await api('POST', '/status', {
+            text: caption,
+            image_url: imageUrl,
+            uid: currentUser.email,
+            author: currentUser.display_name,
+            expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+            text_color: 'white',
+            background: 'default',
+            wallpaper: 'none'
+          });
+          toast('Your status is now live! 🎉', 'success');
+          postButton.innerHTML = '<i class="fa-regular fa-check-circle"></i> Shared!';
+          setTimeout(function() {
+            // Refresh status list
+            loadMyStatuses();
+            // Reset form
+            removeMedia();
+            captionInput.value = '';
+            updateCaption();
+            postButton.disabled = true;
+            postButton.innerHTML = '<i class="fa-regular fa-paper-plane"></i> Share Status';
+          }, 1000);
+        }
+      } catch (e) {
+        toast('Failed: ' + e.message, 'error');
+        postButton.disabled = false;
+        postButton.innerHTML = editingStatusId ? '<i class="fa-regular fa-pen-to-square"></i> Update Status' : '<i class="fa-regular fa-paper-plane"></i> Share Status';
+      }
+    };
+
+    // ---- Back ----
+    function goBack() {
+      if (selectedFile || captionInput.value.trim()) {
+        if (confirm('You have unsaved changes. Leave anyway?')) {
+          window.location.href = 'index.html';
+        }
+      } else {
+        window.location.href = 'index.html';
+      }
+    }
+    window.goBack = goBack;
+
+    // ---- Theme ----
+    var savedTheme = localStorage.getItem('alpha_theme') || 'light';
+    if (savedTheme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+
+    // ---- Init ----
+    async function init() {
+      if (!API_BASE) {
+        toast('Please set API_BASE to your Worker URL.', 'error');
+        console.warn('API_BASE is empty.');
+        return;
+      }
+      await loadUserProfile();
+    }
+
+    init();
+  </script>
+</body>
+</html>
