@@ -3528,8 +3528,8 @@
     <script>
         // ============================================================
         // CONFIGURATION
-        // ============================================================
-        const CF_API_BASE = 'https://alpha-auth.murwanashyakadieumerci540.workers.dev';
+     
+const cfApi = async () => ({ posts: [], users: [] });
         let CF_TOKEN = localStorage.getItem('alpha_token') || null;
         let CU = null;
         let UP = { display_name: '', bio: '', avatar_color: 'g2', avatar_url: null };
