@@ -2,7 +2,7 @@
 <html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Alpha — Vaults</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&display=swap" rel="stylesheet">
@@ -1347,49 +1347,8 @@
             }
             .file-card .file-preview { height: 110px; }
 
-            .mobile-nav {
-                position: fixed;
-                left: 10px;
-                right: 10px;
-                bottom: 10px;
-                height: 58px;
-                display: flex;
-                align-items: center;
-                justify-content: space-around;
-                background: var(--surface-raised);
-                border: 1px solid var(--border);
-                backdrop-filter: blur(25px);
-                border-radius: var(--radius-lg);
-                z-index: 1000;
-                box-shadow: var(--shadow-lg);
-            }
-            .mobile-nav button {
-                border: 0;
-                background: none;
-                color: var(--text-muted);
-                width: 46px;
-                height: 46px;
-                border-radius: var(--radius-sm);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
-                font-size: 16px;
-                transition: var(--transition);
-            }
-            .mobile-nav button.active {
-                color: var(--primary);
-                background: var(--primary-bg);
-            }
-            .mobile-nav .create {
-                background: var(--gradient-primary);
-                color: #fff;
-                box-shadow: 0 4px 16px var(--primary-a35);
-            }
-            .mobile-nav .create:hover { transform: scale(1.05); }
-
             .toast-wrap {
-                bottom: 80px;
+                bottom: calc(76px + env(safe-area-inset-bottom));
                 right: 12px;
                 left: 12px;
                 max-width: 100%;
@@ -1423,6 +1382,173 @@
             to { opacity: 1; transform: none; }
         }
         .hidden { display: none !important; }
+        /* ============================================================
+           DESIGN POLISH LAYER
+           ============================================================ */
+        body { font-feature-settings: "cv11", "ss01"; }
+        .top { box-shadow: var(--shadow-sm); }
+        .top-icon-wrap i { font-size: 15px; }
+
+        /* Hero */
+        .storage-hero {
+            padding: 26px 28px 24px;
+            background:
+                radial-gradient(120% 140% at 100% 0%, rgba(255,255,255,.16), transparent 55%),
+                linear-gradient(135deg, var(--primary), var(--primary-dark));
+            box-shadow: 0 14px 40px var(--primary-a30);
+        }
+        .hero-top { display: flex; gap: 14px; align-items: center; position: relative; z-index: 1; }
+        .hero-badge {
+            width: 46px; height: 46px; border-radius: 14px; flex-shrink: 0;
+            background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.22);
+            display: flex; align-items: center; justify-content: center; font-size: 19px;
+            backdrop-filter: blur(8px);
+        }
+        .storage-hero h2 { font-size: 21px; }
+        .storage-hero p { margin-top: 2px; line-height: 1.45; }
+        .hero-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px; position: relative; z-index: 1; }
+        .hero-stat {
+            background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.16);
+            border-radius: 14px; padding: 10px 14px; backdrop-filter: blur(8px);
+        }
+        .hero-stat strong { display: block; font-size: 20px; font-weight: 800; line-height: 1.1; }
+        .hero-stat span { font-size: 11px; font-weight: 600; opacity: .8; text-transform: uppercase; letter-spacing: .06em; }
+        .storage-hero .storage-row { margin-top: 20px; align-items: flex-end; }
+        .storage-hero .storage-info { flex: 1; min-width: 220px; }
+        .storage-hero .storage-info strong { font-size: 17px; }
+        .storage-hero .storage-progress {
+            display: flex; width: 100%; max-width: 340px; height: 8px; margin-top: 9px;
+            border-radius: 99px; overflow: hidden; background: rgba(255,255,255,.22); gap: 2px;
+        }
+        .storage-hero .storage-progress span { height: 100%; border-radius: 0; transition: width .5s ease; flex-shrink: 0; }
+        .storage-legend { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 9px; font-size: 10.5px; font-weight: 600; color: rgba(255,255,255,.85); }
+        .storage-legend span { display: inline-flex; align-items: center; gap: 5px; }
+        .storage-legend i { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+        .storage-hero .upload-big {
+            background: #fff; color: var(--primary-dark); border: 0; padding: 11px 22px; font-weight: 800;
+            box-shadow: 0 8px 22px rgba(0,0,0,.18);
+        }
+        .storage-hero .upload-big:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 12px 28px rgba(0,0,0,.22); }
+
+        /* Toolbar */
+        .vault-search input { height: 44px; box-shadow: var(--shadow-sm); }
+        .vault-btn, .vault-sort { height: 44px; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+        .vault-actions .vault-btn:not(:first-child) { width: 44px; padding: 0; justify-content: center; }
+
+        /* Filter chips */
+        .filter-chips { display: flex; gap: 8px; overflow-x: auto; margin: -4px 0 16px; padding: 2px 1px 4px; scrollbar-width: none; }
+        .filter-chips::-webkit-scrollbar { display: none; }
+        .chip {
+            flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px;
+            border-radius: var(--radius-full); border: 1px solid var(--border); background: var(--surface);
+            color: var(--text-secondary); font-size: 12px; font-weight: 700; transition: var(--transition);
+        }
+        .chip i { font-size: 11px; opacity: .8; }
+        .chip:hover { border-color: var(--primary); color: var(--primary); }
+        .chip.active { background: var(--primary); border-color: var(--primary); color: #fff; box-shadow: 0 6px 16px var(--primary-a30); }
+
+        /* Section headers */
+        .section-head h3 { font-size: 14px; letter-spacing: -.01em; }
+        .section-head span { background: var(--surface-hover); padding: 2px 10px; border-radius: 99px; font-weight: 600; }
+
+        /* Folders */
+        .folder-card { display: flex; flex-direction: column; box-shadow: var(--shadow-sm); }
+        .folder-card .folder-icon { background: linear-gradient(135deg, var(--orange-bg), rgba(245,158,11,.22)); width: 46px; height: 46px; border-radius: 14px; }
+        .folder-card .folder-menu { opacity: 0; }
+        .folder-card:hover .folder-menu, .folder-card:focus-within .folder-menu { opacity: 1; }
+        .folder-card .folder-menu:hover { background: var(--red-bg); color: var(--red); }
+        @media (hover: none) { .folder-card .folder-menu { opacity: .8; } }
+
+        /* Files */
+        .file-card { box-shadow: var(--shadow-sm); border-radius: 18px; }
+        .file-card:hover { box-shadow: var(--shadow-lg); border-color: var(--primary); }
+        .file-card .file-preview { height: 150px; background: linear-gradient(180deg, var(--surface-hover), var(--border-light)); }
+        .file-card .file-preview img, .file-card .file-preview video { transition: transform .4s ease; }
+        .file-card:hover .file-preview img, .file-card:hover .file-preview video { transform: scale(1.05); }
+        .file-card .file-badge { background: rgba(15,23,42,.72); letter-spacing: .04em; }
+        .file-card .file-fav { color: rgba(255,255,255,.7); }
+        .file-card .file-fav.active { color: #fbbf24; }
+        .file-type-icon.sm { width: 36px !important; height: 36px !important; font-size: 15px !important; border-radius: 10px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+        .file-type-icon.sm.image, .file-type-icon.sm.document { background: var(--primary-bg); color: var(--primary); }
+        .file-type-icon.sm.video { background: var(--purple-bg); color: var(--purple); }
+        .file-type-icon.sm.audio, .file-type-icon.sm.sheet { background: var(--green-bg); color: var(--green); }
+        .file-type-icon.sm.pdf { background: var(--red-bg); color: var(--red); }
+        .file-type-icon.sm.archive { background: var(--orange-bg); color: var(--orange); }
+        .file-type-icon.sm.default { background: var(--surface-hover); color: var(--text-muted); }
+        .file-grid.list-view .file-card { height: 68px; border-radius: 14px; }
+        .file-grid.list-view .file-card:hover { transform: none; }
+        .file-grid.list-view .file-card .file-preview { height: 68px; width: 68px; border-radius: 0; background: var(--surface-hover); }
+
+        /* Empty */
+        .empty-state { padding: 56px 20px; background: var(--surface); border: 1px dashed var(--border); border-radius: var(--radius-lg); }
+        .empty-state i { font-size: 42px; color: var(--primary); opacity: .35; }
+
+        /* Right panel */
+        .recent-item { display: flex; align-items: center; gap: 10px; padding: 7px 6px; border-radius: 10px; cursor: pointer; transition: var(--transition); }
+        .recent-item:hover { background: var(--surface-hover); }
+        .recent-meta { min-width: 0; flex: 1; }
+        .recent-meta strong { display: block; font-size: 12.5px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .recent-meta small { font-size: 10.5px; color: var(--text-muted); }
+        .recent-empty { font-size: 12px; color: var(--text-muted); padding: 4px 0; }
+
+        /* Modal + dialog */
+        .modal { border-radius: 22px; }
+        .detail-preview { height: 220px; border-radius: 16px; }
+        .detail-actions .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 10px 14px; border-radius: 12px; }
+        .modal.dialog { max-width: 400px; }
+        .dlg-msg { color: var(--text-secondary); font-size: 13px; line-height: 1.5; margin: -6px 0 14px; }
+        .dlg-input {
+            display: none; width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 12px;
+            background: var(--surface); color: var(--text-primary); outline: none; font-size: 14px; margin-bottom: 6px;
+        }
+        .dlg-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-bg); }
+        #dialogModal { z-index: 2100; }
+        .btn { padding: 10px 20px; border-radius: 12px; }
+        .toast { border-radius: 14px; }
+
+        /* Desktop: keep the three-column shell but let content breathe */
+        @media (max-width: 1100px) { .storage-hero .storage-info { min-width: 0; } }
+
+        /* ---- Mobile: bottom bar identical in style to chat.html ---- */
+        @media (max-width: 760px) {
+            .center { padding: 10px 12px calc(84px + env(safe-area-inset-bottom)) 12px; }
+            .storage-hero { padding: 20px 18px; border-radius: 20px; }
+            .hero-badge { width: 40px; height: 40px; font-size: 17px; }
+            .hero-stat { padding: 9px 10px; }
+            .hero-stat strong { font-size: 17px; }
+            .hero-stat span { font-size: 9.5px; }
+            .storage-hero .storage-progress { max-width: none; }
+            .vault-toolbar { gap: 10px; }
+            .vault-actions { flex-wrap: nowrap; }
+            .vault-actions .vault-btn:first-child { flex: 1; }
+            .vault-actions .vault-btn:not(:first-child) { flex: 0 0 44px; }
+            .vault-sort { flex: 1; min-width: 0; }
+            .folder-grid { margin: 0 -12px; padding: 2px 12px 6px; }
+            .file-card .file-preview { height: 120px; }
+            .mobile-nav {
+                display: grid; grid-template-columns: repeat(5, 1fr);
+                position: fixed; left: 0; right: 0; bottom: 0;
+                height: calc(62px + env(safe-area-inset-bottom));
+                padding: 5px 7px calc(5px + env(safe-area-inset-bottom));
+                z-index: 1000;
+                background: color-mix(in srgb, var(--surface) 94%, transparent);
+                border-top: 1px solid var(--border);
+                backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+            }
+            .mobile-nav button {
+                display: flex; flex-direction: column; align-items: center; justify-content: center;
+                gap: 3px; font-size: 9px; font-weight: 750; color: var(--text-muted);
+                background: transparent; border-radius: 12px; transition: var(--transition);
+            }
+            .mobile-nav button:active { transform: scale(.96); }
+            .mobile-nav button.active { color: var(--primary); }
+            .mobile-nav .mobile-nav-icon { font-size: 16px; line-height: 1; }
+            .modal-overlay { align-items: flex-end; padding: 0; }
+            .modal { margin: 0; max-width: 100%; border-bottom-left-radius: 0; border-bottom-right-radius: 0; padding-bottom: calc(18px + env(safe-area-inset-bottom)); animation: sheetUp .3s cubic-bezier(.4,0,.2,1); }
+            .modal.dialog { border-radius: 22px 22px 0 0; }
+            @keyframes sheetUp { from { transform: translateY(40px); opacity: 0; } to { transform: none; opacity: 1; } }
+        }
+        @media (prefers-reduced-motion: reduce) { * { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
     </style>
 </head>
 <body>
@@ -1528,17 +1654,26 @@
 
             <!-- Storage Hero -->
             <div class="storage-hero">
-                <h2>🔒 Your Alpha Vault</h2>
-                <p>Securely store your files, folders, videos, music, documents and everything important to you.</p>
+                <div class="hero-top">
+                    <div class="hero-badge"><i class="fa-solid fa-lock"></i></div>
+                    <div>
+                        <h2>Your Alpha Vault</h2>
+                        <p>A private place for your files, photos, videos, music and documents.</p>
+                    </div>
+                </div>
+                <div class="hero-stats">
+                    <div class="hero-stat"><strong id="statFiles">0</strong><span>Files</span></div>
+                    <div class="hero-stat"><strong id="statFolders">0</strong><span>Folders</span></div>
+                    <div class="hero-stat"><strong id="statFavs">0</strong><span>Favorites</span></div>
+                </div>
                 <div class="storage-row">
                     <div class="storage-info">
-                        <strong id="storageUsed">0 B</strong> of 10 GB used
-                        <div class="storage-progress">
-                            <span id="storageProgress"></span>
-                        </div>
+                        <div><strong id="storageUsed">0 B</strong> of 10 GB used</div>
+                        <div class="storage-progress" id="storageBar"></div>
+                        <div class="storage-legend" id="storageLegend"></div>
                     </div>
                     <button class="upload-big" onclick="openUploadModal()">
-                        <i class="fa-solid fa-upload"></i> Upload Files
+                        <i class="fa-solid fa-arrow-up-from-bracket"></i> Upload files
                     </button>
                 </div>
             </div>
@@ -1554,7 +1689,7 @@
                         <i class="fa-solid fa-folder-plus"></i> Folder
                     </button>
                     <button class="vault-btn active" id="gridBtn" onclick="setView('grid')">
-                        <i class="fa-solid fa-grid-2"></i>
+                        <i class="fa-solid fa-table-cells-large"></i>
                     </button>
                     <button class="vault-btn" id="listBtn" onclick="setView('list')">
                         <i class="fa-solid fa-list"></i>
@@ -1568,6 +1703,15 @@
                 </div>
             </div>
 
+            <div class="filter-chips" id="filterChips">
+                <button class="chip active" data-filter="all">All</button>
+                <button class="chip" data-filter="image"><i class="fa-solid fa-image"></i> Images</button>
+                <button class="chip" data-filter="video"><i class="fa-solid fa-video"></i> Videos</button>
+                <button class="chip" data-filter="audio"><i class="fa-solid fa-music"></i> Audio</button>
+                <button class="chip" data-filter="doc"><i class="fa-solid fa-file-lines"></i> Documents</button>
+                <button class="chip" data-filter="fav"><i class="fa-solid fa-star"></i> Favorites</button>
+            </div>
+
             <!-- Breadcrumbs -->
             <div class="breadcrumbs" id="breadcrumbs">
                 <button class="crumb current" onclick="goHomeFolder()">
@@ -1576,7 +1720,7 @@
             </div>
 
             <!-- Folders -->
-            <div class="section-head">
+            <div class="section-head" id="folderHead">
                 <h3>Folders</h3>
                 <span id="folderCount">0 folders</span>
             </div>
@@ -1592,8 +1736,9 @@
             <!-- Empty State -->
             <div class="empty-state" id="emptyState">
                 <i class="fa-regular fa-folder-open"></i>
-                <div class="title">No files found</div>
-                <div class="sub">Upload your first file or create a folder to get started.</div>
+                <div class="title">Nothing here yet</div>
+                <div class="sub">Upload a file or create a folder to get started.</div>
+                <button class="btn btn-primary" style="margin-top:16px" onclick="openUploadModal()"><i class="fa-solid fa-arrow-up-from-bracket"></i> Upload files</button>
             </div>
 
         </div>
@@ -1606,26 +1751,12 @@
     <aside class="right">
 
         <div class="panel">
-            <div class="panel-title">Trending <span onclick="goToExplore()">See all</span></div>
-            <div class="trend" onclick="searchPosts('#Alpha')">
-                <small>1 · Community</small><strong>#Alpha</strong><em>2.4K posts</em>
-            </div>
-            <div class="trend" onclick="searchPosts('#Kigali')">
-                <small>2 · Rwanda</small><strong>#Kigali</strong><em>890 posts</em>
-            </div>
-            <div class="trend" onclick="searchPosts('#Rwanda')">
-                <small>3 · Rwanda</small><strong>#Rwanda</strong><em>543 posts</em>
-            </div>
-            <div class="trend" onclick="searchPosts('#Tech')">
-                <small>4 · Technology</small><strong>#Tech</strong><em>421 posts</em>
-            </div>
-            <div class="trend" onclick="searchPosts('#AlphaLaunch')">
-                <small>5 · Alpha</small><strong>#AlphaLaunch</strong><em>312 posts</em>
-            </div>
+            <div class="panel-title">Recent uploads</div>
+            <div id="recentList"><div class="recent-empty">Nothing uploaded yet</div></div>
         </div>
 
         <div class="panel">
-            <div class="panel-title"><span class="dot-live" style="margin-right:0;"></span> Online Now</div>
+            <div class="panel-title">Online now</div>
             <div id="online-list"></div>
         </div>
 
@@ -1644,7 +1775,7 @@
         <div class="panel">
             <div class="panel-title">Alpha</div>
             <div style="font-size:11.5px;color:var(--text-muted);line-height:1.7">
-                Your private cloud storage. Files are encrypted and secure.
+                Your private cloud storage, visible only to you.
                 <br><br>
                 © 2026 Alpha
             </div>
@@ -1656,11 +1787,11 @@
 
 <!-- Mobile Nav -->
 <nav class="mobile-nav">
-    <button onclick="goHome()"><i class="fa-solid fa-house"></i></button>
-    <button onclick="goToExplore()"><i class="fa-solid fa-compass"></i></button>
-    <button class="create" onclick="openUploadModal()"><i class="fa-solid fa-plus"></i></button>
-    <button onclick="goToChat()"><i class="fa-solid fa-comment-dots"></i></button>
-    <button class="active" onclick="goToVault()"><i class="fa-solid fa-shield-halved"></i></button>
+    <button onclick="goHome()"><span class="mobile-nav-icon"><i class="fa-solid fa-house"></i></span>Home</button>
+    <button onclick="goToExplore()"><span class="mobile-nav-icon"><i class="fa-solid fa-magnifying-glass"></i></span>Search</button>
+    <button onclick="goToChat()"><span class="mobile-nav-icon"><i class="fa-solid fa-comment-dots"></i></span>Messages</button>
+    <button onclick="goToReels()"><span class="mobile-nav-icon"><i class="fa-solid fa-film"></i></span>Reels</button>
+    <button class="active" onclick="goToVault()"><span class="mobile-nav-icon"><i class="fa-solid fa-shield-halved"></i></span>Vault</button>
 </nav>
 
 <!-- Toast -->
@@ -1673,7 +1804,7 @@
         <div class="modal-title">Upload to Vault</div>
 
         <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
-            <i class="fa-regular fa-cloud-arrow-up"></i>
+            <i class="fa-solid fa-cloud-arrow-up"></i>
             <div class="title">Drop files here or tap to browse</div>
             <div class="sub">Supports images, videos, documents, and more</div>
         </div>
@@ -1724,6 +1855,20 @@
             <button class="btn btn-secondary" onclick="moveCurrent()"><i class="fa-solid fa-folder"></i> Move</button>
             <button class="btn btn-secondary" id="favBtn" onclick="toggleFavoriteCurrent()"><i class="fa-regular fa-star"></i> Favorite</button>
             <button class="btn btn-danger" onclick="deleteCurrent()"><i class="fa-solid fa-trash"></i> Delete</button>
+        </div>
+    </div>
+</div>
+
+<!-- Dialog (replaces prompt/confirm) -->
+<div class="modal-overlay" id="dialogModal">
+    <div class="modal dialog">
+        <div class="modal-title" id="dlgTitle"></div>
+        <p class="dlg-msg" id="dlgMsg"></p>
+        <input class="dlg-input" id="dlgInput" type="text" autocomplete="off">
+        <select class="dlg-input" id="dlgSelect"></select>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" id="dlgCancel">Cancel</button>
+            <button class="btn btn-primary" id="dlgOk">OK</button>
         </div>
     </div>
 </div>
@@ -1805,6 +1950,42 @@
     let currentFolder = null;
     let currentView = 'grid';
     let allUsers = {};
+    let currentFilter = 'all';
+
+    // ============================================================
+    // DIALOGS (promise based, replaces prompt()/confirm())
+    // ============================================================
+    function openDialog({ title, message = '', input = null, select = null, okText = 'OK', danger = false }) {
+        return new Promise(resolve => {
+            const ov = document.getElementById('dialogModal');
+            const inp = document.getElementById('dlgInput');
+            const sel = document.getElementById('dlgSelect');
+            const ok = document.getElementById('dlgOk');
+            const cancel = document.getElementById('dlgCancel');
+            document.getElementById('dlgTitle').textContent = title;
+            document.getElementById('dlgMsg').textContent = message;
+            document.getElementById('dlgMsg').style.display = message ? 'block' : 'none';
+            inp.style.display = input !== null ? 'block' : 'none';
+            inp.value = input || '';
+            sel.style.display = select ? 'block' : 'none';
+            if (select) {
+                sel.innerHTML = select.options.map(o => `<option value="${escapeHTML(o.value)}"${o.value === select.value ? ' selected' : ''}>${escapeHTML(o.label)}</option>`).join('');
+            }
+            ok.textContent = okText;
+            ok.className = 'btn ' + (danger ? 'btn-danger' : 'btn-primary');
+            const done = v => {
+                ov.classList.remove('open');
+                ok.onclick = cancel.onclick = ov.onclick = inp.onkeydown = null;
+                resolve(v);
+            };
+            ok.onclick = () => done(select ? sel.value : (input !== null ? inp.value : true));
+            cancel.onclick = () => done(null);
+            ov.onclick = e => { if (e.target === ov) done(null); };
+            inp.onkeydown = e => { if (e.key === 'Enter') ok.click(); if (e.key === 'Escape') cancel.click(); };
+            ov.classList.add('open');
+            if (input !== null) setTimeout(() => { inp.focus(); inp.select(); }, 50);
+        });
+    }
 
     // ============================================================
     // HELPERS
@@ -1871,7 +2052,7 @@
             pdf: 'fa-file-pdf',
             document: 'fa-file-lines',
             archive: 'fa-file-zipper',
-            sheet: 'fa-file-spreadsheet',
+            sheet: 'fa-file-excel',
             image: 'fa-file-image',
             default: 'fa-file'
         };
@@ -2077,29 +2258,31 @@
         }
 
         grid.innerHTML = names.map(name => `
-            <div class="folder-card" data-folder="${escapeHTML(name)}" onclick="openFolder('${escapeHTML(name)}')">
+            <div class="folder-card" data-folder="${escapeHTML(name)}" onclick="openFolder(this.dataset.folder)">
                 <div class="folder-icon"><i class="fa-solid fa-folder"></i></div>
                 <span class="folder-name">${escapeHTML(name)}</span>
                 <span class="folder-meta">${derived[name]} item${derived[name] === 1 ? '' : 's'}</span>
-                <button class="folder-menu" onclick="event.stopPropagation();deleteFolder('${escapeHTML(name)}')"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                <button class="folder-menu" title="Delete folder" onclick="event.stopPropagation();deleteFolder(this.closest('.folder-card').dataset.folder)"><i class="fa-solid fa-trash-can"></i></button>
             </div>
         `).join('');
     }
 
-    function createFolder() {
-        const name = prompt('Enter folder name:');
+    async function createFolder() {
+        const name = await openDialog({ title: 'New folder', message: 'Give your folder a name.', input: '', okText: 'Create' });
         if (!name || !name.trim()) return;
-        const trimmed = name.trim();
+        const trimmed = name.trim().slice(0, 60);
+        if (getFolderNames().includes(trimmed)) { toast('That folder already exists', 'info'); return; }
         if (!virtualFolders.includes(trimmed)) {
             virtualFolders.push(trimmed);
             localStorage.setItem('alpha_vault_folders', JSON.stringify(virtualFolders));
         }
         renderFolders();
+        updateStorage();
         toast(`Folder "${trimmed}" created`);
     }
 
-    function deleteFolder(name) {
-        const confirmed = confirm(`Delete folder "${name}"? (Files inside will move back to My Vault)`);
+    async function deleteFolder(name) {
+        const confirmed = await openDialog({ title: 'Delete folder?', message: `"${name}" will be removed. Files inside move back to My Vault.`, okText: 'Delete', danger: true });
         if (!confirmed) return;
 
         allFiles.forEach(f => {
@@ -2160,16 +2343,17 @@
         toast(folderName ? `Moved to "${folderName}"` : 'Moved to My Vault');
     }
 
-    function moveCurrent() {
+    async function moveCurrent() {
         if (!currentFile) return;
-        const names = getFolderNames();
-        const hint = names.length ? `Existing folders: ${names.join(', ')}` : 'No folders yet.';
-        const answer = prompt(
-            `Move "${currentFile.name}" to which folder?\n${hint}\n\nType a folder name, or leave blank for My Vault.`,
-            currentFile.folder || ''
-        );
+        const options = [{ value: '', label: 'My Vault (no folder)' }, ...getFolderNames().map(n => ({ value: n, label: n })), { value: '__new__', label: '+ New folder…' }];
+        let answer = await openDialog({ title: 'Move file', message: `Where should "${currentFile.name}" go?`, select: { options, value: currentFile.folder || '' }, okText: 'Move' });
         if (answer === null) return;
-        moveFileToFolder(currentFile.id, answer.trim() || null);
+        if (answer === '__new__') {
+            const n = await openDialog({ title: 'New folder', input: '', okText: 'Create & move' });
+            if (!n || !n.trim()) return;
+            answer = n.trim().slice(0, 60);
+        }
+        moveFileToFolder(currentFile.id, answer || null);
         if (document.getElementById('detailsModal').classList.contains('open')) {
             openDetails(currentFile.id);
         }
@@ -2183,15 +2367,25 @@
         const sortBy = document.getElementById('sortSelect').value;
         const grid = document.getElementById('fileGrid');
 
+        const filtering = currentFilter !== 'all' || !!query;
         let files = allFiles.filter(f => {
-            if (currentFolder) {
-                if (f.folder !== currentFolder) return false;
-            } else {
-                if (f.folder) return false;
+            // filters and search look across the whole vault; browsing is folder by folder
+            if (!filtering) {
+                if (currentFolder) { if (f.folder !== currentFolder) return false; }
+                else if (f.folder) return false;
             }
             if (query && !(f.name || '').toLowerCase().includes(query)) return false;
+            if (currentFilter === 'fav') return !!f.favorite;
+            if (currentFilter === 'image') return getFileType(f.type, f.name) === 'image';
+            if (currentFilter === 'video') return getFileType(f.type, f.name) === 'video';
+            if (currentFilter === 'audio') return getFileType(f.type, f.name) === 'audio';
+            if (currentFilter === 'doc') return ['pdf', 'document', 'sheet'].includes(getFileType(f.type, f.name));
             return true;
         });
+        const showFolders = !filtering;
+        document.getElementById('folderHead').style.display = showFolders ? 'flex' : 'none';
+        document.getElementById('folderGrid').style.display = showFolders ? '' : 'none';
+        document.getElementById('breadcrumbs').style.display = showFolders ? '' : 'none';
 
         files.sort((a, b) => {
             if (sortBy === 'name') return (a.name || '').localeCompare(b.name || '');
@@ -2232,7 +2426,7 @@
                     ${preview}
                     <span class="file-badge">${ext}</span>
                     <button class="file-fav ${isFav ? 'active' : ''}" onclick="event.stopPropagation();toggleFavorite('${f.id}')">
-                        <i class="fa-solid ${isFav ? 'fa-star' : 'fa-star'}"></i>
+                        <i class="fa-solid fa-star"></i>
                     </button>
                 </div>
                 <div class="file-body">
@@ -2250,6 +2444,12 @@
     // SEARCH / SORT / VIEW
     // ============================================================
     document.getElementById('searchInput').addEventListener('input', renderFiles);
+    document.getElementById('filterChips').addEventListener('click', e => {
+        const c = e.target.closest('.chip'); if (!c) return;
+        currentFilter = c.dataset.filter;
+        document.querySelectorAll('#filterChips .chip').forEach(x => x.classList.toggle('active', x === c));
+        renderFiles();
+    });
     document.getElementById('sortSelect').addEventListener('change', renderFiles);
 
     function setView(view) {
@@ -2281,6 +2481,7 @@
         setFileMeta(file.url, { favorite: next });
 
         renderFiles();
+        updateStorage();
         toast(next ? 'Added to favorites' : 'Removed from favorites');
     }
 
@@ -2385,7 +2586,7 @@
     async function renameCurrent() {
         if (!currentFile) return;
 
-        const newName = prompt('Enter new file name:', currentFile.name || '');
+        const newName = await openDialog({ title: 'Rename file', input: currentFile.name || '', okText: 'Rename' });
         if (!newName || !newName.trim()) return;
 
         const trimmed = newName.trim();
@@ -2414,7 +2615,7 @@
     async function deleteCurrent() {
         if (!currentFile) return;
 
-        const confirmed = confirm(`Delete "${currentFile.name}"?`);
+        const confirmed = await openDialog({ title: 'Delete file?', message: `"${currentFile.name}" will be permanently deleted.`, okText: 'Delete', danger: true });
         if (!confirmed) return;
 
         try {
@@ -2422,7 +2623,8 @@
             delete vaultMeta[currentFile.url];
             persistVaultMeta();
 
-            allFiles = allFiles.filter(f => f.id !== currentFile.id);
+            const delId = currentFile.id;
+            allFiles = allFiles.filter(f => String(f.id) !== String(delId));
             currentFile = null;
 
             closeDetails();
@@ -2532,13 +2734,48 @@
     // ============================================================
     // STORAGE
     // ============================================================
+    const TYPE_GROUPS = [
+        { key: 'image', label: 'Images', color: '#ffffff' },
+        { key: 'video', label: 'Videos', color: '#c4b5fd' },
+        { key: 'audio', label: 'Audio', color: '#fcd34d' },
+        { key: 'doc', label: 'Documents', color: '#86efac' },
+        { key: 'other', label: 'Other', color: '#fda4af' }
+    ];
+    function groupOf(f) {
+        const t = getFileType(f.type, f.name);
+        if (t === 'image' || t === 'video' || t === 'audio') return t;
+        if (['pdf', 'document', 'sheet'].includes(t)) return 'doc';
+        return 'other';
+    }
+
     function updateStorage() {
         const total = allFiles.reduce((sum, f) => sum + (f.size || 0), 0);
         const max = 10 * 1024 * 1024 * 1024;
-        const pct = Math.min((total / max) * 100, 100);
 
         document.getElementById('storageUsed').textContent = formatBytes(total);
-        document.getElementById('storageProgress').style.width = pct + '%';
+        document.getElementById('statFiles').textContent = allFiles.length;
+        document.getElementById('statFolders').textContent = getFolderNames().length;
+        document.getElementById('statFavs').textContent = allFiles.filter(f => f.favorite).length;
+
+        const sizes = {};
+        allFiles.forEach(f => { const g = groupOf(f); sizes[g] = (sizes[g] || 0) + (f.size || 0); });
+        const bar = document.getElementById('storageBar');
+        // a very small vault would otherwise render invisible slivers; scale so used space is always readable
+        const usedPct = Math.min(total / max * 100, 100);
+        bar.innerHTML = total ? TYPE_GROUPS.filter(g => sizes[g.key]).map(g =>
+            `<span style="width:${(sizes[g.key] / total) * Math.max(usedPct, 3)}%;background:${g.color}" title="${g.label}: ${formatBytes(sizes[g.key])}"></span>`).join('') : '';
+        document.getElementById('storageLegend').innerHTML = TYPE_GROUPS.filter(g => sizes[g.key]).map(g =>
+            `<span><i style="background:${g.color}"></i>${g.label} ${formatBytes(sizes[g.key])}</span>`).join('');
+
+        const recent = [...allFiles].sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0)).slice(0, 5);
+        const rl = document.getElementById('recentList');
+        if (rl) rl.innerHTML = recent.length ? recent.map(f => {
+            const t = getFileType(f.type, f.name);
+            return `<div class="recent-item" onclick="openDetails('${f.id}')">
+                <div class="file-type-icon sm ${getTypeClass(t)}"><i class="fa-solid ${getTypeIcon(t)}"></i></div>
+                <div class="recent-meta"><strong>${escapeHTML(f.name || 'Untitled')}</strong><small>${formatBytes(f.size || 0)} · ${formatDate(f.created_at)}</small></div>
+            </div>`;
+        }).join('') : '<div class="recent-empty">Nothing uploaded yet</div>';
     }
 
     // ============================================================
@@ -2546,6 +2783,7 @@
     // ============================================================
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
+            if (document.getElementById('dialogModal').classList.contains('open')) return;
             closeUploadModal();
             closeDetails();
         }
@@ -2564,7 +2802,7 @@
         const savedUser = localStorage.getItem('alpha_user');
 
         if (!CF_TOKEN || !savedUser) {
-            window.location.href = 'index.html';
+            window.location.href = 'login.html';
             return;
         }
 
