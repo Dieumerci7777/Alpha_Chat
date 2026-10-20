@@ -1,6 +1,8 @@
 (function () {
   'use strict';
 
+  var API_BASE = 'https://alpha-auth.murwanashyakadieumerci540.workers.dev';
+
   var LS = {
     token: 'alpha_token',
     user: 'alpha_user',
@@ -9,10 +11,11 @@
     font: 'alpha_font',
     density: 'alpha_density',
     wallpaper: 'alpha_wallpaper',
-    wallpaperCustom: 'alpha_wallpaper_custom'
+    wallpaperCustom: 'alpha_wallpaper_custom',
+    dataSaver: 'alpha_datasaver'
   };
 
-  var DEFAULT_ACCENT = '#4f46e5'; // Alpha's actual brand indigo (index.html's --primary), also the "(default)" swatch in Settings
+  var DEFAULT_ACCENT = '#4f46e5';
 
   var WALLPAPERS = [
     { id: 'none', label: 'Default', css: 'none' },
@@ -40,12 +43,32 @@
     try { return JSON.parse(str); } catch (e) { return fallback; }
   }
 
-  // ---------- color math (so ANY accent, not just the 4 presets, works) ----------
+  // ---------- 0. leave early if we are about to be wrapped by Shell.html ----------
+  // Before: the page kept downloading and running while the redirect happened, then loaded
+  // a second time inside the shell. window.stop() cancels that wasted first load.
+  var redirecting = false;
+  function bootstrapShell() {
+    var page = (window.location.pathname.split('/').pop() || 'index.html');
+    var SKIP = { 'shell.html': 1, 'login.html': 1, 'register.html': 1 };
+    if (SKIP[page.toLowerCase()]) return;
+    if (window.top !== window) return;
+    if (!safeGet(LS.token)) return;
+    var qs = window.location.search;
+    if (page.toLowerCase() === 'calls.html' && /[?&](accept_room|start_call)=/.test(qs)) return;
+    var target = page + qs + window.location.hash;
+    redirecting = true;
+    window.location.replace('Shell.html?page=' + encodeURIComponent(target));
+    try { window.stop(); } catch (e) {}
+  }
+  bootstrapShell();
+  if (redirecting) return; // nothing else on this page matters, it is being replaced
+
+  // ---------- color math ----------
   function hexToRgb(hex) {
     hex = (hex || '').replace('#', '');
     if (hex.length === 3) hex = hex.split('').map(function (c) { return c + c; }).join('');
     var num = parseInt(hex, 16);
-    if (isNaN(num)) return { r: 51, g: 102, b: 255 };
+    if (isNaN(num)) return { r: 79, g: 70, b: 229 }; // brand indigo (was the old blue)
     return { r: (num >> 16) & 255, g: (num >> 8) & 255, b: num & 255 };
   }
   function toHex(n) { return Math.max(0, Math.min(255, Math.round(n))).toString(16).padStart(2, '0'); }
@@ -53,8 +76,7 @@
     var c = hexToRgb(hex);
     var t = percent < 0 ? 0 : 255;
     var p = Math.abs(percent);
-    var r = c.r + (t - c.r) * p, g = c.g + (t - c.g) * p, b = c.b + (t - c.b) * p;
-    return '#' + toHex(r) + toHex(g) + toHex(b);
+    return '#' + toHex(c.r + (t - c.r) * p) + toHex(c.g + (t - c.g) * p) + toHex(c.b + (t - c.b) * p);
   }
   function rgba(hex, alpha) {
     var c = hexToRgb(hex);
@@ -62,48 +84,48 @@
   }
 
   // ---------- icons (lucide) ----------
-  // Several pages load lucide.js but never call lucide.createIcons(), so
-  // their <i data-lucide="..."> icons were rendering as nothing. A couple
-  // even call a global refreshIcons() that didn't exist anywhere. This
-  // gives every page one real, always-on icon renderer: it draws icons
-  // already in the page AND any added later (feed items, modals, toasts)
-  // without every page having to remember to call it itself.
+  // Cheap guard: only call createIcons() when there is actually an un-rendered icon,
+  // so feeds that add many nodes don't rescan the whole document every frame.
   var iconsPending = false;
   function renderIcons() {
-    if (window.lucide && typeof window.lucide.createIcons === 'function') {
-      try { window.lucide.createIcons(); } catch (e) {}
-    }
+    if (!window.lucide || typeof window.lucide.createIcons !== 'function') return;
+    if (!document.querySelector('[data-lucide]:not(svg)')) return;
+    try { window.lucide.createIcons(); } catch (e) {}
   }
   function scheduleRenderIcons() {
     if (iconsPending) return;
     iconsPending = true;
-    requestAnimationFrame(function () { iconsPending = false; renderIcons(); });
+    var run = function () { iconsPending = false; renderIcons(); };
+    if (window.requestIdleCallback) requestIdleCallback(run, { timeout: 300 });
+    else requestAnimationFrame(run);
   }
   function initIconObserver() {
     renderIcons();
     if (!window.MutationObserver || !document.body) return;
-    var observer = new MutationObserver(function (mutations) {
+    new MutationObserver(function (mutations) {
       for (var i = 0; i < mutations.length; i++) {
         if (mutations[i].addedNodes && mutations[i].addedNodes.length) { scheduleRenderIcons(); break; }
       }
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
+    }).observe(document.body, { childList: true, subtree: true });
   }
-  // Global fallbacks: don't overwrite a page's own working implementation.
   if (typeof window.refreshIcons !== 'function') window.refreshIcons = renderIcons;
 
-  // ---------- theme ----------
+  // ---------- theme (follows the phone's setting until the user picks one) ----------
   function applyTheme(theme) {
     theme = theme === 'dark' ? 'dark' : 'light';
     document.documentElement.setAttribute('data-theme', theme);
     return theme;
   }
   function initTheme() {
-    var saved = safeGet(LS.theme) || 'light';
+    var saved = safeGet(LS.theme);
+    if (!saved) {
+      var prefersDark = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;
+      saved = prefersDark ? 'dark' : 'light';
+    }
     return applyTheme(saved);
   }
 
-  // ---------- accent color (mapped onto every naming convention in use) ----------
+  // ---------- accent color ----------
   function applyAccent(color) {
     color = color || safeGet(LS.accent) || DEFAULT_ACCENT;
     var light = shade(color, 0.35);
@@ -111,22 +133,15 @@
     var root = document.documentElement.style;
 
     var pairs = {
-      // shared "Alpha Premium" system (ai/calls/chat/events/explore/groups/status/vault/settings)
       '--primary': color, '--primary-light': light, '--primary-dark': dark,
       '--accent': light, '--primary-l': rgba(color, 0.12), '--primary-l2': rgba(color, 0.06),
       '--accent-l': rgba(light, 0.12),
-      // index.html's naming
       '--blue': color, '--blue2': light,
-      // reels.html's naming
       '--alpha': color, '--alpha2': light,
-      // index.html's hardcoded rgba(79,70,229,X) tints/shadows, keyed by alpha so any accent works.
-      // Left as raw alpha-tint vars (not --primary-bg directly) so index.html's own light/dark
-      // stylesheet rules can still each pick their own alpha level per theme.
       '--primary-a08': rgba(color, 0.08), '--primary-a15': rgba(color, 0.15),
       '--primary-a16': rgba(color, 0.16), '--primary-a20': rgba(color, 0.20),
       '--primary-a25': rgba(color, 0.25), '--primary-a30': rgba(color, 0.30),
       '--primary-a35': rgba(color, 0.35), '--primary-a40': rgba(color, 0.40),
-      // login.html's naming
       '--violet': color, '--violet-dark': dark, '--violet-light': light,
       '--violet-l': rgba(color, 0.14), '--indigo': dark, '--coral': light, '--iris': color
     };
@@ -134,12 +149,7 @@
     safeSet(LS.accent, color);
   }
 
-  // ---------- nav icon badges (make every page's nav icons look like index.html's) ----------
-  // index.html wraps each sidebar icon in a 30px rounded-square "badge" that goes from a plain
-  // neutral chip to a blue gradient chip when active. The other pages' drawer/off-canvas nav
-  // (.app-sidebar .app-nav-item) and bottom tab bar (.app-bottom-nav) only had plain icons with
-  // no badge, so they read as a different app. This gives them the same badge treatment using
-  // only the single brand blue (--primary/--primary-light), with no new colors introduced.
+  // ---------- nav icon badges ----------
   function injectNavIconBadge() {
     var style = document.getElementById('alpha-common-navicon');
     if (!style) {
@@ -155,13 +165,13 @@
       '}' +
       '.app-sidebar .app-nav-item:hover svg.lucide{background:var(--surface-solid,#fff);color:var(--text,#111214);}' +
       '.app-sidebar .app-nav-item.active svg.lucide{' +
-        'background:linear-gradient(135deg,var(--primary,#3366FF),var(--primary-light,#5C85FF));' +
-        'color:#fff;box-shadow:0 4px 10px rgba(51,102,255,.32);' +
+        'background:linear-gradient(135deg,var(--primary,#4f46e5),var(--primary-light,#818cf8));' +
+        'color:#fff;box-shadow:0 4px 10px var(--primary-a30,rgba(79,70,229,.32));' +   // follows the accent now
       '}' +
       '.app-sidebar .app-nav-item.logout svg.lucide{background:transparent;}' +
       '.app-sidebar .app-nav-item.logout:hover svg.lucide{background:var(--danger-l,rgba(255,59,79,.12));color:var(--danger,#E5484D);}' +
-      '.app-bottom-nav button.active svg.lucide,.mobile-bottom-nav button.active svg.lucide{color:var(--primary,#3366FF);}' +
-      '.app-bottom-nav button.active,.mobile-bottom-nav button.active{color:var(--primary,#3366FF);}';
+      '.app-bottom-nav button.active svg.lucide,.mobile-bottom-nav button.active svg.lucide{color:var(--primary,#4f46e5);}' +
+      '.app-bottom-nav button.active,.mobile-bottom-nav button.active{color:var(--primary,#4f46e5);}';
   }
 
   // ---------- font ----------
@@ -174,7 +184,6 @@
       style.id = 'alpha-common-font';
       document.head.appendChild(style);
     }
-    // Headings keep the display stack; body text follows the chosen font.
     style.textContent = 'html{--fb:' + stack + ';}' +
       'body,input,textarea,button,select{font-family:' + stack + ' !important;}';
     safeSet(LS.font, id);
@@ -197,13 +206,37 @@
     safeSet(LS.density, id);
   }
 
-  // ---------- wallpaper (Settings -> synced into Chat) ----------
+  // ---------- low-data / low-end-phone mode ----------
+  // On when: the user turned on "Data saver" in Settings, Android's Data Saver is on,
+  // or the connection is 2G. Pages can read AlphaCommon.isLowData() (e.g. skip video
+  // preloading) and CSS can use html[data-lowdata].
+  function isLowData() {
+    var c = navigator.connection || {};
+    return safeGet(LS.dataSaver) === '1' || c.saveData === true || /2g$/.test(c.effectiveType || '');
+  }
+  function applyDataSaver() {
+    var on = isLowData();
+    document.documentElement.toggleAttribute('data-lowdata', on);
+    var style = document.getElementById('alpha-common-lowdata');
+    if (on && !style && document.head) {
+      style = document.createElement('style');
+      style.id = 'alpha-common-lowdata';
+      // backdrop-filter is the single most expensive effect on cheap Android GPUs
+      style.textContent = 'html[data-lowdata] *{backdrop-filter:none !important;-webkit-backdrop-filter:none !important;}';
+      document.head.appendChild(style);
+    } else if (!on && style) {
+      style.remove();
+    }
+  }
+  if (navigator.connection && navigator.connection.addEventListener) {
+    navigator.connection.addEventListener('change', applyDataSaver);
+  }
+
+  // ---------- wallpaper ----------
   function applyWallpaper() {
     var id = safeGet(LS.wallpaper) || 'none';
-    // chat.html's real message-list container is #messages; #chat-messages is
-    // kept as a fallback in case a future page names it that way instead.
     var target = document.getElementById('messages') || document.getElementById('chat-messages');
-    if (!target) return; // only Chat renders a wallpaper surface
+    if (!target) return;
     if (id === 'custom') {
       var data = safeGet(LS.wallpaperCustom);
       target.style.backgroundImage = data ? 'url(' + data + ')' : 'none';
@@ -241,10 +274,64 @@
   }
   function logout(redirectTo) {
     try { localStorage.removeItem(LS.token); localStorage.removeItem(LS.user); } catch (e) {}
-    window.location.href = redirectTo || 'login.html';
+    // If we are inside Shell.html, leave the shell too
+    (window.top || window).location.href = redirectTo || 'login.html';
   }
 
-  // ---------- fallback toast (only used if a page doesn't define its own) ----------
+  // ---------- shared API helper ----------
+  // One place for: base URL, auth header, 20 s timeout (slow networks otherwise hang forever),
+  // clean error messages, and automatic sign-out when the session has expired.
+  function api(path, opts) {
+    opts = opts || {};
+    var ctl = new AbortController();
+    var timer = setTimeout(function () { ctl.abort(); }, opts.timeout || 20000);
+    var headers = Object.assign({ 'Content-Type': 'application/json' }, opts.headers || {});
+    if (typeof FormData !== 'undefined' && opts.body instanceof FormData) delete headers['Content-Type'];
+    var tok = getToken();
+    if (tok) headers.Authorization = 'Bearer ' + tok;
+    var init = Object.assign({}, opts, { headers: headers, signal: ctl.signal });
+    delete init.timeout;
+    return fetch(API_BASE + path, init).then(function (res) {
+      return res.json().catch(function () { return null; }).then(function (data) {
+        if (res.status === 401 && tok) { logout(); throw new Error('Session expired'); }
+        if (!res.ok) throw new Error((data && data.error) || 'Request failed');
+        return data;
+      });
+    }).catch(function (e) {
+      if (e && e.name === 'AbortError') throw new Error('Connection too slow. Please try again.');
+      throw e;
+    }).then(function (d) { clearTimeout(timer); return d; }, function (e) { clearTimeout(timer); throw e; });
+  }
+
+  // ---------- image compression (use before EVERY photo upload) ----------
+  // A phone photo is 3-8 MB. This turns it into ~100-300 KB JPEG before it leaves the phone.
+  // Resolves to a Blob (or the original file if it is already small / not an image).
+  function compressImage(file, maxSide, quality) {
+    maxSide = maxSide || 1280; quality = quality || 0.72;
+    if (!file || !/^image\/(jpeg|png|webp|heic|heif)/i.test(file.type) || file.size < 200 * 1024) {
+      return Promise.resolve(file);
+    }
+    var load = window.createImageBitmap
+      ? createImageBitmap(file)
+      : new Promise(function (ok, no) {
+          var img = new Image(), u = URL.createObjectURL(file);
+          img.onload = function () { URL.revokeObjectURL(u); ok(img); };
+          img.onerror = function () { no(new Error('Not a valid image')); };
+          img.src = u;
+        });
+    return load.then(function (img) {
+      var w = img.width, h = img.height, k = Math.min(1, maxSide / Math.max(w, h));
+      var c = document.createElement('canvas');
+      c.width = Math.round(w * k); c.height = Math.round(h * k);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      if (img.close) img.close();
+      return new Promise(function (ok) {
+        c.toBlob(function (blob) { ok(blob && blob.size < file.size ? blob : file); }, 'image/jpeg', quality);
+      });
+    }).catch(function () { return file; });
+  }
+
+  // ---------- fallback toast ----------
   function toast(msg, type) {
     if (typeof window.toast === 'function' && window.toast !== toast) {
       window.toast(msg, type);
@@ -254,12 +341,13 @@
     if (!wrap) {
       wrap = document.createElement('div');
       wrap.id = 'alpha-common-toast-wrap';
-      wrap.style.cssText = 'position:fixed;top:18px;left:50%;transform:translateX(-50%);z-index:99999;display:flex;flex-direction:column;gap:8px;pointer-events:none;';
+      wrap.style.cssText = 'position:fixed;top:calc(18px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);z-index:99999;display:flex;flex-direction:column;gap:8px;pointer-events:none;';
       document.body.appendChild(wrap);
     }
     var t = document.createElement('div');
-    var bg = type === 'error' ? '#E5484D' : (type === 'info' ? '#3366FF' : '#16181c');
+    var bg = type === 'error' ? '#E5484D' : (type === 'info' ? '#4f46e5' : '#16181c');
     t.textContent = msg;
+    t.setAttribute('role', 'status');
     t.style.cssText = 'background:' + bg + ';color:#fff;padding:10px 18px;border-radius:99px;font:600 13px Inter,sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.25);opacity:0;transition:opacity .2s;';
     wrap.appendChild(t);
     requestAnimationFrame(function () { t.style.opacity = '1'; });
@@ -269,35 +357,11 @@
     }, 2400);
   }
 
-  // ---------- app-shell bootstrap ----------
-  // Every real page (chat, vaults, explore, etc.) used to be opened as its own
-  // top-level document, so an incoming call only rang if you happened to be on
-  // calls.html, and starting a call meant that page owned it — navigate away
-  // and the call died. Shell.html already solves both problems (it polls for
-  // invites globally and keeps the call alive in the parent window while the
-  // page underneath navigates freely), it just wasn't the thing people actually
-  // landed on. This makes any top-level, logged-in page load hand itself to
-  // Shell.html instead, with itself as the page Shell should display.
-  function bootstrapShell() {
-    var page = (window.location.pathname.split('/').pop() || 'index.html');
-    var SKIP = { 'shell.html': 1, 'login.html': 1, 'register.html': 1 };
-    if (SKIP[page.toLowerCase()]) return;
-    if (window.top !== window) return; // already inside Shell (or some other frame) — leave it alone
-    if (!getToken()) return; // nothing to ring for if we're not logged in
-    var qs = window.location.search;
-    // Don't hijack a call deep-link opened straight from a push notification —
-    // calls.html handles accept_room/start_call itself when it's top-level.
-    if (page.toLowerCase() === 'calls.html' && /[?&](accept_room|start_call)=/.test(qs)) return;
-    var target = page + qs + window.location.hash;
-    window.location.replace('Shell.html?page=' + encodeURIComponent(target));
-  }
-  bootstrapShell();
-
-  // ---------- run immediately (before body renders) to avoid any flash ----------
+  // ---------- run immediately (before body renders) ----------
   initTheme();
   applyAccent(safeGet(LS.accent) || DEFAULT_ACCENT);
+  applyDataSaver();
 
-  // ---------- run once DOM exists, for the bits that touch <body>/specific nodes ----------
   document.addEventListener('DOMContentLoaded', function () {
     applyFont(safeGet(LS.font));
     applyDensity(safeGet(LS.density));
@@ -306,16 +370,18 @@
     initIconObserver();
   });
 
-  // ---------- keep every open tab in sync when a setting changes elsewhere ----------
+  // ---------- keep every open tab in sync ----------
   window.addEventListener('storage', function (e) {
     if (e.key === LS.theme) applyTheme(e.newValue);
     else if (e.key === LS.accent) applyAccent(e.newValue);
     else if (e.key === LS.font) applyFont(e.newValue);
     else if (e.key === LS.density) applyDensity(e.newValue);
+    else if (e.key === LS.dataSaver) applyDataSaver();
     else if (e.key === LS.wallpaper || e.key === LS.wallpaperCustom) applyWallpaper();
   });
 
   window.AlphaCommon = {
+    API_BASE: API_BASE,
     DEFAULT_ACCENT: DEFAULT_ACCENT,
     WALLPAPERS: WALLPAPERS,
     applyTheme: applyTheme,
@@ -323,6 +389,8 @@
     setFont: applyFont,
     setDensity: applyDensity,
     applyWallpaper: applyWallpaper,
+    applyDataSaver: applyDataSaver,
+    isLowData: isLowData,
     injectNavIconBadge: injectNavIconBadge,
     renderIcons: renderIcons,
     getToken: getToken,
@@ -330,6 +398,8 @@
     isLoggedIn: isLoggedIn,
     requireAuth: requireAuth,
     logout: logout,
+    api: api,
+    compressImage: compressImage,
     toast: toast
   };
 })();
