@@ -2,655 +2,580 @@
 <html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#4f46e5">
-<title>Alpha</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" media="print" onload="this.media='all'">
-<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"></noscript>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alpha — Settings</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <script src="alpha-common.js"></script>
-<script src="alpha-ui.js"></script>
 <style>
-  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-  html, body { height:100%; overflow:hidden; }
-  body { font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; }
-  button { font-family:inherit; border:0; cursor:pointer; }
+:root{
+  --primary:#4f46e5;--primary-light:#818cf8;--primary-dark:#3730a3;--primary-l:rgba(79,70,229,.12);
+  --success:#1fa84a;--danger:#e5484d;
+  --bg:#f4f5f8;--card:#fff;--surface:#eef0f4;--text:#14161b;--text2:#5b6272;--muted:#8d94a3;--border:#e2e5ec;
+  --shadow:0 1px 2px rgba(16,24,40,.05),0 6px 24px rgba(16,24,40,.05);
+}
+[data-theme="dark"]{
+  --bg:#0c0e12;--card:#14171d;--surface:#1c2028;--text:#f3f5f9;--text2:#a7afbd;--muted:#727a89;--border:#262b34;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 24px rgba(0,0,0,.25);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.4}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer;border:none;background:none}
+:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+.hidden{display:none!important}
 
-  #appFrame { position:fixed; inset:0; width:100%; height:100%; border:0; display:block; background:#f0f2f6; }
+/* shell */
+.app{display:flex;min-height:100vh}
+.sidebar{width:232px;position:fixed;inset:0 auto 0 0;background:var(--card);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:20px 12px;z-index:50}
+.logo{display:flex;align-items:center;gap:10px;padding:2px 10px 20px;font-weight:800;font-size:1.4rem;letter-spacing:-.5px}
+.logo i{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;color:#fff;font-style:normal;font-size:1.1rem;background:linear-gradient(135deg,var(--primary),var(--primary-dark))}
+.nav{display:flex;flex-direction:column;gap:3px;overflow:auto}
+.nav button{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;color:var(--text2);font-weight:600;font-size:.88rem;text-align:left}
+.nav button i{width:18px;text-align:center}
+.nav button:hover{background:var(--surface);color:var(--text)}
+.nav button.active{background:var(--primary-l);color:var(--primary)}
+.nav .sp{margin-top:auto}
+.main{margin-left:232px;width:calc(100% - 232px)}
+.topbar{height:64px;position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:14px;padding:0 32px;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.topbar h1{font-size:1.35rem;letter-spacing:-.4px}
+.search{margin-left:auto;position:relative;width:min(320px,50%)}
+.search i{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:.85rem}
+.search input{width:100%;height:40px;border-radius:12px;border:1px solid var(--border);background:var(--card);padding:0 14px 0 38px;outline:none}
+.search input:focus{border-color:var(--primary)}
+.wrap{max-width:1040px;margin:0 auto;padding:26px 28px 90px}
 
-  :root {
-    --primary:#4f46e5; --primary-light:#818cf8;
-    --green:#22c55e; --red:#ef4444;
-    --stage-void:#0b0d12; --stage-line:rgba(255,255,255,0.07);
-    --stage-text:#f0f4fa; --stage-muted:#94a3b8;
-  }
+/* profile */
+.me{display:flex;align-items:center;gap:16px;padding:20px;background:var(--card);border:1px solid var(--border);border-radius:20px;box-shadow:var(--shadow);margin-bottom:22px}
+.avatar{width:64px;height:64px;border-radius:50%;flex-shrink:0;display:grid;place-items:center;color:#fff;font-weight:800;font-size:1.3rem;background:linear-gradient(135deg,var(--primary),var(--primary-dark)) center/cover;cursor:pointer;position:relative}
+.avatar::after{content:"\f030";font-family:"Font Awesome 6 Free";font-weight:900;position:absolute;right:-2px;bottom:-2px;width:22px;height:22px;border-radius:50%;background:var(--card);color:var(--text2);border:1px solid var(--border);display:grid;place-items:center;font-size:.6rem}
+.me-info{flex:1;min-width:0}
+.me-name{font-weight:800;font-size:1.1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.me-user{color:var(--text2);font-size:.85rem}
+.me-bio{color:var(--text2);font-size:.82rem;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.btn{padding:10px 16px;border-radius:11px;font-size:.84rem;font-weight:700;background:var(--surface)}
+.btn:hover{filter:brightness(.97)}
+.btn.primary{background:var(--primary);color:#fff}
+.btn.danger{background:rgba(229,72,77,.12);color:var(--danger)}
 
-  .stage-overlay { position:fixed; inset:0; z-index:2000; display:none; background:var(--stage-void); }
-  .stage-overlay.show { display:block; }
-  .stage-overlay.minimized { display:none; }
+/* layout */
+.cols{display:grid;grid-template-columns:210px minmax(0,1fr);gap:24px;align-items:start}
+.rail{position:sticky;top:84px;display:flex;flex-direction:column;gap:2px}
+.rail button{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;color:var(--text2);font-weight:600;font-size:.88rem;text-align:left}
+.rail button i{width:18px;text-align:center}
+.rail button:hover{background:var(--card);color:var(--text)}
+.rail button.active{background:var(--card);color:var(--primary);box-shadow:var(--shadow);border:1px solid var(--border)}
+.panel{display:none}
+.panel.show{display:block}
+.panel-head{margin:2px 4px 14px}
+.panel-head h2{font-size:1.3rem;letter-spacing:-.3px}
+.panel-head p{color:var(--text2);font-size:.88rem;margin-top:2px}
+.group{background:var(--card);border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow);overflow:hidden;margin-bottom:16px}
+.row{display:flex;align-items:center;gap:14px;padding:14px 18px;min-height:64px}
+.row+.row{border-top:1px solid var(--border)}
+.row.link{cursor:pointer}
+.row.link:hover{background:var(--surface)}
+.row .ic{width:36px;height:36px;border-radius:11px;background:var(--surface);display:grid;place-items:center;color:var(--text2);flex-shrink:0}
+.row .tx{flex:1;min-width:0}
+.row .nm{font-weight:700;font-size:.93rem}
+.row .ds{font-size:.8rem;color:var(--text2);margin-top:2px}
+.row .chev{color:var(--muted);font-size:.8rem}
+.row.stack{flex-wrap:wrap}
+.row.stack .ctl-block{flex-basis:100%;padding-left:50px}
+.row.danger .nm,.row.danger .ic{color:var(--danger)}
+.row.danger .ic{background:rgba(229,72,77,.1)}
+.row.hit{background:var(--primary-l)}
 
-  .stage-root {
-    position:absolute; inset:0; display:flex; flex-direction:column;
-    background:
-      radial-gradient(circle at 20% 10%, rgba(79,70,229,0.18), transparent 50%),
-      radial-gradient(circle at 80% 90%, rgba(34,211,238,0.10), transparent 50%),
-      var(--stage-void);
-    color:var(--stage-text); overflow:hidden;
-  }
-  .stage-topbar {
-    position:absolute; top:0; left:0; right:0; z-index:40;
-    display:flex; align-items:flex-start; justify-content:space-between;
-    padding:calc(14px + env(safe-area-inset-top)) 20px 40px;
-    background:linear-gradient(to bottom, rgba(3,4,6,0.7) 0%, rgba(3,4,6,0.2) 60%, transparent 100%);
-    pointer-events:none;
-  }
-  .stage-topbar > * { pointer-events:auto; }
-  .stage-pill {
-    display:inline-flex; align-items:center; gap:7px; padding:5px 14px; border-radius:20px;
-    background:rgba(20,25,35,0.7); border:1px solid var(--stage-line);
-    font-size:12px; font-weight:600; backdrop-filter:blur(10px);
-  }
-  .stage-pill .timer { font-variant-numeric:tabular-nums; font-weight:700; display:none; }
-  .stage-pill .timer.show { display:inline-flex; }
-  .stage-icon-btn {
-    width:40px; height:40px; border-radius:10px; background:rgba(20,25,35,0.6);
-    border:1px solid var(--stage-line); color:var(--stage-text);
-    display:grid; place-items:center; font-size:15px; backdrop-filter:blur(10px); transition:0.15s;
-  }
-  .stage-icon-btn:hover { background:rgba(255,255,255,0.12); }
-  button:focus-visible { outline:3px solid rgba(129,140,248,0.7); outline-offset:2px; }
+/* controls */
+.tg{width:46px;height:27px;border-radius:99px;background:#c3c8d2;padding:3px;transition:.2s;flex-shrink:0}
+.tg::after{content:"";display:block;width:21px;height:21px;border-radius:50%;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,.25);transition:.2s}
+.tg.on{background:var(--primary)}
+.tg.on::after{transform:translateX(19px)}
+.tg.saving{opacity:.6}
+select{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:8px 10px;outline:none;font-size:.82rem;color:var(--text)}
+.seg{display:inline-flex;background:var(--surface);border-radius:11px;padding:3px;gap:2px}
+.seg button{padding:7px 14px;border-radius:9px;font-size:.82rem;font-weight:700;color:var(--text2)}
+.seg button.on{background:var(--card);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.swatches{display:flex;gap:10px;flex-wrap:wrap}
+.sw{width:30px;height:30px;border-radius:50%;border:3px solid var(--card);box-shadow:0 0 0 2px transparent,0 1px 3px rgba(0,0,0,.2);position:relative;transition:transform .12s}
+.sw:hover{transform:scale(1.1)}
+.sw.sel{box-shadow:0 0 0 2px var(--text)}
+.sw.custom{background:conic-gradient(from 180deg,#e5484d,#f59e0b,#20b958,#0071e3,#7c5cff,#e5484d);overflow:hidden}
+.sw input{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer}
+.walls{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:10px}
+.wall{border-radius:12px;border:2px solid var(--border);height:62px;background-color:var(--surface);position:relative;display:grid;place-items:end start;padding:5px 8px;font-size:.72rem;font-weight:700;color:var(--text2);overflow:hidden}
+.wall.sel{border-color:var(--primary);color:var(--primary)}
+.wall.up{place-items:center;gap:0;font-size:.78rem}
 
-  .stage-view { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
-  .stage-hero { display:flex; flex-direction:column; align-items:center; text-align:center; gap:6px; }
-  .stage-hero .hero-avatar { width:110px; height:110px; margin-bottom:14px; position:relative; }
-  .stage-hero .hero-avatar::before {
-    content:""; position:absolute; inset:-12px; border-radius:50%;
-    background:linear-gradient(135deg, #22d3ee, var(--primary)); opacity:0.3; filter:blur(24px);
-  }
-  .stage-hero .hero-avatar img {
-    width:100%; height:100%; border-radius:50%; object-fit:cover; position:relative;
-    border:3px solid rgba(255,255,255,0.08); background:#151b24;
-  }
-  .stage-hero h2 { font-size:26px; letter-spacing:-0.3px; }
-  .stage-hero p { color:var(--stage-muted); font-size:14px; }
-  .stage-hero .ring-badge {
-    display:inline-block; margin-top:8px; padding:4px 14px; border-radius:20px;
-    background:rgba(245,185,66,0.14); color:#f5b942; font-size:11.5px; font-weight:700;
-    border:1px solid rgba(245,185,66,0.3);
-  }
+/* live preview */
+.preview{border-radius:16px;border:1px solid var(--border);background-color:var(--surface);padding:16px;display:flex;flex-direction:column;gap:8px;margin:0 0 16px;min-height:150px}
+.preview .b{max-width:72%;padding:9px 13px;border-radius:16px;font-size:.88rem}
+.preview .in{background:var(--card);border:1px solid var(--border);border-bottom-left-radius:5px;align-self:flex-start}
+.preview .out{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;border-bottom-right-radius:5px;align-self:flex-end}
+.preview small{opacity:.7;font-size:.68rem;display:block;margin-top:2px}
+.pv-label{font-size:.78rem;color:var(--text2);margin:0 4px 6px}
 
-  .stage-video-wrap { position:absolute; inset:0; display:none; background:#000; }
-  .stage-video-wrap video { width:100%; height:100%; object-fit:cover; }
-  .stage-video-wrap .solo-name {
-    position:absolute; left:20px; bottom:22px; padding:6px 16px; border-radius:10px;
-    background:rgba(6,7,10,0.6); backdrop-filter:blur(8px); font-weight:700; font-size:14px; z-index:3;
-  }
-  .stage-video-wrap .local-pip {
-    position:absolute; bottom:22px; right:20px; width:160px; aspect-ratio:3/4; max-height:28vh;
-    border-radius:14px; overflow:hidden; background:#111; border:2px solid rgba(255,255,255,0.2); z-index:3;
-  }
-  .stage-video-wrap .local-pip video { width:100%; height:100%; object-fit:cover; transform:scaleX(-1); }
+/* storage */
+.bar{height:9px;border-radius:99px;background:var(--surface);overflow:hidden;margin:12px 0}
+.bar div{height:100%;width:42%;background:linear-gradient(90deg,var(--primary),var(--primary-light));border-radius:99px}
+.sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;font-size:.78rem;color:var(--text2)}
+.sgrid b{display:block;color:var(--text);font-size:.92rem}
 
-  .stage-ring-buttons {
-    position:absolute; left:0; right:0; bottom:calc(50px + env(safe-area-inset-bottom));
-    display:flex; justify-content:center; gap:26px; z-index:40;
-  }
-  .stage-call-btn {
-    width:62px; height:62px; border-radius:50%; display:grid; place-items:center;
-    font-size:20px; box-shadow:0 12px 30px rgba(0,0,0,0.4); transition:0.2s; color:#fff;
-  }
-  .stage-call-btn:hover { transform:scale(1.04); }
-  .stage-call-btn.cancel { background:var(--red); }
-  .stage-call-btn.accept { background:var(--green); animation:acceptPulse 1.6s ease-in-out infinite; }
-  @keyframes acceptPulse {
-    0%,100% { box-shadow:0 12px 30px rgba(0,0,0,0.4), 0 0 0 0 rgba(34,197,94,0.4); }
-    50% { box-shadow:0 12px 30px rgba(0,0,0,0.4), 0 0 0 14px rgba(34,197,94,0); }
-  }
-  @media (prefers-reduced-motion: reduce) { .stage-call-btn.accept { animation:none; } }
+/* modal + toast */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:18px;z-index:500}
+.ov.show{display:flex}
+.modal{width:100%;max-width:440px;background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;animation:pop .18s ease;max-height:90vh;display:flex;flex-direction:column}
+@keyframes pop{from{opacity:0;transform:translateY(8px) scale(.97)}}
+.mh{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border);font-weight:800}
+.mh button{width:32px;height:32px;border-radius:50%;background:var(--surface)}
+.mb{padding:20px;overflow:auto}
+.mf{padding:14px 20px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px}
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:.78rem;font-weight:700;margin-bottom:6px}
+.fg input{width:100%;height:44px;padding:0 12px;border-radius:10px;border:1px solid var(--border);background:var(--surface);outline:none}
+.fg input:focus{border-color:var(--primary)}
+.fg input[readonly]{color:var(--text2)}
+.empty{text-align:center;padding:22px 8px;color:var(--text2)}
+.empty i{font-size:1.8rem;margin-bottom:8px;display:block}
+.toast{position:fixed;bottom:24px;left:50%;transform:translate(-50%,14px);background:#14161b;color:#fff;padding:12px 18px;border-radius:12px;font-size:.84rem;font-weight:600;opacity:0;pointer-events:none;transition:.25s;z-index:1000;max-width:calc(100% - 28px)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.none{display:none;text-align:center;color:var(--text2);padding:40px 0}
 
-  .stage-dock-wrap {
-    position:absolute; left:0; right:0; bottom:0; z-index:40; display:none; justify-content:center;
-    padding:20px 16px calc(16px + env(safe-area-inset-bottom));
-    background:linear-gradient(to top, rgba(3,4,6,0.7) 0%, rgba(3,4,6,0.2) 60%, transparent 100%);
-    pointer-events:none;
-  }
-  .stage-dock-wrap.show { display:flex; }
-  .stage-dock {
-    pointer-events:auto; display:flex; align-items:center; gap:6px; padding:8px 14px; border-radius:30px;
-    background:rgba(18,24,34,0.8); border:1px solid var(--stage-line); backdrop-filter:blur(20px); flex-wrap:wrap;
-  }
-  .ctrl-wrap { display:flex; flex-direction:column; align-items:center; gap:2px; }
-  .ctrl-wrap span { font-size:10px; font-weight:600; color:var(--stage-muted); }
-  .ctrl-btn {
-    width:44px; height:44px; border-radius:12px; display:grid; place-items:center;
-    background:rgba(255,255,255,0.06); color:#fff; font-size:16px;
-    border:1px solid rgba(255,255,255,0.04); transition:0.15s; flex-shrink:0;
-  }
-  .ctrl-btn:hover { background:rgba(255,255,255,0.12); }
-  .ctrl-btn.active { background:var(--red); border-color:var(--red); }
-  .ctrl-btn.leave { width:auto; min-width:56px; padding:0 14px; gap:6px; display:inline-flex; align-items:center; background:var(--red); font-weight:700; font-size:13px; }
-  .ctrl-btn.leave:hover { filter:brightness(1.1); }
+/* search mode */
+body.searching .rail{visibility:hidden}
+body.searching .panel{display:block}
+body.searching .panel-head p{display:none}
+.mnav{display:none}
 
-  #callPill {
-    position:fixed; right:16px; bottom:calc(16px + env(safe-area-inset-bottom));
-    z-index:1900; display:none; align-items:center; gap:10px;
-    background:rgba(15,19,27,0.94); color:#fff; border:1px solid var(--stage-line);
-    border-radius:99px; padding:8px 16px 8px 8px; box-shadow:0 12px 30px rgba(0,0,0,0.3);
-    backdrop-filter:blur(14px); cursor:pointer; max-width:min(320px, calc(100vw - 32px));
-  }
-  #callPill.show { display:flex; }
-  #callPill img { width:34px; height:34px; border-radius:50%; object-fit:cover; flex-shrink:0; }
-  #callPill .pill-text { display:flex; flex-direction:column; overflow:hidden; }
-  #callPill .pill-name { font-size:13px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  #callPill .pill-sub { font-size:11px; color:var(--stage-muted); font-variant-numeric:tabular-nums; }
-  #callPill .pill-end {
-    width:34px; height:34px; border-radius:50%; background:var(--red); color:#fff;
-    display:grid; place-items:center; font-size:13px; flex-shrink:0; margin-left:4px;
-  }
+@media(max-width:900px){
+  .sidebar{display:none}.main{margin-left:0;width:100%}
+  .topbar{padding:0 16px}.wrap{padding:18px 14px 100px}
+  .cols{grid-template-columns:1fr;gap:14px}
+  .rail{position:sticky;top:64px;z-index:30;flex-direction:row;overflow-x:auto;gap:6px;padding:8px 0;background:var(--bg);scrollbar-width:none}
+  .rail::-webkit-scrollbar{display:none}
+  .rail button{white-space:nowrap;background:var(--card);border:1px solid var(--border);padding:8px 13px;border-radius:99px}
+  .rail button i{display:none}
+  .mnav{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;inset:auto 0 0 0;height:62px;background:color-mix(in srgb,var(--card) 94%,transparent);backdrop-filter:blur(16px);border-top:1px solid var(--border);z-index:200}
+  .mnav button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:.66rem;font-weight:600;color:var(--text2)}
+  .mnav button.active{color:var(--primary)}
+  .mnav i{font-size:1.1rem}
+  .toast{bottom:76px}
+  .row{padding:12px 14px}.row.stack .ctl-block{padding-left:0}
+  .me-bio{display:none}
+  .sgrid{grid-template-columns:1fr 1fr}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
 <body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="logo"><i>A</i>Alpha</div>
+    <nav class="nav" id="sideNav"></nav>
+  </aside>
 
-<iframe id="appFrame" title="Alpha" src=""></iframe>
-<script>
-  // Show the page that handed off to us (?page=...), default to the home feed.
-  (function () {
-    var params = new URLSearchParams(window.location.search);
-    var initial = params.get('page') || 'index.html';
-    // Only same-site relative pages may be framed (blocks ?page=https://evil.example)
-    if (/^[a-z][a-z0-9+.-]*:|^\/\//i.test(initial)) initial = 'index.html';
-    document.getElementById('appFrame').src = initial;
-  })();
-</script>
+  <main class="main">
+    <header class="topbar">
+      <h1>Settings</h1>
+      <label class="search"><i class="fa-solid fa-magnifying-glass"></i>
+        <input id="q" type="search" placeholder="Search all settings" autocomplete="off"></label>
+    </header>
 
-<div class="stage-overlay" id="stageOverlay" role="dialog" aria-modal="true" aria-label="Call">
-  <div class="stage-root">
-    <div class="stage-topbar">
-      <span class="stage-pill"><span class="timer" id="callTimer">00:00</span><span id="callStatusText" aria-live="polite">Calling…</span></span>
-      <button class="stage-icon-btn" onclick="AlphaCallShell.minimize()" title="Minimize" aria-label="Minimize call"><i class="fa-solid fa-chevron-down"></i></button>
-    </div>
-
-    <div class="stage-view" id="callStage">
-      <div class="stage-hero" id="stageHero">
-        <div class="hero-avatar"><img id="callAvatar" src="" alt=""></div>
-        <h2 id="callName">—</h2>
-        <p id="callSub"></p>
+    <section class="wrap">
+      <div class="me">
+        <div class="avatar" id="avatar" title="Change photo" role="button" tabindex="0">··</div>
+        <input type="file" id="avatarInput" accept="image/*" hidden>
+        <div class="me-info">
+          <div class="me-name" id="meName">Loading…</div>
+          <div class="me-user" id="meUser">@…</div>
+          <div class="me-bio" id="meBio"></div>
+        </div>
+        <button class="btn primary" data-m="profile">Edit profile</button>
       </div>
-      <div class="stage-video-wrap" id="callVideoWrap">
-        <video id="remoteVideo" autoplay playsinline></video>
-        <span class="solo-name" id="soloName">—</span>
-        <div class="local-pip"><video id="localVideo" autoplay playsinline muted></video></div>
-      </div>
-      <audio id="remoteAudio" autoplay></audio>
-    </div>
 
-    <div class="stage-ring-buttons" id="ringButtons">
-      <button class="stage-call-btn cancel" onclick="AlphaCallShell.cancelCall()" aria-label="Decline or cancel"><i class="fa-solid fa-xmark"></i></button>
-      <button class="stage-call-btn accept" id="acceptBtn" style="display:none" onclick="AlphaCallShell.acceptCall()" aria-label="Accept call"><i class="fa-solid fa-phone"></i></button>
-    </div>
-
-    <div class="stage-dock-wrap" id="stageDockWrap">
-      <div class="stage-dock">
-        <div class="ctrl-wrap"><button class="ctrl-btn" id="ctrlMic" onclick="AlphaCallShell.toggleMic()" aria-label="Mute microphone"><i class="fa-solid fa-microphone"></i></button><span>Mute</span></div>
-        <div class="ctrl-wrap"><button class="ctrl-btn" id="ctrlCam" onclick="AlphaCallShell.toggleCam()" aria-label="Turn camera off"><i class="fa-solid fa-video"></i></button><span>Camera</span></div>
-        <div class="ctrl-wrap"><button class="ctrl-btn leave" onclick="AlphaCallShell.endCall()"><i class="fa-solid fa-phone-slash"></i> Leave</button></div>
+      <div class="cols">
+        <nav class="rail" id="rail" aria-label="Settings categories"></nav>
+        <div id="panels"></div>
       </div>
-    </div>
-  </div>
+      <div class="none" id="none">No settings match your search.</div>
+    </section>
+  </main>
 </div>
 
-<div id="callPill" onclick="AlphaCallShell.expand()" role="button" tabindex="0" aria-label="Return to call">
-  <img id="pillAvatar" src="" alt="">
-  <div class="pill-text">
-    <span class="pill-name" id="pillName">—</span>
-    <span class="pill-sub" id="pillSub">00:00</span>
+<nav class="mnav" id="mNav"></nav>
+
+<div class="ov" id="ov">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <div class="mh"><span id="mTitle"></span><button id="mClose" aria-label="Close"><i class="fa-solid fa-xmark"></i></button></div>
+    <div class="mb" id="mBody"></div>
+    <div class="mf"><button class="btn" id="mCancel">Cancel</button><button class="btn primary" id="mSave">Save changes</button></div>
   </div>
-  <div class="pill-end" onclick="event.stopPropagation();AlphaCallShell.endCall()" role="button" aria-label="End call"><i class="fa-solid fa-phone-slash"></i></div>
 </div>
+<div class="toast" id="toast" role="status"></div>
 
 <script>
-(function () {
-  'use strict';
+/* ---------- helpers ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const ls = (k, d) => { try { return localStorage.getItem(k) ?? d; } catch { return d; } };
+const lsSet = (k, v) => { try { localStorage.setItem(k, v); } catch {} };
+const goTo = u => { window.location.href = u; };
 
-  window.AlphaShell = true;
+let tt;
+function toast(m){ const t = $("#toast"); t.textContent = m; t.classList.add("show"); clearTimeout(tt); tt = setTimeout(() => t.classList.remove("show"), 2400); }
 
-  const API_BASE = 'https://alpha-auth.murwanashyakadieumerci540.workers.dev';
-  const LIVEKIT_URL = 'wss://alpha-chat-5bw21lfu.livekit.cloud';
-  const LIVEKIT_SRC = 'https://cdn.jsdelivr.net/npm/livekit-client@2/dist/livekit-client.umd.min.js';
+/* ---------- api / auth ---------- */
+const API = "https://alpha-auth.murwanashyakadieumerci540.workers.dev";
+const TOKEN_KEY = "alpha_token";
+const token = ls(TOKEN_KEY, null);
+if(!token) goTo("login.html");
 
-  // The call engine is ~400 KB, so it only downloads when a call actually starts.
-  let lkLoading = null;
-  function ensureLiveKit() {
-    if (window.LivekitClient) return Promise.resolve(window.LivekitClient);
-    if (lkLoading) return lkLoading;
-    lkLoading = new Promise(function (resolve, reject) {
-      const sc = document.createElement('script');
-      sc.src = LIVEKIT_SRC;
-      sc.onload = function () { resolve(window.LivekitClient); };
-      sc.onerror = function () { lkLoading = null; reject(new Error('Couldn’t load the call engine. Check your connection and try again.')); };
-      document.head.appendChild(sc);
-    });
-    return lkLoading;
+async function api(path, opts = {}){
+  const res = await fetch(API + path, { ...opts, headers: { "Content-Type": "application/json", Authorization: "Bearer " + token, ...(opts.headers || {}) } });
+  let data = null; try { data = await res.json(); } catch {}
+  if(res.status === 401){ localStorage.removeItem(TOKEN_KEY); goTo("login.html"); throw new Error("Session expired"); }
+  if(!res.ok) throw new Error((data && data.error) || "Request failed");
+  return data;
+}
+
+/* ---------- schema: one source of truth for every setting ---------- */
+const CATS = [
+  ["account","Account","fa-user","Your identity on Alpha."],
+  ["appearance","Appearance","fa-palette","Looks that apply to every page, including chat, calls and reels."],
+  ["chat","Chat","fa-comment-dots","How messages behave."],
+  ["privacy","Privacy","fa-lock","Control who can see and reach you."],
+  ["security","Security","fa-shield-halved","Protect your account and devices."],
+  ["notifications","Notifications","fa-bell","Choose what is worth interrupting you."],
+  ["calls","Calls","fa-phone","Voice and video defaults."],
+  ["reels","Reels","fa-film","Short-video playback."],
+  ["vault","Vault","fa-vault","Private files and backups."],
+  ["data","Data & storage","fa-hard-drive","What Alpha keeps on this device and in the cloud."],
+  ["support","Support","fa-circle-question","Get help or report an issue."]
+];
+const T = (c,k,i,n,d,v) => ({c,t:"toggle",k,i,n,d,v});
+const S = (c,k,i,n,d,o,v,local) => ({c,t:"select",k,i,n,d,o,v,local});
+const L = (c,m,i,n,d) => ({c,t:"link",m,i,n,d});
+const ROWS = [
+  L("account","profile","fa-pen","Profile","Photo, name and bio"),
+  L("account","account","fa-id-card","Account information","Username and email"),
+  S("account","language","fa-globe","Language","Language used across Alpha",["English","Kinyarwanda","French","Swahili"],"English"),
+  {c:"account",t:"act",id:"logout",i:"fa-arrow-right-from-bracket",n:"Log out",d:"Sign out from this device",danger:1},
+  {c:"account",t:"act",id:"deactivate",i:"fa-triangle-exclamation",n:"Deactivate account",d:"Disable your account. Log in again to reactivate.",danger:1},
+
+  {c:"appearance",t:"preview"},
+  {c:"appearance",t:"theme",i:"fa-circle-half-stroke",n:"Theme",d:"Light or dark interface"},
+  {c:"appearance",t:"accent",i:"fa-droplet",n:"Accent color",d:"Buttons, sent bubbles and highlights everywhere"},
+  {c:"appearance",t:"wallpaper",i:"fa-image",n:"Chat wallpaper",d:"Background behind your messages"},
+  S("appearance","font","fa-font","Font","Typeface across the whole app",[["default","Default"],["inter","Inter"],["poppins","Poppins"],["system","System"]],"default",1),
+  S("appearance","density","fa-table-cells-large","Density","Compact tightens spacing on every page",[["comfortable","Comfortable"],["compact","Compact"]],"comfortable",1),
+  S("appearance","textsize","fa-text-height","Text size","Size of interface text",[["14","Small"],["16","Default"],["18","Large"]],"16",1),
+  {c:"appearance",t:"reset",i:"fa-rotate-left",n:"Reset appearance",d:"Back to Alpha's default look"},
+
+  T("chat","autoDownload","fa-image","Auto-download media","Save received photos and videos automatically",true),
+  S("chat","disappearingMessages","fa-stopwatch","Disappearing messages","Delete new messages after a set time",["Off","24 hours","7 days","90 days"],"Off"),
+  T("chat","readReceipts","fa-check-double","Read receipts","Let people see when you read their messages",true),
+
+  T("privacy","privateAccount","fa-lock","Private account","Only approved people can follow you",false),
+  T("privacy","activityStatus","fa-eye","Activity status","Show when you are active",true),
+  T("privacy","readReceipts","fa-check-double","Read receipts","Let people see when you read their messages",true),
+  L("privacy","blocked","fa-user-slash","Blocked accounts","People you have blocked"),
+
+  L("security","password","fa-key","Password","Change your account password"),
+  T("security","twoFactor","fa-shield-halved","Two-factor authentication","Ask for a code when you log in",false),
+  L("security","devices","fa-laptop","Connected devices","Where your account is logged in"),
+
+  T("notifications","pushNotifications","fa-bell","Push notifications","Receive notifications on this device",true),
+  T("notifications","messageNotifications","fa-comment-dots","Messages","New message alerts",true),
+  T("notifications","socialNotifications","fa-heart","Likes and comments","Activity on your posts",true),
+  T("notifications","callNotifications","fa-phone","Incoming calls","Ring when someone calls you",true),
+
+  T("calls","callNotifications","fa-phone","Call notifications","Ring when someone calls you",true),
+  S("calls","videoQuality","fa-video","Video quality","Default for video calls",["Auto","720p","1080p"],"Auto"),
+
+  T("reels","autoplay","fa-film","Autoplay videos","Play videos as you scroll",true),
+  T("reels","dataSaver","fa-wifi","Data saver","Use less data for video",false),
+
+  T("vault","vaultLock","fa-lock","Vault lock","Require authentication to open Vault",true),
+  T("vault","vaultBackup","fa-cloud-arrow-up","Automatic backup","Back up Vault files automatically",true),
+
+  L("data","storage","fa-hard-drive","Manage storage","Clear cached files and media"),
+  {c:"data",t:"storage"},
+
+  L("support","help","fa-circle-question","Help center","Answers to common questions"),
+  {c:"support",t:"act",id:"report",i:"fa-flag",n:"Report a problem",d:"Tell us about an issue"},
+  {c:"support",t:"about",i:"fa-circle-info",n:"About Alpha",d:"Version 1.0.0"}
+];
+const NAV = [["index.html","fa-house","Home"],["reels.html","fa-film","Reels"],["chat.html","fa-comment-dots","Messages"],["calls.html","fa-phone","Calls"],["events.html","fa-calendar-days","Events"],["vaults.html","fa-shield-halved","Vaults"],["ai.html","fa-wand-magic-sparkles","Alpha AI"],["status.html","fa-circle-dot","Status"],["saved.html","fa-bookmark","Saved"],["settings.html","fa-gear","Settings"]];
+
+/* ---------- state ---------- */
+const server = {};            // values loaded from /settings
+let me = { email:null, display_name:"", bio:"", avatar_url:null };
+let activeCat = (location.hash || "#account").slice(1);
+if(!CATS.some(c => c[0] === activeCat)) activeCat = "account";
+
+const getVal = r => r.local
+  ? ls("alpha_" + r.k, r.v)
+  : (server[r.k] !== undefined ? server[r.k] : r.v);
+const isOn = r => { const v = getVal(r); return v === true || v === 1 || v === "1"; };
+
+/* ---------- render ---------- */
+const sel = (o, cur, k) => `<select data-sel="${k}" aria-label="${k}">` + o.map(x => {
+  const [v, l] = Array.isArray(x) ? x : [x, x];
+  return `<option value="${esc(v)}"${String(cur) === String(v) ? " selected" : ""}>${esc(l)}</option>`;
+}).join("") + "</select>";
+
+function rowHtml(r){
+  const head = (ctl, cls = "") => `<div class="row ${cls}" data-cat="${r.c}" data-text="${esc((r.n + " " + (r.d || "")).toLowerCase())}">
+    <div class="ic"><i class="fa-solid ${r.i}"></i></div><div class="tx"><div class="nm">${esc(r.n)}</div><div class="ds">${esc(r.d || "")}</div></div>${ctl}`;
+  switch(r.t){
+    case "toggle": return head(`<button class="tg${isOn(r) ? " on" : ""}" role="switch" aria-checked="${isOn(r)}" aria-label="${esc(r.n)}" data-tg="${r.k}"></button>`) + "</div>";
+    case "select": return head(sel(r.o, getVal(r), r.k)) + "</div>";
+    case "link":   return head(`<i class="fa-solid fa-chevron-right chev"></i>`, "link").replace('class="row link"', `class="row link" data-m="${r.m}" tabindex="0" role="button"`) + "</div>";
+    case "act":    return head(`<i class="fa-solid fa-chevron-right chev"></i>`, "link" + (r.danger ? " danger" : "")).replace('class="row link', `data-act="${r.id}" tabindex="0" role="button" class="row link`) + "</div>";
+    case "about":  return head("") + "</div>";
+    case "reset":  return head(`<button class="btn" data-act="reset">Reset</button>`) + "</div>";
+    case "theme": {
+      const cur = document.documentElement.getAttribute("data-theme");
+      return head("", "stack") + `<div class="ctl-block"><div class="seg">${["light","dark"].map(t => `<button data-theme-set="${t}" class="${cur === t ? "on" : ""}"><i class="fa-solid ${t === "dark" ? "fa-moon" : "fa-sun"}"></i> ${t[0].toUpperCase() + t.slice(1)}</button>`).join("")}</div></div></div>`;
+    }
+    case "accent": {
+      const cur = (ls("alpha_settings_accent", AlphaCommon.DEFAULT_ACCENT)).toLowerCase();
+      const cols = [["#4f46e5","Indigo"],["#0071e3","Blue"],["#7c5cff","Purple"],["#e5484d","Red"],["#20b958","Green"],["#f59e0b","Amber"],["#0d9488","Teal"],["#db2777","Pink"]];
+      return head("", "stack") + `<div class="ctl-block"><div class="swatches">${cols.map(([c, n]) => `<button class="sw${cur === c ? " sel" : ""}" data-accent="${c}" style="background:${c}" title="${n}" aria-label="${n}"></button>`).join("")}<label class="sw custom" title="Custom"><input type="color" id="accentCustom" value="${cur}"></label></div></div></div>`;
+    }
+    case "wallpaper": {
+      const cur = ls("alpha_wallpaper", "none");
+      const custom = ls("alpha_wallpaper_custom", "");
+      return head("", "stack") + `<div class="ctl-block"><div class="walls">${AlphaCommon.WALLPAPERS.map(w => `<button class="wall${cur === w.id ? " sel" : ""}" data-wall="${w.id}" style="background-image:${w.css}">${esc(w.label)}</button>`).join("")}
+        <button class="wall up${cur === "custom" ? " sel" : ""}" data-wall="upload" style="${custom ? `background-image:url(${custom});background-size:cover` : ""}"><span><i class="fa-solid fa-upload"></i> Your photo</span></button></div>
+        <input type="file" id="wallInput" accept="image/*" hidden></div></div>`;
+    }
+    case "preview": return `<div class="pv-label">Live preview. Changes below show up here first.</div>
+      <div class="preview" id="messages"><div class="b in">Are we still on for the call at 5?</div><div class="b out">Yes! Sending the link now<small>10:42 ✓✓</small></div><div class="b in">Perfect, thank you.</div></div>`;
+    case "storage": return `<div class="row stack" data-cat="data" data-text="alpha storage photos videos vault messages"><div class="tx"><div class="nm">Alpha storage <span class="ds" style="float:right">4.2 GB of 10 GB</span></div>
+      <div class="bar"><div></div></div><div class="sgrid"><span><b>1.8 GB</b>Photos</span><span><b>1.4 GB</b>Videos</span><span><b>650 MB</b>Vault</span><span><b>350 MB</b>Messages</span></div></div></div>`;
   }
+  return "";
+}
 
-  function getToken() { return localStorage.getItem('alpha_token') || null; }
-  function getIdentity() {
-    try {
-      const raw = JSON.parse(localStorage.getItem('alpha_user') || 'null');
-      if (!raw) return null;
-      const cu = raw.CU || raw.cu || {};
-      const up = raw.UP || raw.up || {};
-      return { id: cu.id || cu.email, display_name: up.display_name || (cu.email ? cu.email.split('@')[0] : 'User') };
-    } catch (e) { return null; }
-  }
+function renderPanels(){
+  $("#panels").innerHTML = CATS.map(([id, label,, desc]) => {
+    const rows = ROWS.filter(r => r.c === id);
+    // keep previews / storage outside the card group so they read as their own blocks
+    const loose = rows.filter(r => r.t === "preview");
+    const grouped = rows.filter(r => r.t !== "preview");
+    return `<div class="panel${id === activeCat ? " show" : ""}" id="p-${id}" data-cat="${id}">
+      <div class="panel-head"><h2>${label}</h2><p>${desc}</p></div>
+      ${loose.map(rowHtml).join("")}<div class="group">${grouped.map(rowHtml).join("")}</div></div>`;
+  }).join("");
+  AlphaCommon.applyWallpaper();
+}
 
-  async function cfApi(endpoint, method, body) {
-    const opts = { method: method || 'GET', headers: { 'Content-Type': 'application/json' } };
-    const t = getToken();
-    if (t) opts.headers['Authorization'] = 'Bearer ' + t;
-    if (body) opts.body = JSON.stringify(body);
-    const res = await fetch(API_BASE + endpoint, opts);
-    let data = {};
-    try { data = await res.json(); } catch (e) {}
-    if (res.status === 401) { const err = new Error('Session expired'); err.status = 401; throw err; }
-    if (!res.ok) throw new Error(data.error || data.message || ('Error ' + res.status));
-    return data;
-  }
+function renderRail(){
+  $("#rail").innerHTML = CATS.map(([id, label, icon]) => `<button data-cat-go="${id}" class="${id === activeCat ? "active" : ""}"><i class="fa-solid ${icon}"></i>${label}</button>`).join("");
+}
+function renderNav(){
+  $("#sideNav").innerHTML = NAV.map(([u, i, l]) => `<button class="${u === "settings.html" ? "active" : ""}" onclick="goTo('${u}')"><i class="fa-solid ${i}"></i>${l}</button>`).join("");
+  $("#mNav").innerHTML = [["index.html","fa-house","Home"],["reels.html","fa-film","Reels"],["chat.html","fa-comment-dots","Messages"],["vaults.html","fa-shield-halved","Vault"],["settings.html","fa-gear","Settings"]]
+    .map(([u, i, l]) => `<button class="${u === "settings.html" ? "active" : ""}" onclick="goTo('${u}')"><i class="fa-solid ${i}"></i>${l}</button>`).join("");
+}
+function renderAll(){ renderRail(); renderPanels(); }
 
-  async function getLiveKitToken(room, identity) {
-    const data = await cfApi('/livekit-token', 'POST', { room, identity });
-    if (!data || !data.token) throw new Error('No token received');
-    return data.token;
-  }
+function goCat(id){
+  activeCat = id; history.replaceState(null, "", "#" + id);
+  $("#q").value = ""; document.body.classList.remove("searching");
+  renderRail();
+  document.querySelectorAll(".panel").forEach(p => p.classList.toggle("show", p.dataset.cat === id));
+  $("#none").style.display = "none";
+}
 
-  function sendControlMsg(toUid, payload) {
-    const me = getIdentity();
-    if (!toUid || (me && String(toUid).toLowerCase() === String(me.id).toLowerCase())) return Promise.resolve();
-    return cfApi('/notifications', 'POST', {
-      to_uid: toUid, from_name: me ? me.display_name : '', text: JSON.stringify(payload)
-    }).catch(function () {});
-  }
+/* ---------- saving ---------- */
+async function saveServer(key, value, msg){
+  try { await api("/settings", { method: "PUT", body: JSON.stringify({ [key]: value }) }); server[key] = value; toast(msg); return true; }
+  catch(e){ toast("Couldn't save: " + e.message); return false; }
+}
+async function loadSettings(){
+  try { Object.assign(server, await api("/settings") || {}); renderPanels(); }
+  catch(e){ toast("Couldn't load settings: " + e.message); }
+}
 
-  function isSelf(uid) {
-    const me = getIdentity();
-    return !!(uid && me && me.id && String(uid).trim().toLowerCase() === String(me.id).trim().toLowerCase());
-  }
-
-  function avatarSrc(user) {
-    if (user && user.avatar_url) return user.avatar_url;
-    const name = encodeURIComponent((user && user.display_name) || 'Alpha User');
-    return 'https://ui-avatars.com/api/?background=4f46e5&color=fff&bold=true&name=' + name;
-  }
-
-  function callsKey() {
-    const me = getIdentity();
-    return 'alpha_calls_' + (me && me.id ? me.id : 'guest');
-  }
-  function logCall(uid, type, dur, direction) {
-    try {
-      const list = JSON.parse(localStorage.getItem(callsKey()) || '[]');
-      list.unshift({ id: Date.now() + '-' + Math.random().toString(36).slice(2), uid, type, dur, direction, ts: Date.now() });
-      localStorage.setItem(callsKey(), JSON.stringify(list.slice(0, 200)));
-    } catch (e) {}
-  }
-
-  let lkRoom = null, localCamTrack = null;
-  let callInProgress = false, callState = 'idle', callDirection = 'out', callType = 'voice';
-  let chatPartner = null, currentCallRoom = null, incomingCallData = null;
-  let callSecs = 0, callTimer = null;
-  let ringtoneActive = false, ringtoneCtx = null, ringtoneTimer = null;
-  let minimized = false;
-  let knownUsers = {};
-  const seenCallNotifIds = new Set();
-
-  function userInfo(uid) { return knownUsers[uid] || { display_name: 'User', avatar_url: null }; }
-
-  function startRingtone() {
-    if (ringtoneActive) return;
-    ringtoneActive = true;
-    try {
-      ringtoneCtx = ringtoneCtx || new (window.AudioContext || window.webkitAudioContext)();
-      if (ringtoneCtx.state === 'suspended') ringtoneCtx.resume().catch(function () {});
-    } catch (e) { ringtoneActive = false; return; }
-    const burst = function () {
-      if (!ringtoneActive || !ringtoneCtx) return;
-      const now = ringtoneCtx.currentTime;
-      [0, 0.4].forEach(function (offset) {
-        const o1 = ringtoneCtx.createOscillator(), o2 = ringtoneCtx.createOscillator(), g = ringtoneCtx.createGain();
-        o1.type = 'sine'; o2.type = 'sine'; o1.frequency.value = 480; o2.frequency.value = 620;
-        g.gain.setValueAtTime(0, now + offset);
-        g.gain.linearRampToValueAtTime(0.18, now + offset + 0.05);
-        g.gain.setValueAtTime(0.18, now + offset + 0.32);
-        g.gain.linearRampToValueAtTime(0, now + offset + 0.38);
-        o1.connect(g); o2.connect(g); g.connect(ringtoneCtx.destination);
-        o1.start(now + offset); o2.start(now + offset);
-        o1.stop(now + offset + 0.4); o2.stop(now + offset + 0.4);
-      });
+/* ---------- appearance helpers ---------- */
+function setTheme(t){ AlphaCommon.applyTheme(t); lsSet("alpha_theme", t); renderPanels(); toast(t === "dark" ? "Dark mode on" : "Light mode on"); }
+function applyTextSize(px){ document.documentElement.style.fontSize = px + "px"; }
+function resetAppearance(){
+  AlphaCommon.applyTheme("light"); lsSet("alpha_theme", "light");
+  AlphaCommon.applyAccent(AlphaCommon.DEFAULT_ACCENT);
+  AlphaCommon.setFont("default"); AlphaCommon.setDensity("comfortable");
+  lsSet("alpha_wallpaper", "none"); lsSet("alpha_textsize", "16"); applyTextSize(16);
+  renderPanels(); toast("Appearance reset");
+}
+function shrinkImage(file, max = 1200){
+  return new Promise((ok, no) => {
+    const img = new Image(), url = URL.createObjectURL(file);
+    img.onload = () => {
+      const k = Math.min(1, max / Math.max(img.width, img.height));
+      const c = document.createElement("canvas"); c.width = img.width * k; c.height = img.height * k;
+      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(url); ok(c.toDataURL("image/jpeg", .7));
     };
-    burst();
-    ringtoneTimer = setInterval(burst, 2000);
-  }
-  function stopRingtone() {
-    ringtoneActive = false;
-    if (ringtoneTimer) { clearInterval(ringtoneTimer); ringtoneTimer = null; }
-  }
-
-  function el(id) { return document.getElementById(id); }
-
-  function showStage(state, name, avatar) {
-    callState = state;
-    el('stageOverlay').classList.remove('minimized');
-    el('stageOverlay').classList.add('show');
-    el('callPill').classList.remove('show');
-    minimized = false;
-
-    el('callName').textContent = name || '—';
-    el('soloName').textContent = name || '—';
-    el('callAvatar').src = avatar || '';
-    el('pillAvatar').src = avatar || '';
-    el('pillName').textContent = name || '—';
-    el('stageHero').style.display = 'flex';
-    el('callVideoWrap').style.display = 'none';
-
-    const ringBtns = el('ringButtons'), acceptBtn = el('acceptBtn');
-    if (state === 'ringing-out') {
-      el('callStatusText').textContent = callType === 'video' ? 'Starting video…' : 'Starting voice…';
-      el('callSub').innerHTML = '<span class="ring-badge">Ringing…</span>';
-      ringBtns.style.display = 'flex'; acceptBtn.style.display = 'none';
-      el('stageDockWrap').classList.remove('show');
-    } else if (state === 'ringing-in') {
-      el('callStatusText').textContent = (callType === 'video' ? '📹' : '📞') + ' Incoming call';
-      el('callSub').innerHTML = '<span class="ring-badge">Incoming ' + (callType === 'video' ? 'video' : 'voice') + ' call</span>';
-      ringBtns.style.display = 'flex'; acceptBtn.style.display = 'grid';
-      el('stageDockWrap').classList.remove('show');
-      startRingtone();
-      if (navigator.vibrate) navigator.vibrate([300, 150, 300]);
-    } else if (state === 'active') {
-      el('callStatusText').textContent = 'Connected ●';
-      el('callSub').innerHTML = '';
-      ringBtns.style.display = 'none';
-      el('stageDockWrap').classList.add('show');
-      el('ctrlMic').classList.remove('active');
-      el('ctrlCam').classList.remove('active');
-    }
-  }
-
-  function startTimer() {
-    callSecs = 0;
-    if (callTimer) clearInterval(callTimer);
-    el('callTimer').classList.add('show');
-    callTimer = setInterval(function () {
-      callSecs++;
-      const m = String(Math.floor(callSecs / 60)).padStart(2, '0');
-      const s = String(callSecs % 60).padStart(2, '0');
-      el('callTimer').textContent = m + ':' + s;
-      el('pillSub').textContent = m + ':' + s;
-    }, 1000);
-  }
-
-  function getCid(a, b) { return [a, b].sort().join('_'); }
-
-  async function joinLiveKitRoom(room, type) {
-    const LivekitClient = await ensureLiveKit();
-    const me = getIdentity();
-    const token = await getLiveKitToken(room, me.id);
-    lkRoom = new LivekitClient.Room({ adaptiveStream: true, dynacast: true });
-
-    lkRoom.on(LivekitClient.RoomEvent.TrackSubscribed, function (track) {
-      if (track.kind === 'video') {
-        track.attach(el('remoteVideo'));
-        el('callVideoWrap').style.display = 'block';
-        el('stageHero').style.display = 'none';
-      } else if (track.kind === 'audio') {
-        track.attach(el('remoteAudio'));
-      }
-    });
-    lkRoom.on(LivekitClient.RoomEvent.TrackUnsubscribed, function (track) { track.detach(); });
-    lkRoom.on(LivekitClient.RoomEvent.Disconnected, function () { endCall(true); });
-
-    await lkRoom.connect(LIVEKIT_URL, token);
-    await lkRoom.localParticipant.setMicrophoneEnabled(true);
-
-    if (type === 'video') {
-      await lkRoom.localParticipant.setCameraEnabled(true);
-      const camPub = lkRoom.localParticipant.videoTrackPublications && lkRoom.localParticipant.videoTrackPublications.values().next().value;
-      if (camPub && camPub.track) {
-        localCamTrack = camPub.track;
-        camPub.track.attach(el('localVideo'));
-        el('callVideoWrap').style.display = 'block';
-        el('stageHero').style.display = 'none';
-      }
-    }
-
-    const partnerInfo = userInfo(chatPartner);
-    showStage('active', partnerInfo.display_name, avatarSrc(partnerInfo));
-    startTimer();
-  }
-
-  async function callUser(uid, type, name, avatarUrl) {
-    if (callInProgress) { AlphaCommon.toast('You’re already on a call'); return; }
-    if (isSelf(uid)) { AlphaCommon.toast('You can’t call yourself'); return; }
-    const me = getIdentity();
-    if (!me || !me.id) { AlphaCommon.toast('Sign in to make calls', 'error'); return; }
-
-    if (name) knownUsers[uid] = { display_name: name, avatar_url: avatarUrl };
-    chatPartner = uid; callType = type || 'voice'; callDirection = 'out'; callInProgress = true;
-    const room = 'call_' + getCid(me.id, uid) + '_' + Date.now();
-    currentCallRoom = room;
-
-    const info = userInfo(uid);
-    showStage('ringing-out', info.display_name, avatarSrc(info));
-
-    try {
-      await cfApi('/notifications', 'POST', {
-        to_uid: uid, from_name: me.display_name,
-        text: JSON.stringify({ type: 'call_invite', from_uid: me.id, from_name: me.display_name, action: 'invite', call_type: callType, room: room, host_uid: me.id })
-      });
-      await joinLiveKitRoom(room, callType);
-    } catch (e) {
-      AlphaCommon.toast('Call failed: ' + e.message, 'error');
-      resetCallState();
-    }
-  }
-
-  async function acceptCall() {
-    stopRingtone();
-    if (!incomingCallData) return;
-    const data = incomingCallData;
-    incomingCallData = null;
-    chatPartner = data.from_uid; callType = data.type || 'voice'; callInProgress = true; callDirection = 'in';
-    try {
-      currentCallRoom = data.room;
-      await joinLiveKitRoom(data.room, callType);
-    } catch (e) {
-      AlphaCommon.toast('Couldn’t join the call: ' + e.message, 'error');
-      resetCallState();
-    }
-  }
-
-  function cancelCall() {
-    stopRingtone();
-    if (callState === 'ringing-in' && incomingCallData) {
-      const data = incomingCallData;
-      incomingCallData = null;
-      if (!isSelf(data.from_uid)) {
-        sendControlMsg(data.from_uid, { type: 'call_invite', from_uid: getIdentity().id, from_name: getIdentity().display_name, action: 'decline', room: data.room });
-      }
-      AlphaCommon.toast('Call declined');
-      resetCallState();
-      return;
-    }
-    endCall();
-  }
-
-  function showIncomingCall(data) {
-    if (isSelf(data.from_uid)) return;
-    incomingCallData = data;
-    knownUsers[data.from_uid] = { display_name: data.from_name || 'Unknown', avatar_url: null };
-    chatPartner = data.from_uid;
-    callType = data.type || 'voice';
-    showStage('ringing-in', data.from_name || 'Unknown', avatarSrc(userInfo(data.from_uid)));
-    setTimeout(function () {
-      if (callState === 'ringing-in' && incomingCallData === data) cancelCall();
-    }, 30000);
-  }
-
-  function toggleMic() {
-    if (!lkRoom) return;
-    const btn = el('ctrlMic');
-    const muted = btn.classList.contains('active');
-    lkRoom.localParticipant.setMicrophoneEnabled(muted);
-    btn.classList.toggle('active');
-    btn.setAttribute('aria-label', muted ? 'Mute microphone' : 'Unmute microphone');
-    btn.innerHTML = muted ? '<i class="fa-solid fa-microphone"></i>' : '<i class="fa-solid fa-microphone-slash"></i>';
-  }
-  function toggleCam() {
-    if (!lkRoom) return;
-    const btn = el('ctrlCam');
-    const off = btn.classList.contains('active');
-    lkRoom.localParticipant.setCameraEnabled(off);
-    btn.classList.toggle('active');
-    btn.setAttribute('aria-label', off ? 'Turn camera off' : 'Turn camera on');
-    btn.innerHTML = off ? '<i class="fa-solid fa-video"></i>' : '<i class="fa-solid fa-video-slash"></i>';
-    el('callVideoWrap').style.display = off ? 'block' : 'none';
-    el('stageHero').style.display = off ? 'none' : 'flex';
-  }
-
-  function endCall(fromRemote) {
-    if (!callInProgress && callState === 'idle') return; // already ended (Disconnected event fires after leave)
-    const dur = callSecs, type = callType, dir = callDirection, partner = chatPartner;
-    const room = currentCallRoom;
-    if (lkRoom) { const r = lkRoom; lkRoom = null; try { r.disconnect(); } catch (e) {} }
-    if (!fromRemote && partner && !isSelf(partner) && room) {
-      const me = getIdentity();
-      sendControlMsg(partner, { type: 'call_invite', from_uid: me.id, from_name: me.display_name, action: 'end', room: room });
-    }
-    if (partner && dur > 0 && !isSelf(partner)) logCall(partner, type, dur, dir);
-    resetCallState();
-    AlphaCommon.toast('Call ended');
-  }
-
-  function resetCallState() {
-    if (callTimer) { clearInterval(callTimer); callTimer = null; }
-    stopRingtone();
-    el('stageOverlay').classList.remove('show');
-    el('stageOverlay').classList.remove('minimized');
-    el('callPill').classList.remove('show');
-    el('callVideoWrap').style.display = 'none';
-    el('stageDockWrap').classList.remove('show');
-    el('callTimer').classList.remove('show');
-    minimized = false;
-    callInProgress = false; callSecs = 0; currentCallRoom = null;
-    localCamTrack = null; callDirection = 'out'; callState = 'idle';
-    chatPartner = null; incomingCallData = null;
-  }
-
-  function minimize() {
-    if (!callInProgress) return;
-    minimized = true;
-    el('stageOverlay').classList.add('minimized');
-    el('stageOverlay').classList.remove('show');
-    el('callPill').classList.add('show');
-  }
-  function expand() {
-    if (!callInProgress) return;
-    minimized = false;
-    el('stageOverlay').classList.remove('minimized');
-    el('stageOverlay').classList.add('show');
-    el('callPill').classList.remove('show');
-  }
-  el('callPill').addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); expand(); } });
-
-  // ---------- incoming-call polling ----------
-  // Adaptive: quick while the tab is visible or a call is ringing, slower in the background,
-  // and paused when offline or signed out — saves data and battery.
-  let pollTimer = null, polling = false;
-
-  function nextDelay() {
-    if (callState === 'ringing-in' || callInProgress) return 3000;
-    return document.hidden ? 10000 : 4000;
-  }
-
-  async function pollOnce() {
-    if (!getToken() || navigator.onLine === false) return;
-    try {
-      const data = await cfApi('/notifications');
-      const relevant = (data || []).filter(function (n) {
-        if (!n.text || typeof n.text !== 'string' || n.text[0] !== '{') return false;
-        try { const d = JSON.parse(n.text); return d && d.type === 'call_invite'; } catch (e) { return false; }
-      });
-      for (const n of relevant) {
-        let payload;
-        try { payload = JSON.parse(n.text); } catch (e) { continue; }
-        if (isSelf(payload.from_uid)) continue;
-
-        const ageMs = Date.now() - new Date(n.created_at).getTime();
-        if (payload.action === 'invite' && ageMs > 30000) continue;
-
-        if ((payload.action === 'end' || payload.action === 'decline') && incomingCallData && payload.room === incomingCallData.room) {
-          stopRingtone(); resetCallState(); AlphaCommon.toast('Call cancelled');
-          continue;
-        }
-        if (payload.action === 'end' && callInProgress && payload.room === currentCallRoom) {
-          endCall(true);
-          continue;
-        }
-
-        if (seenCallNotifIds.has(n.id)) continue;
-        seenCallNotifIds.add(n.id);
-
-        if (payload.action !== 'invite') continue;
-        if (callInProgress) continue;
-        if (payload.is_group) continue; // group calls: open Calls to join
-
-        showIncomingCall({ from_name: payload.from_name, from_uid: payload.from_uid, type: payload.call_type || 'voice', room: payload.room });
-        break;
-      }
-    } catch (e) {
-      if (e && e.status === 401) stopPolling(); // signed out elsewhere: stop asking
-    }
-  }
-
-  function schedule() {
-    if (!polling) return;
-    pollTimer = setTimeout(async function () { await pollOnce(); schedule(); }, nextDelay());
-  }
-  function startPolling() {
-    if (polling) return;
-    polling = true;
-    pollOnce().then(schedule);
-  }
-  function stopPolling() {
-    polling = false;
-    if (pollTimer) { clearTimeout(pollTimer); pollTimer = null; }
-    seenCallNotifIds.clear();
-  }
-
-  document.addEventListener('visibilitychange', function () {
-    if (!document.hidden && polling) { clearTimeout(pollTimer); pollOnce().then(schedule); } // catch up immediately
+    img.onerror = () => no(new Error("Not a valid image"));
+    img.src = url;
   });
-  window.addEventListener('online', function () { if (polling) { clearTimeout(pollTimer); pollOnce().then(schedule); } });
+}
 
-  if (getToken()) startPolling();
-  window.addEventListener('storage', function (e) {
-    if (e.key === 'alpha_token') { e.newValue ? startPolling() : stopPolling(); }
+/* ---------- events (delegated) ---------- */
+document.addEventListener("click", async e => {
+  const t = e.target.closest("[data-tg],[data-cat-go],[data-m],[data-act],[data-theme-set],[data-accent],[data-wall]");
+  if(!t) return;
+  if(t.dataset.catGo) return goCat(t.dataset.catGo);
+  if(t.dataset.m) return openModal(t.dataset.m);
+  if(t.dataset.themeSet) return setTheme(t.dataset.themeSet);
+  if(t.dataset.accent){ AlphaCommon.applyAccent(t.dataset.accent); renderPanels(); return toast("Accent color updated"); }
+  if(t.dataset.wall){
+    if(t.dataset.wall === "upload") return $("#wallInput").click();
+    lsSet("alpha_wallpaper", t.dataset.wall); renderPanels(); return toast("Wallpaper updated");
+  }
+  if(t.dataset.act) return runAction(t.dataset.act);
+  if(t.dataset.tg){
+    const on = !t.classList.contains("on");
+    document.querySelectorAll(`[data-tg="${t.dataset.tg}"]`).forEach(b => { b.classList.toggle("on", on); b.setAttribute("aria-checked", on); b.classList.add("saving"); });
+    const ok = await saveServer(t.dataset.tg, on, on ? "Turned on" : "Turned off");
+    document.querySelectorAll(`[data-tg="${t.dataset.tg}"]`).forEach(b => { b.classList.remove("saving"); if(!ok){ b.classList.toggle("on", !on); b.setAttribute("aria-checked", !on); } });
+  }
+});
+document.addEventListener("keydown", e => {
+  if(e.key === "Escape") closeModal();
+  if((e.key === "Enter" || e.key === " ") && e.target.matches(".row.link,.avatar")){ e.preventDefault(); e.target.click(); }
+});
+document.addEventListener("input", e => {
+  if(e.target.id === "accentCustom"){ AlphaCommon.applyAccent(e.target.value); }
+});
+document.addEventListener("change", async e => {
+  const el = e.target;
+  if(el.id === "accentCustom"){ renderPanels(); return toast("Accent color updated"); }
+  if(el.id === "wallInput" && el.files[0]){
+    try { lsSet("alpha_wallpaper_custom", await shrinkImage(el.files[0])); lsSet("alpha_wallpaper", "custom"); renderPanels(); toast("Wallpaper updated"); }
+    catch(err){ toast(err.message); }
+    return;
+  }
+  const k = el.dataset.sel; if(!k) return;
+  const r = ROWS.find(x => x.t === "select" && x.k === k);
+  if(r && r.local){
+    lsSet("alpha_" + k, el.value);
+    if(k === "font") AlphaCommon.setFont(el.value);
+    if(k === "density") AlphaCommon.setDensity(el.value);
+    if(k === "textsize") applyTextSize(el.value);
+    toast(r.n + " updated");
+  } else saveServer(k, el.value, r.n + ": " + el.value);
+});
+
+function runAction(id){
+  if(id === "logout") return AlphaCommon.logout("login.html");
+  if(id === "reset") return resetAppearance();
+  if(id === "report") return toast("Reporting is coming soon");
+  if(id === "deactivate"){
+    if(!confirm("Deactivate your Alpha account? You can reactivate by logging back in.")) return;
+    api("/account/deactivate", { method: "POST" }).then(() => { localStorage.removeItem(TOKEN_KEY); toast("Account deactivated"); setTimeout(() => goTo("login.html"), 800); })
+      .catch(e => toast("Couldn't deactivate: " + e.message));
+  }
+}
+
+/* ---------- search ---------- */
+$("#q").addEventListener("input", e => {
+  const q = e.target.value.toLowerCase().trim();
+  document.body.classList.toggle("searching", !!q);
+  let total = 0;
+  document.querySelectorAll(".panel").forEach(p => {
+    let n = 0;
+    p.querySelectorAll(".row[data-text]").forEach(r => { const hit = !q || r.dataset.text.includes(q); r.classList.toggle("hidden", !hit); r.classList.toggle("hit", !!q && hit); if(hit) n++; });
+    // hide the preview block and the panel when nothing matched
+    p.querySelectorAll(".preview,.pv-label").forEach(x => x.classList.toggle("hidden", !!q));
+    p.classList.toggle("hidden", !!q && !n); total += n;
   });
+  if(!q){ document.querySelectorAll(".panel").forEach(p => p.classList.remove("hidden")); goCat(activeCat); }
+  $("#none").style.display = q && !total ? "block" : "none";
+});
 
-  // Embedded pages ask the shell to start calls
-  window.addEventListener('message', function (e) {
-    if (e.origin !== window.location.origin) return; // only our own pages
-    if (!e.data || typeof e.data !== 'object') return;
-    if (e.data.type === 'alpha:startCall') {
-      if (!e.data.uid) return;
-      callUser(e.data.uid, e.data.callType || 'voice', e.data.name, e.data.avatarUrl);
+/* ---------- profile ---------- */
+function renderMe(){
+  $("#meName").textContent = me.display_name || me.email || "Unknown";
+  $("#meUser").textContent = "@" + (me.email ? me.email.split("@")[0] : "user");
+  $("#meBio").textContent = me.bio || "";
+  const a = $("#avatar");
+  if(me.avatar_url){ a.style.backgroundImage = `url("${me.avatar_url}")`; a.firstChild && (a.firstChild.textContent = ""); a.textContent = ""; }
+  else { a.style.backgroundImage = ""; a.textContent = (me.display_name || me.email || "??").slice(0, 2).toUpperCase(); }
+}
+async function loadMe(){
+  try {
+    const v = await api("/verify"); me.email = v.email; me.display_name = v.display_name;
+    try { const m = (await api("/users")).find(u => u.email === v.email); if(m){ me.bio = m.bio || ""; me.avatar_url = m.avatar_url || null; } } catch {}
+    renderMe();
+  } catch(e){ toast("Couldn't load profile: " + e.message); }
+}
+$("#avatar").addEventListener("click", () => $("#avatarInput").click());
+$("#avatarInput").addEventListener("change", async e => {
+  const f = e.target.files[0]; if(!f) return;
+  try {
+    const fd = new FormData(); fd.append("file", f);
+    const r = await fetch(API + "/upload", { method: "POST", body: fd }); const d = await r.json();
+    if(!r.ok) throw new Error(d.error || "Upload failed");
+    await api("/profile", { method: "PUT", body: JSON.stringify({ avatar_url: d.url }) });
+    me.avatar_url = d.url; renderMe(); toast("Profile photo updated");
+  } catch(err){ toast("Couldn't update photo: " + err.message); }
+  finally { e.target.value = ""; }
+});
+
+/* ---------- modals ---------- */
+let modal = null;
+const field = (id, label, val, extra = "") => `<div class="fg"><label for="${id}">${label}</label><input id="${id}" value="${esc(val)}" ${extra}></div>`;
+const rowInfo = (i, n, d) => `<div class="row"><div class="ic"><i class="fa-solid ${i}"></i></div><div class="tx"><div class="nm">${n}</div><div class="ds">${d}</div></div></div>`;
+const MODALS = {
+  profile: () => ["Edit profile", field("mName", "Name", me.display_name) + field("mBio", "Bio", me.bio)],
+  account: () => ["Account information", field("mName", "Full name", me.display_name) + field("mUser", "Username", "@" + (me.email || "").split("@")[0], "readonly") + field("mMail", "Email", me.email || "", "readonly")],
+  password: () => ["Change password", field("mCur", "Current password", "", 'type="password" autocomplete="current-password"') + field("mNew", "New password", "", 'type="password" autocomplete="new-password"') + field("mCon", "Confirm new password", "", 'type="password" autocomplete="new-password"')],
+  devices: () => ["Connected devices", rowInfo("fa-laptop", "This device", "Active now") + rowInfo("fa-mobile-screen-button", "iPhone", "Kigali · 2 hours ago")],
+  blocked: () => ["Blocked accounts", `<div class="empty"><i class="fa-solid fa-ban"></i><strong style="display:block;color:var(--text)">No blocked accounts</strong>When you block someone, they will show up here.</div>`],
+  storage: () => ["Manage storage", field("a", "Cached files", "350 MB", "readonly") + field("b", "Downloaded media", "1.2 GB", "readonly") + `<button class="btn primary" style="width:100%" id="clearCache">Clear cache</button>`],
+  help: () => ["Help center", rowInfo("fa-circle-question", "Frequently asked questions", "Answers to common questions") + rowInfo("fa-comment-dots", "Contact Alpha support", "Talk to the support team")]
+};
+function openModal(type){
+  modal = type; const [title, body] = MODALS[type]();
+  $("#mTitle").textContent = title; $("#mBody").innerHTML = body;
+  $("#mSave").classList.toggle("hidden", ["devices","blocked","help","storage"].includes(type));
+  $("#mCancel").textContent = $("#mSave").classList.contains("hidden") ? "Close" : "Cancel";
+  $("#ov").classList.add("show");
+  const f = $("#mBody input:not([readonly])"); f && f.focus();
+  const cc = $("#clearCache");
+  if(cc) cc.onclick = async () => { try { if(window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch {} toast("Cache cleared"); closeModal(); };
+}
+function closeModal(){ $("#ov").classList.remove("show"); modal = null; }
+$("#mClose").onclick = $("#mCancel").onclick = closeModal;
+$("#ov").addEventListener("click", e => { if(e.target.id === "ov") closeModal(); });
+
+$("#mSave").addEventListener("click", async () => {
+  const btn = $("#mSave"); btn.disabled = true;
+  try {
+    if(modal === "password"){
+      const c = $("#mCur").value, n = $("#mNew").value, k = $("#mCon").value;
+      if(!c || !n || !k) throw new Error("Fill in all password fields");
+      if(n.length < 6) throw new Error("New password must be at least 6 characters");
+      if(n !== k) throw new Error("New passwords don't match");
+      await api("/account/password", { method: "PUT", body: JSON.stringify({ current_password: c, new_password: n }) });
+      toast("Password updated");
+    } else if(modal === "profile" || modal === "account"){
+      const body = { display_name: $("#mName").value.trim() };
+      if(modal === "profile") body.bio = $("#mBio").value.trim();
+      await api("/profile", { method: "PUT", body: JSON.stringify(body) });
+      Object.assign(me, body); renderMe(); toast(modal === "profile" ? "Profile updated" : "Account updated");
     }
-  });
+    closeModal();
+  } catch(e){ toast(e.message); }
+  finally { btn.disabled = false; }
+});
 
-  window.AlphaCallShell = {
-    callUser: callUser, acceptCall: acceptCall, cancelCall: cancelCall, endCall: endCall,
-    toggleMic: toggleMic, toggleCam: toggleCam, minimize: minimize, expand: expand,
-    isCallInProgress: function () { return callInProgress; }
-  };
-})();
+/* ---------- init ---------- */
+applyTextSize(ls("alpha_textsize", "16"));
+renderNav(); renderAll(); loadMe(); loadSettings();
 </script>
 </body>
 </html>
