@@ -5889,7 +5889,8 @@ async function startVoiceRecording(){
         recordingStream = await navigator.mediaDevices.getUserMedia({ audio:true });
         recordedChunks = [];
 
-        const mimeType = (window.MediaRecorder && MediaRecorder.isTypeSupported("audio/webm")) ? "audio/webm" : "";
+        const mimeType = ["audio/webm;codecs=opus","audio/webm","audio/mp4","audio/ogg"]
+            .find(t => window.MediaRecorder && MediaRecorder.isTypeSupported(t)) || "";
         mediaRecorder = new MediaRecorder(recordingStream,mimeType ? { mimeType } : undefined);
 
         mediaRecorder.ondataavailable = e => {
@@ -5957,14 +5958,16 @@ function stopAndSendVoiceRecording(){
 
         if(!recordedChunks.length || !endpoint){ return; }
 
-        const blob = new Blob(recordedChunks,{ type:"audio/webm" });
+        const recType = (mediaRecorder && mediaRecorder.mimeType || "audio/webm").split(";")[0];
+        const recExt = recType.includes("mp4") ? "m4a" : recType.includes("ogg") ? "ogg" : "webm";
+        const blob = new Blob(recordedChunks,{ type:recType });
 
         if(blob.size < 500){
             showToast("Recording too short");
             return;
         }
 
-        const file = new File([blob],`voice-note-${Date.now()}.webm`,{ type:"audio/webm" });
+        const file = new File([blob],`voice-note-${Date.now()}.${recExt}`,{ type:recType });
 
         showToast("Sending voice note…");
 
