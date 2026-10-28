@@ -1,221 +1,775 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Alpha — Home</title>
-<meta name="theme-color" content="#2563eb">
-<meta name="description" content="Alpha — connect, create and belong.">
-<meta name="color-scheme" content="light dark">
-<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-<link rel="preconnect" href="https://alpha-auth.murwanashyakadieumerci540.workers.dev" crossorigin>
-<link rel="icon" href="data:,">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-<link rel="stylesheet" href="home.css">
-<script src="alpha-common.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alpha — Sign In</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --blue: #3366ff;
+      --blue-light: #5c85ff;
+      --cyan: #21d4fd;
+      --bg: #f5f7fb;
+      --text: #111827;
+      --muted: #667085;
+      --border: #e4e8f0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Inter, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 10% 10%, rgba(51,102,255,.13), transparent 30%),
+        radial-gradient(circle at 90% 90%, rgba(33,212,253,.12), transparent 30%),
+        var(--bg);
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    .page {
+      width: min(1080px, 100%);
+      min-height: 650px;
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      overflow: hidden;
+      border-radius: 32px;
+      background: rgba(255,255,255,.8);
+      border: 1px solid rgba(255,255,255,.9);
+      backdrop-filter: blur(25px);
+      box-shadow: 0 30px 80px rgba(25,45,90,.13);
+    }
+
+    /* LEFT SIDE */
+
+    .showcase {
+      position: relative;
+      padding: 58px;
+      overflow: hidden;
+      color: white;
+      background: linear-gradient(145deg, #1d49d8, #3366ff 55%, #21a8e8);
+    }
+
+    .showcase::before,
+    .showcase::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,.09);
+    }
+
+    .showcase::before {
+      width: 360px;
+      height: 360px;
+      right: -150px;
+      top: -120px;
+    }
+
+    .showcase::after {
+      width: 300px;
+      height: 300px;
+      left: -170px;
+      bottom: -130px;
+    }
+
+    .brand {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: rgba(255,255,255,.18);
+      border: 1px solid rgba(255,255,255,.28);
+      font-size: 21px;
+      font-weight: 800;
+    }
+
+    .brand strong {
+      font-size: 22px;
+      letter-spacing: -.5px;
+    }
+
+    .hero {
+      position: relative;
+      z-index: 1;
+      margin-top: 115px;
+      max-width: 470px;
+    }
+
+    .hero h1 {
+      font-size: clamp(40px, 5vw, 62px);
+      line-height: .98;
+      letter-spacing: -3px;
+    }
+
+    .hero h1 span {
+      color: #bff4ff;
+    }
+
+    .hero p {
+      margin-top: 22px;
+      max-width: 420px;
+      color: rgba(255,255,255,.78);
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    .pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 30px;
+    }
+
+    .pill {
+      padding: 9px 13px;
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 999px;
+      background: rgba(255,255,255,.1);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    /* LOGIN */
+
+    .login-side {
+      display: grid;
+      place-items: center;
+      padding: 54px;
+      background: rgba(255,255,255,.72);
+    }
+
+    .card {
+      width: min(390px, 100%);
+    }
+
+    .mobile-brand {
+      display: none;
+    }
+
+    .heading h2 {
+      font-size: 31px;
+      letter-spacing: -1.3px;
+    }
+
+    .heading p {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    form {
+      margin-top: 32px;
+    }
+
+    .field {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #344054;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    input[type="email"],
+    input[type="password"],
+    input[type="text"] {
+      width: 100%;
+      height: 54px;
+      padding: 0 48px 0 16px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      outline: none;
+      background: white;
+      color: var(--text);
+      font: inherit;
+      font-size: 14px;
+      transition: .2s;
+    }
+
+    input:focus {
+      border-color: var(--blue-light);
+      box-shadow: 0 0 0 4px rgba(51,102,255,.1);
+    }
+
+    .toggle {
+      position: absolute;
+      right: 8px;
+      top: 7px;
+      width: 40px;
+      height: 40px;
+      border: 0;
+      background: transparent;
+      color: #98a2b3;
+      cursor: pointer;
+      border-radius: 10px;
+    }
+
+    .toggle:hover {
+      background: #f2f4f7;
+      color: var(--blue);
+    }
+
+    .options {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 6px 0 24px;
+      font-size: 12px;
+    }
+
+    .remember {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .remember input {
+      accent-color: var(--blue);
+    }
+
+    a {
+      color: var(--blue);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .btn {
+      width: 100%;
+      height: 54px;
+      border: 0;
+      border-radius: 14px;
+      cursor: pointer;
+      background: linear-gradient(135deg, var(--blue), #4d7cff);
+      color: white;
+      font: inherit;
+      font-size: 14px;
+      font-weight: 800;
+      box-shadow: 0 12px 25px rgba(51,102,255,.24);
+      transition: .2s;
+    }
+
+    .btn:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 30px rgba(51,102,255,.3);
+    }
+
+    .btn:disabled {
+      opacity: .7;
+      cursor: not-allowed;
+    }
+
+    .spinner {
+      display: none;
+    }
+
+    .loading .spinner {
+      display: inline-block;
+      animation: spin .7s linear infinite;
+    }
+
+    .loading .btn-text {
+      display: none;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .message {
+      min-height: 0;
+      margin-top: 14px;
+      border-radius: 12px;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .message.error,
+    .message.success {
+      padding: 11px 13px;
+    }
+
+    .message.error {
+      color: #b42318;
+      background: #fef3f2;
+      border: 1px solid #fecdca;
+    }
+
+    .message.success {
+      color: #067647;
+      background: #ecfdf3;
+      border: 1px solid #abefc6;
+    }
+
+    .register {
+      margin-top: 26px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 820px) {
+      body {
+        padding: 12px;
+      }
+
+      .page {
+        min-height: auto;
+        grid-template-columns: 1fr;
+        max-width: 520px;
+        border-radius: 24px;
+      }
+
+      .showcase {
+        display: none;
+      }
+
+      .login-side {
+        padding: 42px 26px;
+      }
+
+      .mobile-brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 34px;
+      }
+
+      .mobile-brand .logo {
+        color: white;
+        background: linear-gradient(135deg, var(--blue), var(--cyan));
+      }
+
+      .mobile-brand strong {
+        font-size: 21px;
+      }
+    }
+  </style>
 </head>
+
 <body>
-<noscript><p style="padding:24px;font-family:sans-serif">Alpha needs JavaScript to run.</p></noscript>
 
-<div class="app">
-  <!-- LEFT NAV -->
-  <aside class="left">
-    <button class="brand" onclick="goHome()">
-      <div class="logo">A</div>
-      <div class="brand-name-wrap"><div class="brand-name">Alpha</div><div class="brand-tag">Connect · Create · Belong</div></div>
-    </button>
-    <nav class="nav">
-      <div class="nav-section-label">Main</div>
-      <button class="active" onclick="goHome()"><span class="nav-icon"><i class="fa-solid fa-house"></i></span> Home</button>
-      <button onclick="goToExplore()"><span class="nav-icon"><i class="fa-solid fa-compass"></i></span> Explore</button>
-      <button onclick="goToReels()"><span class="nav-icon"><i class="fa-solid fa-film"></i></span> Reels</button>
-      <button onclick="goToChat()"><span class="nav-icon"><i class="fa-solid fa-comment-dots"></i></span> Messages <span class="nav-badge" id="nav-msg-badge" style="display:none"></span></button>
-      <div class="nav-section-label">Activity</div>
-      <button onclick="goToCalls()"><span class="nav-icon"><i class="fa-solid fa-phone"></i></span> Calls</button>
-      <button onclick="goToStatus()"><span class="nav-icon"><i class="fa-solid fa-circle-dot"></i></span> Status</button>
-      <button onclick="goToEvents()"><span class="nav-icon"><i class="fa-solid fa-calendar-days"></i></span> Events</button>
-      <button onclick="viewSaved()"><span class="nav-icon"><i class="fa-solid fa-bookmark"></i></span> Saved</button>
-      <div class="nav-section-label">Workspace</div>
-      <button onclick="goToAI()"><span class="nav-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></span> AI</button>
-      <button onclick="goToVault()"><span class="nav-icon"><i class="fa-solid fa-shield-halved"></i></span> Vault</button>
-      <button onclick="goToSettings()"><span class="nav-icon"><i class="fa-solid fa-gear"></i></span> Settings</button>
-    </nav>
-    <div class="profile-mini">
-      <div class="avatar" id="me-mini-avatar">?</div>
-      <div class="name-wrap" onclick="goToSettings()"><div class="name" id="me-mini-name">You</div><small id="me-mini-handle">@you</small></div>
-      <button class="logout-btn" title="Sign out" onclick="doLogout()"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
-    </div>
-  </aside>
+  <main class="page">
 
-  <!-- CENTER -->
-  <main class="center">
-    <div class="top">
-      <div class="top-left-group">
-        <button class="circle-btn" id="index-back-btn" onclick="goIndexBack()" title="Back" style="display:none;"><i class="fa-solid fa-arrow-left"></i></button>
-        <button class="top-left" onclick="goHome()">
-          <div class="top-icon-wrap"><i class="fa-solid fa-bolt"></i></div>
-          <div class="top-title-wrap"><div class="top-title">Alpha</div><div class="top-sub">Your social space</div></div>
-        </button>
+    <section class="showcase">
+
+      <div class="brand">
+        <div class="logo">A</div>
+        <strong>ALPHA</strong>
       </div>
-      <div class="top-actions">
-        <button class="circle-btn" id="search-toggle-btn" onclick="toggleSearchBar()" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
-        <button class="circle-btn" onclick="toggleTheme()" id="theme-toggle" aria-label="Toggle theme"><i class="fa-regular fa-circle-half-stroke"></i></button>
-      </div>
-    </div>
 
-    <div class="search-bar-wrap" id="search-bar-wrap">
-      <i class="fa-solid fa-magnifying-glass"></i>
-      <input id="nav-search-input" type="text" placeholder="Search Alpha, people, posts & #tags…" oninput="searchPosts(this.value)">
-      <button class="clear-search" onclick="clearSearchBar()" aria-label="Clear"><i class="fa-solid fa-xmark"></i></button>
-    </div>
+      <div class="hero">
+        <h1>
+          Your world.<br>
+          Your people.<br>
+          <span>Your Alpha.</span>
+        </h1>
 
-    <div class="people" id="stories-row"></div>
+        <p>
+          Connect, share, discover and manage your digital life
+          from one beautifully connected platform.
+        </p>
 
-    <div class="feed-control">
-      <div class="tabs" id="feed-tabs">
-        <button class="active" data-tab="trending" onclick="switchFeedTab('trending',this)">For You</button>
-        <button data-tab="following" onclick="switchFeedTab('following',this)">Following</button>
-        <button data-tab="recent" onclick="switchFeedTab('recent',this)">Latest</button>
-        <button data-tab="saved" onclick="switchFeedTab('saved',this)">Saved</button>
-      </div>
-      <button class="circle-btn" onclick="goToExplore()" title="Explore more"><i class="fa-solid fa-sliders"></i></button>
-    </div>
+        <div class="pills">
+          <span class="pill">
+            <i class="fa-solid fa-globe"></i> Social
+          </span>
 
-    <div class="composer" id="compose-card">
-      <div class="compose-top">
-        <div class="compose-avatar" id="compose-avatar">?</div>
-        <textarea id="post-text" placeholder="Share something meaningful…" rows="2"></textarea>
-      </div>
-      <div class="compose-media-grid" id="compose-media-grid"></div>
-      <div class="poll-composer" id="poll-composer">
-        <div class="poll-opt-row"><input type="text" id="poll-opt-0" placeholder="Option 1" maxlength="60"></div>
-        <div class="poll-opt-row"><input type="text" id="poll-opt-1" placeholder="Option 2" maxlength="60"></div>
-        <button class="poll-add-opt" id="poll-add-btn" onclick="addPollOption()"><i class="fa-solid fa-plus" style="font-size:10px;"></i> Add option</button>
-      </div>
-      <div class="compose-bottom">
-        <div class="tools">
-          <input type="file" id="post-media-input" accept="image/*,video/*" multiple style="display:none" onchange="handleMediaSelect(this)">
-          <button class="tool" onclick="document.getElementById('post-media-input').click()" title="Add photos or videos"><i class="fa-solid fa-image"></i></button>
-          <button class="tool" id="poll-btn" onclick="togglePollComposer()" title="Add a poll"><i class="fa-solid fa-chart-simple"></i></button>
-          <button class="tool" id="mood-btn" onclick="cycleMood()" title="Mood"><i class="fa-solid fa-sun"></i></button>
-          <button class="tool" id="anon-btn" onclick="toggleAnon()" title="Post anonymously"><i class="fa-solid fa-user"></i></button>
+          <span class="pill">
+            <i class="fa-solid fa-lock"></i> Private Vaults
+          </span>
+
+          <span class="pill">
+            <i class="fa-solid fa-robot"></i> AI
+          </span>
+
+          <span class="pill">
+            <i class="fa-solid fa-calendar"></i> Events
+          </span>
         </div>
-        <button class="post-btn" id="post-btn" onclick="createPost()"><i class="fa-solid fa-paper-plane"></i> Post</button>
       </div>
-    </div>
 
-    <div id="posts-container"></div>
+    </section>
+
+
+    <section class="login-side">
+
+      <div class="card">
+
+        <div class="mobile-brand">
+          <div class="logo">A</div>
+          <strong>ALPHA</strong>
+        </div>
+
+        <div class="heading">
+          <h2>Welcome back</h2>
+          <p>Sign in to continue to your Alpha account.</p>
+        </div>
+
+        <div id="message" class="message"></div>
+
+        <form id="loginForm" novalidate>
+
+          <div class="field">
+            <label for="email">Email address</label>
+
+            <div class="input-wrap">
+              <input
+                id="email"
+                type="email"
+                placeholder="you@example.com"
+                autocomplete="username"
+                required
+              >
+            </div>
+          </div>
+
+
+          <div class="field">
+
+            <label for="password">Password</label>
+
+            <div class="input-wrap">
+
+              <input
+                id="password"
+                type="password"
+                placeholder="Enter your password"
+                autocomplete="current-password"
+                required
+              >
+
+              <button
+                class="toggle"
+                id="passwordToggle"
+                type="button"
+                aria-label="Show password"
+              >
+                <i class="fa-solid fa-eye"></i>
+              </button>
+
+            </div>
+
+          </div>
+
+
+          <div class="options">
+
+            <label class="remember">
+              <input id="remember" type="checkbox">
+              Remember me
+            </label>
+
+            <a href="#" id="forgotLink">
+              Forgot password?
+            </a>
+
+          </div>
+
+
+          <button class="btn" id="loginButton" type="submit">
+
+            <span class="btn-text">
+              Sign in
+            </span>
+
+            <i class="fa-solid fa-spinner spinner"></i>
+
+          </button>
+
+        </form>
+
+
+        <div class="register">
+          Don't have an account?
+          <a href="register.html">Create account</a>
+        </div>
+
+      </div>
+
+    </section>
+
   </main>
 
-  <!-- RIGHT PANEL -->
-  <aside class="right">
-    <div class="panel">
-      <div class="panel-title">Trending <span onclick="goToExplore()">See all</span></div>
-      <div class="trend" onclick="searchPosts('#Alpha')"><small>1 · Community</small><strong>#Alpha</strong><em>2.4K posts</em></div>
-      <div class="trend" onclick="searchPosts('#Kigali')"><small>2 · Rwanda</small><strong>#Kigali</strong><em>890 posts</em></div>
-      <div class="trend" onclick="searchPosts('#Rwanda')"><small>3 · Rwanda</small><strong>#Rwanda</strong><em>543 posts</em></div>
-      <div class="trend" onclick="searchPosts('#Tech')"><small>4 · Technology</small><strong>#Tech</strong><em>421 posts</em></div>
-      <div class="trend" onclick="searchPosts('#AlphaLaunch')"><small>5 · Alpha</small><strong>#AlphaLaunch</strong><em>312 posts</em></div>
-    </div>
-    <div class="panel"><div class="panel-title"><span class="dot-live"></span> Online Now</div><div id="online-list"></div></div>
-    <div class="panel"><div class="panel-title">People <span onclick="viewAllPeople()">See all</span></div><div id="follow-list"></div></div>
-    <div class="panel">
-      <div class="panel-title">Alpha</div>
-      <div style="font-size:11.5px;color:var(--text-muted);line-height:1.7">A place for meaningful conversations, creativity and communities.<br><br>© 2026 Alpha</div>
-    </div>
-  </aside>
-</div>
 
-<!-- Mobile nav -->
-<nav class="mobile-nav">
-  <button class="active" onclick="goHome()"><span class="mobile-nav-icon"><i class="fa-solid fa-house"></i></span>Home</button>
-  <button onclick="goToExplore()"><span class="mobile-nav-icon"><i class="fa-solid fa-magnifying-glass"></i></span>Search</button>
-  <button onclick="goToChat()"><span class="mobile-nav-icon"><i class="fa-solid fa-comment-dots"></i></span>Messages</button>
-  <button onclick="goToReels()"><span class="mobile-nav-icon"><i class="fa-solid fa-film"></i></span>Reels</button>
-  <button onclick="openMobileMenu()"><span class="mobile-nav-icon"><i class="fa-solid fa-bars"></i></span>More</button>
-</nav>
+  <script>
+    const API_BASE =
+      'https://alpha-auth.murwanashyakadieumerci540.workers.dev';
 
-<div class="mobile-menu-overlay" id="mobile-menu-overlay" onclick="if(event.target===this) closeMobileMenu()">
-  <aside class="mobile-menu-sheet">
-    <div class="mm-header">
-      <div class="brand"><div class="logo">A</div><div class="brand-name-wrap"><div class="brand-name">Alpha</div><div class="brand-tag">Connect · Create · Belong</div></div></div>
-      <button class="mm-close" onclick="closeMobileMenu()"><i class="fa-solid fa-xmark"></i></button>
-    </div>
-    <nav class="mm-nav">
-      <div class="nav-section-label">Main</div>
-      <button onclick="closeMobileMenu();goToExplore()"><span class="nav-icon"><i class="fa-solid fa-compass"></i></span> Explore</button>
-      <button onclick="closeMobileMenu();goToReels()"><span class="nav-icon"><i class="fa-solid fa-film"></i></span> Reels</button>
-      <button onclick="closeMobileMenu();goToGroups()"><span class="nav-icon"><i class="fa-solid fa-people-group"></i></span> Groups</button>
-      <div class="nav-section-label">Activity</div>
-      <button onclick="closeMobileMenu();goToCalls()"><span class="nav-icon"><i class="fa-solid fa-phone"></i></span> Calls</button>
-      <button onclick="closeMobileMenu();goToStatus()"><span class="nav-icon"><i class="fa-solid fa-circle-dot"></i></span> Status</button>
-      <button onclick="closeMobileMenu();goToEvents()"><span class="nav-icon"><i class="fa-solid fa-calendar-days"></i></span> Events</button>
-      <button onclick="closeMobileMenu();viewSaved()"><span class="nav-icon"><i class="fa-solid fa-bookmark"></i></span> Saved</button>
-      <div class="nav-section-label">Workspace</div>
-      <button onclick="closeMobileMenu();goToAI()"><span class="nav-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></span> AI</button>
-      <button onclick="closeMobileMenu();goToVault()"><span class="nav-icon"><i class="fa-solid fa-shield-halved"></i></span> Vault</button>
-      <button onclick="closeMobileMenu();goToSettings()"><span class="nav-icon"><i class="fa-solid fa-gear"></i></span> Settings</button>
-    </nav>
-    <div class="mm-footer"><button class="logout-btn" onclick="closeMobileMenu();doLogout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sign out</button></div>
-  </aside>
-</div>
+    const TOKEN_KEY = 'alpha_token';
+    const USER_KEY = 'alpha_user';
 
-<div class="toast-wrap" id="toast-wrap"></div>
+    const form = document.getElementById('loginForm');
+    const email = document.getElementById('email');
+    const password = document.getElementById('password');
+    const remember = document.getElementById('remember');
+    const button = document.getElementById('loginButton');
+    const message = document.getElementById('message');
+    const toggle = document.getElementById('passwordToggle');
 
-<div class="modal-overlay" id="modal-overlay"><div class="modal" id="modal-box"><button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button></div></div>
 
-<div class="lightbox" id="lightbox">
-  <button class="lb-close" onclick="closeLB()"><i class="fa-solid fa-xmark"></i></button>
-  <div class="lb-counter" id="lb-counter" style="display:none"></div>
-  <button class="lb-nav lb-prev" id="lb-prev" onclick="lbNav(-1)" style="display:none"><i class="fa-solid fa-chevron-left"></i></button>
-  <div class="lb-stage"><img id="lb-img" src="" alt="" style="display:none"><video id="lb-video" controls playsinline style="display:none"></video></div>
-  <button class="lb-nav lb-next" id="lb-next" onclick="lbNav(1)" style="display:none"><i class="fa-solid fa-chevron-right"></i></button>
-</div>
+    /* Existing session */
 
-<!-- Story viewer -->
-<div class="story-viewer" id="storyViewer">
-  <button class="close-viewer" onclick="closeStoryViewer()"><i class="fa-solid fa-xmark"></i></button>
-  <button class="story-mute-toggle" id="storyMuteToggle" onclick="event.stopPropagation();toggleStoryMute()"><i class="fa-solid fa-volume-xmark" id="storyMuteIcon"></i></button>
-  <div class="progress-bar" id="storyProgress"></div>
-  <div class="story-user" id="storyUser"></div>
-  <div class="story-content" id="storyContent"></div>
-  <div class="story-heart-burst" id="storyHeartBurst"><i class="fa-solid fa-heart"></i></div>
-  <div class="story-caption" id="storyCaption"></div>
-  <div class="story-timer" id="storyTimer"></div>
-  <div class="story-viewers-pill" id="storyViewersPill" onclick="event.stopPropagation();openStoryViewersSheet()">
-    <div class="sv-avatars" id="storyViewersAvatars"></div><span id="storyViewersCount">0 views</span>
-  </div>
-  <div class="story-quick-reacts" id="storyQuickReacts">
-    <button onclick="event.stopPropagation();sendQuickReact('❤️')">❤️</button>
-    <button onclick="event.stopPropagation();sendQuickReact('😂')">😂</button>
-    <button onclick="event.stopPropagation();sendQuickReact('😮')">😮</button>
-    <button onclick="event.stopPropagation();sendQuickReact('😢')">😢</button>
-    <button onclick="event.stopPropagation();sendQuickReact('👏')">👏</button>
-    <button onclick="event.stopPropagation();sendQuickReact('🔥')">🔥</button>
-  </div>
-  <div class="story-footer" id="storyFooter" onclick="event.stopPropagation()">
-    <div class="story-reply-input-wrap">
-      <input type="text" class="story-reply-input" id="storyReplyInput" placeholder="Reply…" maxlength="300"
-        onfocus="pauseStoryTimer()" onblur="resumeStoryTimer()" onkeydown="if(event.key==='Enter'){sendStoryReply();}"
-        oninput="document.getElementById('storySendBtn').classList.toggle('active', this.value.trim().length>0)">
-      <button class="story-send-btn" id="storySendBtn" onclick="sendStoryReply()"><i class="fa-solid fa-paper-plane"></i></button>
-    </div>
-    <button class="story-react-btn" id="storyLikeBtn" onclick="toggleStoryLike()"><i class="fa-regular fa-heart"></i></button>
-    <button class="story-react-btn" onclick="toggleStoryQuickReacts()"><i class="fa-regular fa-face-smile"></i></button>
-  </div>
-</div>
-<div class="story-sheet-overlay" id="storySheetOverlay" onclick="if(event.target===this)closeStoryViewersSheet()">
-  <div class="story-sheet">
-    <button class="story-sheet-close" onclick="closeStoryViewersSheet()"><i class="fa-solid fa-xmark"></i></button>
-    <div class="story-sheet-handle"></div>
-    <div class="story-sheet-tabs">
-      <button class="active" id="storySheetTabViews" onclick="switchStorySheetTab('views')"><i class="fa-solid fa-eye"></i> Viewed by <span id="storySheetViewsCount">0</span></button>
-      <button id="storySheetTabLikes" onclick="switchStorySheetTab('likes')"><i class="fa-solid fa-heart"></i> Liked by <span id="storySheetLikesCount">0</span></button>
-    </div>
-    <div class="story-sheet-list" id="storySheetList"></div>
-  </div>
-</div>
+    if (
+      localStorage.getItem(TOKEN_KEY) &&
+      localStorage.getItem(USER_KEY)
+    ) {
+      location.href = 'Shell.html';
+    }
 
-<script src="home.js" defer></script>
+
+    /* Remember email */
+
+    const savedEmail =
+      localStorage.getItem('alphaRemember');
+
+    if (savedEmail) {
+      email.value = savedEmail;
+      remember.checked = true;
+    }
+
+
+    /* Messages */
+
+    function showMessage(text, type = '') {
+      message.textContent = text;
+      message.className = `message ${type}`;
+    }
+
+
+    /* Show / hide password */
+
+    toggle.addEventListener('click', () => {
+
+      const visible = password.type === 'text';
+
+      password.type =
+        visible ? 'password' : 'text';
+
+      toggle.innerHTML =
+        `<i class="fa-solid ${
+          visible ? 'fa-eye' : 'fa-eye-slash'
+        }"></i>`;
+    });
+
+
+    /* Forgot password */
+
+    document
+      .getElementById('forgotLink')
+      .addEventListener('click', (e) => {
+
+        e.preventDefault();
+
+        showMessage(
+          'Password reset is not configured yet. Please contact support.',
+          'success'
+        );
+      });
+
+
+    /* Login API */
+
+    async function login(emailValue, passwordValue) {
+
+      const response = await fetch(
+        `${API_BASE}/login`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            email: emailValue,
+            password: passwordValue
+          })
+        }
+      );
+
+      let data = null;
+
+      try {
+        data = await response.json();
+      } catch {}
+
+      if (!response.ok) {
+        throw new Error(
+          data?.error ||
+          'Invalid credentials. Please try again.'
+        );
+      }
+
+      return data;
+    }
+
+
+    /* Submit */
+
+    form.addEventListener('submit', async (e) => {
+
+      e.preventDefault();
+
+      const emailValue =
+        email.value.trim();
+
+      const passwordValue =
+        password.value;
+
+
+      if (!emailValue) {
+        showMessage(
+          'Please enter your email address.',
+          'error'
+        );
+        return;
+      }
+
+
+      if (passwordValue.length < 6) {
+        showMessage(
+          'Password must be at least 6 characters.',
+          'error'
+        );
+        return;
+      }
+
+
+      button.disabled = true;
+      button.classList.add('loading');
+
+      showMessage();
+
+
+      try {
+
+        const data =
+          await login(
+            emailValue,
+            passwordValue
+          );
+
+
+        /* Save token */
+
+        localStorage.setItem(
+          TOKEN_KEY,
+          data.token
+        );
+
+
+        /* Save user */
+
+        const user =
+          data.user || data;
+
+        localStorage.setItem(
+          USER_KEY,
+          JSON.stringify({
+
+            CU: {
+              id: user.email || emailValue,
+              email: user.email || emailValue
+            },
+
+            UP: {
+              display_name:
+                user.display_name ||
+                user.name ||
+                emailValue.split('@')[0],
+
+              bio:
+                user.bio || '',
+
+              avatar_color:
+                user.avatar_color || 'g2',
+
+              avatar_url:
+                user.avatar_url || null
+            }
+
+          })
+        );
+
+
+        /* Remember me */
+
+        if (remember.checked) {
+
+          localStorage.setItem(
+            'alphaRemember',
+            emailValue
+          );
+
+        } else {
+
+          localStorage.removeItem(
+            'alphaRemember'
+          );
+
+        }
+
+
+        showMessage(
+          'Welcome back! Redirecting…',
+          'success'
+        );
+
+
+        setTimeout(() => {
+
+          location.href = 'Shell.html';
+
+        }, 500);
+
+
+      } catch (error) {
+
+        showMessage(
+          error.message,
+          'error'
+        );
+
+        button.disabled = false;
+        button.classList.remove('loading');
+      }
+
+    });
+  </script>
+
 </body>
 </html>
