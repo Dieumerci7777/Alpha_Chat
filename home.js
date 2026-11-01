@@ -94,7 +94,7 @@ function uploadFile(file) {
 }
 
 // ---------- Theme / back / search ----------
-function initTheme() { setThemeIcon(); }
+  function initTheme() { setThemeIcon(); AlphaCommon.applyAccent(); }
 function setThemeIcon() { const b = document.getElementById('theme-toggle'); if (b) b.innerHTML = '<i class="fa-regular fa-circle-half-stroke"></i>'; }
 window.toggleTheme = function () {
   const cur = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
@@ -325,8 +325,7 @@ function saveJSON(key, obj) { try { localStorage.setItem(key, JSON.stringify(obj
 let storyViews = loadJSON('alpha_story_views', {});
 let storyLikes = loadJSON('alpha_story_likes', {});
 function isVideoUrl(url) { return !!url && /\.(mp4|webm|ogg|mov|m4v)(\?.*)?$/i.test(url); }
-const uiAvatar = n => `https://ui-avatars.com/api/?background=7046d8&color=fff&name=${encodeURIComponent(n || 'U')}`;
-
+  const uiAvatar = n => `https://ui-avatars.com/api/?background=${(getComputedStyle(document.documentElement).getPropertyValue('--primary').trim()||'#4f46e5').replace('#','')}&color=fff&name=${encodeURIComponent(n || 'U')}`;
 function recordStoryView(status) {
   if (!status || !CU?.id || status.uid === CU.id) return;
   const list = storyViews[status.id] || (storyViews[status.id] = []);
