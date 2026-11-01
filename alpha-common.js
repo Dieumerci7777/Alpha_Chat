@@ -8,18 +8,28 @@
     font: 'alpha_font', density: 'alpha_density', wallpaper: 'alpha_wallpaper',
     wallpaperCustom: 'alpha_wallpaper_custom', dataSaver: 'alpha_datasaver'
   };
-  var DEFAULT_ACCENT = '#4f46e5';
+  var DEFAULT_ACCENT = '#0f766e';
 
   var WALLPAPERS = [
-    { id: 'none', label: 'Default', css: 'none' },
-    { id: 'dawn', label: 'Dawn', css: 'linear-gradient(160deg, rgba(51,102,255,.12), rgba(92,133,255,.08))' },
-    { id: 'forest', label: 'Forest', css: 'linear-gradient(160deg, rgba(16,185,129,.12), rgba(51,102,255,.08))' },
-    { id: 'dusk', label: 'Dusk', css: 'linear-gradient(160deg, rgba(92,133,255,.15), rgba(229,72,77,.06))' },
-    { id: 'mono', label: 'Mono', css: 'repeating-linear-gradient(45deg, rgba(120,120,120,.06) 0 2px, transparent 2px 14px)' }
+    { id: 'none', label: 'Plain', css: 'none' },
+    { id: 'aurora', label: 'Aurora', css: 'radial-gradient(70% 70% at 15% 10%,color-mix(in srgb,var(--ag-primary) 45%,transparent),transparent),radial-gradient(70% 70% at 90% 100%,color-mix(in srgb,var(--ag-primary) 30%,transparent),transparent)' },
+    { id: 'dusk', label: 'Dusk', css: 'linear-gradient(165deg,color-mix(in srgb,var(--ag-primary) 40%,transparent),transparent)' },
+    { id: 'dots', label: 'Dots', css: 'radial-gradient(color-mix(in srgb,var(--ag-primary) 50%,transparent) 1.4px,transparent 1.6px) 0 0/12px 12px' },
+    { id: 'grid', label: 'Grid', css: 'linear-gradient(color-mix(in srgb,var(--ag-primary) 25%,transparent) 1px,transparent 1px) 0 0/14px 14px,linear-gradient(90deg,color-mix(in srgb,var(--ag-primary) 25%,transparent) 1px,transparent 1px) 0 0/14px 14px' },
+    { id: 'waves', label: 'Waves', css: 'radial-gradient(120% 70% at 50% 130%,color-mix(in srgb,var(--ag-primary) 50%,transparent),transparent 70%)' }
+  ];
+  // A small, curated set: six accents that all pass contrast on white and on dark.
+  var ACCENTS = [
+    { id: 'teal',   label: 'Teal',   color: '#0f766e' },
+    { id: 'indigo', label: 'Indigo', color: '#4f46e5' },
+    { id: 'ocean',  label: 'Ocean',  color: '#0369a1' },
+    { id: 'violet', label: 'Violet', color: '#7c3aed' },
+    { id: 'rose',   label: 'Rose',   color: '#e11d48' },
+    { id: 'amber',  label: 'Amber',  color: '#c2410c' }
   ];
 
   var FONT_STACKS = {
-    default: "'Space Grotesk','Inter',-apple-system,BlinkMacSystemFont,sans-serif",
+    default: "'Inter',-apple-system,BlinkMacSystemFont,sans-serif",
     inter: "'Inter',-apple-system,BlinkMacSystemFont,sans-serif",
     poppins: "'Poppins','Inter',sans-serif",
     system: "-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
@@ -94,6 +104,7 @@
   function applyTheme(theme) {
     theme = theme === 'dark' ? 'dark' : 'light';
     document.documentElement.setAttribute('data-theme', theme);
+    if (typeof applyAccent === 'function') applyAccent();
     return theme;
   }
   function initTheme() {
@@ -105,21 +116,24 @@
   // ---------- accent ----------
   function applyAccent(color) {
     color = color || safeGet(LS.accent) || DEFAULT_ACCENT;
-    var light = shade(color, 0.35), dark = shade(color, -0.25), root = document.documentElement.style;
-    var pairs = {
-      '--primary': color, '--primary-light': light, '--primary-dark': dark,
-      '--accent': light, '--primary-l': rgba(color, 0.12), '--primary-l2': rgba(color, 0.06),
-      '--accent-l': rgba(light, 0.12), '--blue': color, '--blue2': light, '--alpha': color, '--alpha2': light,
-      '--primary-rgb': hexToRgb(color).r + ',' + hexToRgb(color).g + ',' + hexToRgb(color).b,
-      '--primary-a08': rgba(color, 0.08), '--primary-a15': rgba(color, 0.15), '--primary-a16': rgba(color, 0.16),
-      '--primary-a20': rgba(color, 0.20), '--primary-a25': rgba(color, 0.25), '--primary-a30': rgba(color, 0.30),
-      '--primary-a35': rgba(color, 0.35), '--primary-a40': rgba(color, 0.40),
-      '--violet': color, '--violet-dark': dark, '--violet-light': light, '--violet-l': rgba(color, 0.14),
-      '--indigo': dark, '--coral': light, '--iris': color
-    };
-    for (var k in pairs) root.setProperty(k, pairs[k]);
-    safeSet(LS.accent, color);
+    if (!/^#[0-9a-f]{6}$/i.test(color)) color = DEFAULT_ACCENT;
+    var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    var c = hexToRgb(color);
+    var primary = dark ? shade(color, 0.38) : color;
+    // A <style> rule (not inline) so it also reaches <body>, which the dark theme re-declares
+    var st = document.getElementById('alpha-common-accent');
+    if (!st) { st = document.createElement('style'); st.id = 'alpha-common-accent'; (document.head || document.documentElement).appendChild(st); }
+    st.textContent = ':root,html[data-theme],html[data-theme] body,body.dark{' +
+      '--ag-primary:' + primary + '!important;' +
+      '--ag-primary-hover:' + (dark ? shade(color, 0.58) : shade(color, -0.2)) + '!important;' +
+      '--ag-soft:' + (dark ? shade(color, -0.72) : shade(color, 0.89)) + '!important;' +
+      '--ag-on-primary:' + (dark ? '#06100f' : '#ffffff') + '!important;' +
+      '--ag-glow:' + rgba(primary, dark ? 0.25 : 0.28) + '!important;}';
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', primary);
+    return color;
   }
+  function setAccent(color) { safeSet(LS.accent, color); applyAccent(color); }
 
   function injectNavIconBadge() {
     var style = document.getElementById('alpha-common-navicon');
@@ -127,11 +141,11 @@
     style.textContent =
       '.app-sidebar .app-nav-item svg.lucide{width:16px;height:16px;padding:7px;box-sizing:content-box;border-radius:10px;background:var(--surface2,rgba(0,0,0,.04));color:var(--text2,var(--muted,#73767d));flex-shrink:0;transition:background .18s,color .18s,box-shadow .18s;}' +
       '.app-sidebar .app-nav-item:hover svg.lucide{background:var(--surface-solid,#fff);color:var(--text,#111214);}' +
-      '.app-sidebar .app-nav-item.active svg.lucide{background:linear-gradient(135deg,var(--primary,#4f46e5),var(--primary-light,#818cf8));color:#fff;box-shadow:0 4px 10px var(--primary-a30,rgba(79,70,229,.32));}' +
+      '.app-sidebar .app-nav-item.active svg.lucide{background:var(--primary,#0a0a0a);color:var(--on-primary,#fff);}' +
       '.app-sidebar .app-nav-item.logout svg.lucide{background:transparent;}' +
       '.app-sidebar .app-nav-item.logout:hover svg.lucide{background:var(--danger-l,rgba(255,59,79,.12));color:var(--danger,#E5484D);}' +
-      '.app-bottom-nav button.active svg.lucide,.mobile-bottom-nav button.active svg.lucide{color:var(--primary,#4f46e5);}' +
-      '.app-bottom-nav button.active,.mobile-bottom-nav button.active{color:var(--primary,#4f46e5);}';
+      '.app-bottom-nav button.active svg.lucide,.mobile-bottom-nav button.active svg.lucide{color:var(--primary,#0a0a0a);}' +
+      '.app-bottom-nav button.active,.mobile-bottom-nav button.active{color:var(--primary,#0a0a0a);}';
   }
 
   function applyFont(id) {
@@ -172,17 +186,125 @@
 
   function applyWallpaper() {
     var id = safeGet(LS.wallpaper) || 'none';
-    var target = document.getElementById('messages') || document.getElementById('chat-messages');
-    if (!target) return;
+    var root = document.documentElement;
     if (id === 'custom') {
       var data = safeGet(LS.wallpaperCustom);
-      target.style.backgroundImage = data ? 'url(' + data + ')' : 'none';
-      target.style.backgroundSize = 'cover'; target.style.backgroundPosition = 'center';
-    } else {
-      var w = WALLPAPERS.find(function (x) { return x.id === id; });
-      target.style.backgroundImage = w && w.css !== 'none' ? w.css : 'none';
-      target.style.backgroundSize = ''; target.style.backgroundPosition = '';
+      if (!data) id = 'none';
+      else root.style.setProperty('--ag-wall-img', 'url("' + data + '")');
     }
+    if (id === 'none') root.removeAttribute('data-wall'); else root.setAttribute('data-wall', id);
+  }
+  function setWallpaper(id) { safeSet(LS.wallpaper, id); applyWallpaper(); }
+
+  // ---------- page transitions + load bar ----------
+  (function () {
+    var root = document.documentElement;
+    // Browsers with cross-page View Transitions animate natively (see alphagram.css)
+    if ('onpageswap' in window) root.setAttribute('data-vt', '');
+    function clearNav() { root.classList.remove('ag-leaving', 'ag-loading'); }
+    window.addEventListener('pageshow', function () { clearNav(); root.classList.remove('ag-hide-nav'); });
+    // Hide bars while scrolling down, show them again on any scroll up
+    var lastY = new WeakMap();
+    document.addEventListener('scroll', function (e) {
+      var t = e.target === document ? document.scrollingElement : e.target;
+      if (!t || !('scrollTop' in t) || /^(TEXTAREA|INPUT)$/.test(t.tagName)) return;
+      if (t !== document.scrollingElement && t.clientHeight < window.innerHeight * 0.5) return;
+      var y = t.scrollTop, d = y - (lastY.get(t) || 0);
+      if (Math.abs(d) < 10) return;
+      lastY.set(t, y);
+      if (y < 60 || d < 0) root.classList.remove('ag-hide-nav');
+      else if (y > 80) root.classList.add('ag-hide-nav');
+    }, { capture: true, passive: true });
+    window.addEventListener('beforeunload', function () { root.classList.add('ag-loading'); });
+    document.addEventListener('DOMContentLoaded', function () {
+      if (!document.getElementById('ag-progress')) {
+        var bar = document.createElement('div'); bar.id = 'ag-progress'; bar.setAttribute('aria-hidden', 'true');
+        document.body.appendChild(bar);
+      }
+    });
+    // Fallback exit animation for plain links where View Transitions are missing
+    document.addEventListener('click', function (e) {
+      if (root.hasAttribute('data-vt') || e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey) return;
+      var a = e.target.closest && e.target.closest('a[href]');
+      if (!a || a.target === '_blank' || a.hasAttribute('download')) return;
+      var u; try { u = new URL(a.href, location.href); } catch (x) { return; }
+      if (u.origin !== location.origin || (u.pathname === location.pathname && u.search === location.search) || !/\.html?$|\/$/.test(u.pathname)) return;
+      e.preventDefault();
+      root.classList.add('ag-leaving');
+      setTimeout(function () { location.href = u.href; }, 170);
+    });
+  })();
+
+  // ---------- appearance panel (accent, theme, wallpaper) ----------
+  function openAppearance() {
+    if (document.getElementById('ag-appearance')) return;
+    var ov = document.createElement('div'); ov.className = 'ag-panel-ov'; ov.id = 'ag-appearance';
+    var curAccent = (safeGet(LS.accent) || DEFAULT_ACCENT).toLowerCase();
+    var curWall = safeGet(LS.wallpaper) || 'none';
+    var curTheme = safeGet(LS.theme) || 'auto';
+    var html = '<div class="ag-panel" role="dialog" aria-modal="true" aria-label="Appearance"><header><h3>Appearance</h3><button class="ag-x" aria-label="Close">\u2715</button></header>' +
+      '<h4>Color</h4><div class="ag-swatches">' + ACCENTS.map(function (a) {
+        return '<button class="ag-sw' + (a.color === curAccent ? ' on' : '') + '" data-c="' + a.color + '" style="background:' + a.color + '" title="' + a.label + '" aria-label="' + a.label + '"></button>';
+      }).join('') + '</div>' +
+      '<h4>Theme</h4><div class="ag-seg">' + [['light', 'Light'], ['dark', 'Dark'], ['auto', 'Auto']].map(function (t) {
+        return '<button data-t="' + t[0] + '" class="' + (t[0] === curTheme ? 'on' : '') + '">' + t[1] + '</button>';
+      }).join('') + '</div>' +
+      '<h4>Wallpaper</h4><div class="ag-walls">' + WALLPAPERS.map(function (w) {
+        return '<button class="ag-wall' + (w.id === curWall ? ' on' : '') + '" data-w="' + w.id + '"><span>' + w.label + '</span></button>';
+      }).join('') + '<button class="ag-wall' + (curWall === 'custom' ? ' on' : '') + '" data-w="upload"><span>Your photo</span></button></div>' +
+      '<input type="file" accept="image/*" hidden id="ag-wall-file"><button class="ag-reset">Reset to default</button></div>';
+    ov.innerHTML = html;
+    document.body.appendChild(ov);
+    var panel = ov.firstChild;
+    function close() { document.removeEventListener('keydown', key); ov.remove(); }
+    function key(e) { if (e.key === 'Escape') close(); }
+    function mark(sel, attr, val) {
+      Array.prototype.forEach.call(panel.querySelectorAll(sel), function (el) { el.classList.toggle('on', el.getAttribute(attr) === val); });
+    }
+    document.addEventListener('keydown', key);
+    ov.addEventListener('click', function (e) { if (e.target === ov) close(); });
+    panel.querySelector('.ag-x').onclick = close;
+    panel.addEventListener('click', function (e) {
+      var t = e.target.closest('button'); if (!t) return;
+      if (t.dataset.c) { setAccent(t.dataset.c); mark('.ag-sw', 'data-c', t.dataset.c); }
+      else if (t.dataset.t) {
+        if (t.dataset.t === 'auto') { try { localStorage.removeItem(LS.theme); } catch (x) {} applyTheme(matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); }
+        else { safeSet(LS.theme, t.dataset.t); applyTheme(t.dataset.t); }
+        mark('.ag-seg button', 'data-t', t.dataset.t);
+      }
+      else if (t.dataset.w === 'upload') document.getElementById('ag-wall-file').click();
+      else if (t.dataset.w) { setWallpaper(t.dataset.w); mark('.ag-wall', 'data-w', t.dataset.w); }
+      else if (t.classList.contains('ag-reset')) {
+        setAccent(DEFAULT_ACCENT); setWallpaper('none'); try { localStorage.removeItem(LS.theme); } catch (x) {}
+        applyTheme(matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        mark('.ag-sw', 'data-c', DEFAULT_ACCENT); mark('.ag-wall', 'data-w', 'none'); mark('.ag-seg button', 'data-t', 'auto');
+        toast('Appearance reset');
+      }
+    });
+    document.getElementById('ag-wall-file').onchange = function () {
+      var f = this.files && this.files[0]; if (!f) return;
+      compressImage(f, 1400, 0.7).then(function (blob) {
+        var fr = new FileReader();
+        fr.onload = function () {
+          try { localStorage.setItem(LS.wallpaperCustom, fr.result); safeSet(LS.wallpaper, 'custom'); applyWallpaper(); mark('.ag-wall', 'data-w', 'upload'); panel.querySelector('[data-w="upload"]').classList.add('on'); toast('Wallpaper set'); }
+          catch (x) { toast('That photo is too large. Try a smaller one.', 'error'); }
+        };
+        fr.readAsDataURL(blob);
+      });
+    };
+  }
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest && e.target.closest('[data-ag-appearance]');
+    if (t) { e.preventDefault(); openAppearance(); }
+  });
+  function injectAppearanceButton() {
+    var page = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
+    if (window.ALPHA_NO_APPEARANCE_BUTTON || /^(shell|login|register|calls|chat)\.html$/.test(page)) return;
+    if (document.querySelector('[data-ag-appearance]') || document.querySelector('.ag-app-fab')) return;
+    var b = document.createElement('button'); b.className = 'ag-app-fab'; b.setAttribute('aria-label', 'Appearance');
+    b.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="8.5" cy="10" r="1.2" fill="currentColor"/><circle cx="12" cy="7.5" r="1.2" fill="currentColor"/><circle cx="15.5" cy="10" r="1.2" fill="currentColor"/><path d="M12 21c-1.5 0-2-1.3-1.2-2.4.8-1 .2-2.1-1-2.1H8"/></svg>';
+    b.onclick = openAppearance;
+    document.body.appendChild(b);
   }
 
   // ---------- session ----------
@@ -252,26 +374,49 @@
   function toast(msg, type) {
     if (typeof window.toast === 'function' && window.toast !== toast) { window.toast(msg, type); return; }
     var wrap = document.getElementById('alpha-common-toast-wrap');
-    if (!wrap) {
-      wrap = document.createElement('div'); wrap.id = 'alpha-common-toast-wrap';
-      wrap.style.cssText = 'position:fixed;top:calc(18px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);z-index:99999;display:flex;flex-direction:column;gap:8px;pointer-events:none;';
-      document.body.appendChild(wrap);
-    }
+    if (!wrap) { wrap = document.createElement('div'); wrap.id = 'alpha-common-toast-wrap'; document.body.appendChild(wrap); }
     var t = document.createElement('div');
+    t.className = 'ag-toast' + (type ? ' ' + type : '');
     t.textContent = msg; t.setAttribute('role', 'status');
-    t.style.cssText = 'background:' + (type === 'error' ? '#E5484D' : type === 'info' ? '#4f46e5' : '#16181c') + ';color:#fff;padding:10px 18px;border-radius:99px;font:600 13px Inter,sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.25);opacity:0;transition:opacity .2s;';
     wrap.appendChild(t);
-    requestAnimationFrame(function () { t.style.opacity = '1'; });
-    setTimeout(function () { t.style.opacity = '0'; setTimeout(function () { t.remove(); }, 250); }, 2400);
+    setTimeout(function () { t.classList.add('out'); setTimeout(function () { t.remove(); }, 250); }, 2400);
+  }
+
+  // Pop-up dialog. Returns a promise: true = confirmed, false = cancelled.
+  function confirmBox(o) {
+    o = o || {};
+    return new Promise(function (done) {
+      var ov = document.createElement('div');
+      ov.className = 'ag-overlay';
+      ov.style.cssText = 'position:fixed;inset:0;z-index:99998;display:flex;align-items:center;justify-content:center;padding:16px';
+      var m = document.createElement('div');
+      m.className = 'ag-modal'; m.setAttribute('role', 'dialog'); m.setAttribute('aria-modal', 'true');
+      var h = document.createElement('h3'); h.textContent = o.title || 'Are you sure?';
+      var p = document.createElement('p'); p.textContent = o.text || '';
+      var row = document.createElement('div'); row.className = 'ag-actions';
+      var no = document.createElement('button'); no.textContent = o.cancel || 'Cancel';
+      var ok = document.createElement('button'); ok.textContent = o.ok || 'Confirm';
+      ok.className = o.danger ? 'ag-danger' : 'ag-ok';
+      function close(v) { document.removeEventListener('keydown', key); ov.remove(); done(v); }
+      function key(e) { if (e.key === 'Escape') close(false); }
+      no.onclick = function () { close(false); }; ok.onclick = function () { close(true); };
+      ov.onclick = function (e) { if (e.target === ov) close(false); };
+      document.addEventListener('keydown', key);
+      row.appendChild(no); row.appendChild(ok);
+      m.appendChild(h); if (o.text) m.appendChild(p); m.appendChild(row);
+      ov.appendChild(m); document.body.appendChild(ov); ok.focus();
+    });
   }
 
   initTheme();
-  applyAccent(safeGet(LS.accent) || DEFAULT_ACCENT);
+  applyAccent();
+  applyWallpaper();
   applyDataSaver();
 
   document.addEventListener('DOMContentLoaded', function () {
     applyFont(safeGet(LS.font)); applyDensity(safeGet(LS.density));
-    applyWallpaper(); injectNavIconBadge(); initIconObserver();
+    applyWallpaper(); injectNavIconBadge(); initIconObserver(); injectAppearanceButton();
+    if (location.hash === '#appearance') openAppearance();
   });
 
   window.addEventListener('storage', function (e) {
@@ -285,10 +430,10 @@
 
   window.AlphaCommon = {
     API_BASE: API_BASE, DEFAULT_ACCENT: DEFAULT_ACCENT, WALLPAPERS: WALLPAPERS,
-    applyTheme: applyTheme, applyAccent: applyAccent, setFont: applyFont, setDensity: applyDensity,
+    applyTheme: applyTheme, applyAccent: applyAccent, setAccent: setAccent, ACCENTS: ACCENTS, setWallpaper: setWallpaper, openAppearance: openAppearance, setFont: applyFont, setDensity: applyDensity,
     applyWallpaper: applyWallpaper, applyDataSaver: applyDataSaver, isLowData: isLowData,
     injectNavIconBadge: injectNavIconBadge, renderIcons: renderIcons, getToken: getToken, getUser: getUser,
     isLoggedIn: isLoggedIn, requireAuth: requireAuth, logout: logout, api: api,
-    compressImage: compressImage, toast: toast
+    compressImage: compressImage, toast: toast, confirm: confirmBox
   };
 })();
