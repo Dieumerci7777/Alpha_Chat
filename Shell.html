@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#4f46e5">
-<title>Alpha</title>
+<meta name="theme-color" content="#0a0a0a">
+<title>Alphagram</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"></noscript>
 <script src="alpha-common.js"></script>
@@ -18,7 +18,7 @@
   #appFrame { position:fixed; inset:0; width:100%; height:100%; border:0; display:block; background:#f0f2f6; }
 
   :root {
-    --primary:#4f46e5; --primary-light:#818cf8;
+    --primary:var(--ag-primary); --primary-light:var(--ag-primary);
     --green:#22c55e; --red:#ef4444;
     --stage-void:#0b0d12; --stage-line:rgba(255,255,255,0.07);
     --stage-text:#f0f4fa; --stage-muted:#94a3b8;
@@ -31,8 +31,8 @@
   .stage-root {
     position:absolute; inset:0; display:flex; flex-direction:column;
     background:
-      radial-gradient(circle at 20% 10%, rgba(79,70,229,0.18), transparent 50%),
-      radial-gradient(circle at 80% 90%, rgba(34,211,238,0.10), transparent 50%),
+      radial-gradient(circle at 20% 10%, color-mix(in srgb, var(--ag-primary) 18%, transparent), transparent 50%),
+      radial-gradient(circle at 80% 90%, rgba(255,255,255,0.05), transparent 50%),
       var(--stage-void);
     color:var(--stage-text); overflow:hidden;
   }
@@ -57,14 +57,14 @@
     display:grid; place-items:center; font-size:15px; backdrop-filter:blur(10px); transition:0.15s;
   }
   .stage-icon-btn:hover { background:rgba(255,255,255,0.12); }
-  button:focus-visible { outline:3px solid rgba(129,140,248,0.7); outline-offset:2px; }
+  button:focus-visible { outline:3px solid color-mix(in srgb, var(--ag-primary) 70%, transparent); outline-offset:2px; }
 
   .stage-view { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
   .stage-hero { display:flex; flex-direction:column; align-items:center; text-align:center; gap:6px; }
   .stage-hero .hero-avatar { width:110px; height:110px; margin-bottom:14px; position:relative; }
   .stage-hero .hero-avatar::before {
     content:""; position:absolute; inset:-12px; border-radius:50%;
-    background:linear-gradient(135deg, #22d3ee, var(--primary)); opacity:0.3; filter:blur(24px);
+    background:linear-gradient(135deg, var(--ag-text-2), var(--primary)); opacity:0.3; filter:blur(24px);
   }
   .stage-hero .hero-avatar img {
     width:100%; height:100%; border-radius:50%; object-fit:cover; position:relative;
@@ -147,10 +147,11 @@
     display:grid; place-items:center; font-size:13px; flex-shrink:0; margin-left:4px;
   }
 </style>
+<link rel="stylesheet" href="alphagram.css">
 </head>
 <body>
 
-<iframe id="appFrame" title="Alpha" src=""></iframe>
+<iframe id="appFrame" title="Alphagram" src=""></iframe>
 <script>
   // Show the page that handed off to us (?page=...), default to the home feed.
   (function () {
@@ -277,8 +278,8 @@
 
   function avatarSrc(user) {
     if (user && user.avatar_url) return user.avatar_url;
-    const name = encodeURIComponent((user && user.display_name) || 'Alpha User');
-    return 'https://ui-avatars.com/api/?background=4f46e5&color=fff&bold=true&name=' + name;
+    const name = encodeURIComponent((user && user.display_name) || 'Alphagram User');
+    return 'https://ui-avatars.com/api/?background=27272a&color=fff&bold=true&name=' + name;
   }
 
   function callsKey() {
