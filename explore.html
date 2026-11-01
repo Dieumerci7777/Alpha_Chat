@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Alpha — Explore</title>
+    <title>Alphagram — Explore</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&display=swap" rel="stylesheet" />
     <script src="alpha-common.js"></script>
@@ -37,20 +37,20 @@
             --radius-lg: 24px;
             --radius-xl: 32px;
             --radius-full: 99px;
-            --primary: #4f46e5;
-            --primary-light: #818cf8;
+            --primary: var(--ag-primary);
+            --primary-light: var(--ag-primary);
             --primary-dark: #3730a3;
-            --primary-bg: rgba(79, 70, 229, 0.08);
-            --primary-bg-hover: rgba(79, 70, 229, 0.16);
+            --primary-bg: color-mix(in srgb, var(--ag-primary) 8%, transparent);
+            --primary-bg-hover: color-mix(in srgb, var(--ag-primary) 16%, transparent);
             --green: #22c55e;
             --green-bg: rgba(34, 197, 94, 0.12);
             --red: #ef4444;
             --red-bg: rgba(239, 68, 68, 0.10);
-            --orange: #f59e0b;
+            --orange: var(--ag-text-2);
             --orange-bg: rgba(245, 158, 11, 0.12);
-            --gradient-primary: linear-gradient(135deg, #4f46e5, #7c3aed);
-            --gradient-warm: linear-gradient(135deg, #f59e0b, #ef4444);
-            --gradient-cool: linear-gradient(135deg, #06b6d4, #3b82f6);
+            --gradient-primary: linear-gradient(135deg, var(--ag-primary), var(--ag-primary));
+            --gradient-warm: linear-gradient(135deg, var(--ag-text-2), #ef4444);
+            --gradient-cool: linear-gradient(135deg, var(--ag-text-2), #3b82f6);
             --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             --nav-width: 220px;
@@ -71,8 +71,8 @@
             --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
             --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.5);
             --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.6);
-            --primary-bg: rgba(79, 70, 229, 0.15);
-            --primary-bg-hover: rgba(79, 70, 229, 0.25);
+            --primary-bg: color-mix(in srgb, var(--ag-primary) 15%, transparent);
+            --primary-bg-hover: color-mix(in srgb, var(--ag-primary) 25%, transparent);
             --green-bg: rgba(34, 197, 94, 0.15);
             --red-bg: rgba(239, 68, 68, 0.15);
             --orange-bg: rgba(245, 158, 11, 0.15);
@@ -183,7 +183,7 @@
             color: white;
             font-size: 18px;
             font-weight: 800;
-            box-shadow: 0 6px 18px rgba(79, 70, 229, 0.30);
+            box-shadow: 0 6px 18px color-mix(in srgb, var(--ag-primary) 30%, transparent);
             flex-shrink: 0;
         }
 
@@ -367,13 +367,13 @@
         }
 
         .avatar.g1 {
-            background: linear-gradient(135deg, #f59e0b, #ef4444);
+            background: linear-gradient(135deg, var(--ag-text-2), #ef4444);
         }
         .avatar.g2 {
-            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            background: linear-gradient(135deg, var(--ag-primary), var(--ag-primary));
         }
         .avatar.g3 {
-            background: linear-gradient(135deg, #22c55e, #06b6d4);
+            background: linear-gradient(135deg, #22c55e, var(--ag-text-2));
         }
         .avatar.g4 {
             background: linear-gradient(135deg, #ec4899, #f43f5e);
@@ -455,7 +455,7 @@
             color: white;
             font-size: 16px;
             font-weight: 800;
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+            box-shadow: 0 4px 12px color-mix(in srgb, var(--ag-primary) 25%, transparent);
             flex-shrink: 0;
         }
 
@@ -535,7 +535,7 @@
             position: relative;
             overflow: hidden;
             color: #fff;
-            box-shadow: 0 4px 24px rgba(79, 70, 229, 0.30);
+            box-shadow: 0 4px 24px color-mix(in srgb, var(--ag-primary) 30%, transparent);
         }
         .explore-hero::before {
             content: '';
@@ -615,7 +615,7 @@
             background: var(--primary);
             color: #fff;
             border-color: var(--primary);
-            box-shadow: 0 4px 16px rgba(79, 70, 229, 0.35);
+            box-shadow: 0 4px 16px color-mix(in srgb, var(--ag-primary) 35%, transparent);
         }
         .category-btn i {
             font-size: 13px;
@@ -783,11 +783,11 @@
         .person-row .follow-btn.not-following {
             background: var(--gradient-primary);
             color: #fff;
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.30);
+            box-shadow: 0 4px 12px color-mix(in srgb, var(--ag-primary) 30%, transparent);
         }
         .person-row .follow-btn.not-following:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.40);
+            box-shadow: 0 6px 20px color-mix(in srgb, var(--ag-primary) 40%, transparent);
         }
 
         /* Avatars inline */
@@ -807,8 +807,8 @@
             color: var(--primary);
         }
         .av-accent {
-            background: rgba(124, 58, 237, 0.12);
-            color: #7c3aed;
+            background: color-mix(in srgb, var(--ag-primary) 12%, transparent);
+            color: var(--ag-primary);
         }
         .av-success {
             background: var(--green-bg);
@@ -903,7 +903,7 @@
         .mobile-nav .create {
             background: var(--gradient-primary);
             color: #fff;
-            box-shadow: 0 4px 16px rgba(79, 70, 229, 0.35);
+            box-shadow: 0 4px 16px color-mix(in srgb, var(--ag-primary) 35%, transparent);
         }
         .mobile-nav .create:hover {
             transform: scale(1.05);
@@ -1072,6 +1072,7 @@
             display: none !important;
         }
     </style>
+<link rel="stylesheet" href="alphagram.css">
 </head>
 
 <body>
@@ -1086,7 +1087,7 @@
             <button class="brand" onclick="goTo('index.html')">
                 <div class="logo">A</div>
                 <div class="brand-name-wrap">
-                    <div class="brand-name">Alpha</div>
+                    <div class="brand-name">Alphagram</div>
                     <div class="brand-tag">Social</div>
                 </div>
             </button>
@@ -1115,7 +1116,7 @@
                     <span class="nav-icon"><i class="fa-solid fa-shield-halved"></i></span> Vaults
                 </button>
                 <button onclick="goTo('ai.html')">
-                    <span class="nav-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></span> Alpha AI
+                    <span class="nav-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></span> Alphagram AI
                 </button>
                 <button onclick="goTo('saved.html')">
                     <span class="nav-icon"><i class="fa-solid fa-bookmark"></i></span> Saved
@@ -1150,7 +1151,7 @@
                 <button class="top-left" onclick="goTo('index.html')">
                     <div class="top-icon-wrap"><i class="fa-solid fa-bolt"></i></div>
                     <div class="top-title-wrap">
-                        <div class="top-title">Alpha</div>
+                        <div class="top-title">Alphagram</div>
                         <div class="top-sub">Explore</div>
                     </div>
                 </button>
@@ -1260,7 +1261,7 @@
         let allUsers = {};
 
         const EXPLORE_ITEMS = [
-            { id: 1, name: 'Alpha Tech Meetup', cat: 'tech', icon: '💻', members: 245 },
+            { id: 1, name: 'Alphagram Tech Meetup', cat: 'tech', icon: '💻', members: 245 },
             { id: 2, name: 'Kigali Art Walk', cat: 'creative', icon: '🎨', members: 189 },
             { id: 3, name: 'Sound of Rwanda', cat: 'music', icon: '🎵', members: 312 },
             { id: 4, name: 'AI & You Workshop', cat: 'tech', icon: '🤖', members: 156 },
@@ -1473,7 +1474,7 @@
                         ${avHTML(u.email, 40, 13)}
                         <div class="info">
                             <div class="name">${u.display_name}</div>
-                            <div class="bio">${u.bio || 'Alpha member'}</div>
+                            <div class="bio">${u.bio || 'Alphagram member'}</div>
                         </div>
                         ${followButtonHTML(u.email)}
                     </div>
