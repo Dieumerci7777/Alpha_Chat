@@ -2,4113 +2,560 @@
 <html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-
-<title>Alpha — Settings</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alphagram — Settings</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<script>window.ALPHA_NO_APPEARANCE_BUTTON=true;</script>
 <script src="alpha-common.js"></script>
-
 <style>
-
-/* =========================================================
-   ALPHA SETTINGS
-   ========================================================= */
-
-:root{
-    --primary:#4f46e5;
-    --primary-dark:#3730a3;
-    --primary-soft:rgba(79,70,229,.10);
-    --gradient-primary:linear-gradient(135deg,var(--primary),var(--primary-dark));
-
-    --success:#29cc55;
-    --danger:#ff3b30;
-    --warning:#ff9f0a;
-
-    --bg:#f5f7fa;
-    --card:#ffffff;
-    --surface:#f0f2f5;
-
-    --text:#111827;
-    --text-secondary:#667085;
-    --muted:#98a2b3;
-
-    --border:#e5e7eb;
-
-    --shadow:0 8px 30px rgba(0,0,0,.06);
-
-    --radius:18px;
-}
-
-[data-theme="dark"]{
-    --bg:#0b0d10;
-    --card:#15181d;
-    --surface:#1d2128;
-
-    --text:#f5f7fa;
-    --text-secondary:#a9b0bb;
-    --muted:#737b87;
-
-    --border:#292e36;
-
-    --shadow:0 8px 30px rgba(0,0,0,.25);
-}
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-html{
-    scroll-behavior:smooth;
-}
-
-body{
-    font-family:-apple-system,BlinkMacSystemFont,
-    "SF Pro Display","Segoe UI",Roboto,Arial,sans-serif;
-
-    background:var(--bg);
-    color:var(--text);
-
-    min-height:100vh;
-}
-
-button,
-input{
-    font:inherit;
-}
-
-button{
-    cursor:pointer;
-    border:none;
-}
-
-a{
-    color:inherit;
-    text-decoration:none;
-}
-
-/* =========================================================
-   APP
-   ========================================================= */
-
-.app{
-    display:flex;
-    min-height:100vh;
-}
-
-/* =========================================================
-   SIDEBAR
-   ========================================================= */
-
-.sidebar{
-    width:250px;
-    position:fixed;
-    left:0;
-    top:0;
-    bottom:0;
-
-    background:var(--card);
-    border-right:1px solid var(--border);
-
-    display:flex;
-    flex-direction:column;
-
-    padding:22px 14px;
-
-    z-index:100;
-}
-
-.logo{
-    display:flex;
-    align-items:center;
-    gap:10px;
-
-    padding:4px 12px 25px;
-}
-
-.logo-icon{
-    width:40px;
-    height:40px;
-
-    border-radius:13px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    color:white;
-    font-size:20px;
-    font-weight:800;
-
-    background:var(--gradient-primary,linear-gradient(135deg,#4f46e5,#3730a3));
-
-    box-shadow:0 6px 18px var(--primary-a25,rgba(79,70,229,.25));
-}
-
-.logo-text{
-    font-size:23px;
-    font-weight:800;
-    letter-spacing:-.6px;
-}
-
-.nav{
-    display:flex;
-    flex-direction:column;
-    gap:5px;
-}
-
-.nav-item{
-    width:100%;
-
-    display:flex;
-    align-items:center;
-    gap:13px;
-
-    padding:12px 13px;
-
-    border-radius:13px;
-
-    background:transparent;
-    color:var(--text-secondary);
-
-    font-size:14px;
-    font-weight:600;
-
-    transition:.2s;
-}
-
-.nav-item:hover{
-    background:var(--surface);
-    color:var(--text);
-}
-
-.nav-item.active{
-    color:var(--primary);
-    background:var(--primary-soft);
-}
-
-.nav-icon{
-    width:21px;
-    text-align:center;
-    font-size:17px;
-}
-
-.sidebar-bottom{
-    margin-top:auto;
-}
-
-/* =========================================================
-   MAIN
-   ========================================================= */
-
-.main{
-    width:calc(100% - 250px);
-    margin-left:250px;
-    min-height:100vh;
-}
-
-/* =========================================================
-   TOPBAR
-   ========================================================= */
-
-.topbar{
-    height:74px;
-
-    position:sticky;
-    top:0;
-
-    background:rgba(255,255,255,.85);
-
-    border-bottom:1px solid var(--border);
-
-    backdrop-filter:blur(18px);
-
-    display:flex;
-    align-items:center;
-
-    padding:0 34px;
-
-    z-index:80;
-}
-
-[data-theme="dark"] .topbar{
-    background:rgba(21,24,29,.86);
-}
-
-.topbar-title{
-    font-size:23px;
-    font-weight:800;
-    letter-spacing:-.5px;
-}
-
-.topbar-right{
-    margin-left:auto;
-
-    display:flex;
-    align-items:center;
-    gap:12px;
-}
-
-.icon-button{
-    width:40px;
-    height:40px;
-
-    border-radius:50%;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    background:var(--surface);
-    color:var(--text);
-
-    transition:.2s;
-}
-
-.icon-button:hover{
-    transform:translateY(-1px);
-}
-
-/* =========================================================
-   CONTENT
-   ========================================================= */
-
-.content{
-    max-width:1100px;
-    margin:auto;
-
-    padding:35px 30px 80px;
-}
-
-/* =========================================================
-   PROFILE CARD
-   ========================================================= */
-
-.profile-card{
-    background:var(--card);
-
-    border:1px solid var(--border);
-
-    border-radius:24px;
-
-    padding:24px;
-
-    display:flex;
-    align-items:center;
-
-    gap:18px;
-
-    box-shadow:var(--shadow);
-
-    margin-bottom:28px;
-}
-
-.avatar{
-    width:72px;
-    height:72px;
-
-    border-radius:50%;
-
-    object-fit:cover;
-
-    background:
-    var(--gradient-primary,linear-gradient(135deg,#4f46e5,#3730a3));
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    color:white;
-    font-size:25px;
-    font-weight:800;
-}
-
-.profile-info{
-    flex:1;
-}
-
-.profile-name{
-    font-size:20px;
-    font-weight:800;
-}
-
-.profile-username{
-    color:var(--text-secondary);
-    font-size:14px;
-    margin-top:3px;
-}
-
-.profile-bio{
-    color:var(--text-secondary);
-    font-size:13px;
-    margin-top:6px;
-}
-
-.edit-profile{
-    background:var(--primary);
-    color:white;
-
-    padding:10px 17px;
-
-    border-radius:11px;
-
-    font-size:13px;
-    font-weight:700;
-}
-
-/* =========================================================
-   SEARCH
-   ========================================================= */
-
-.settings-search{
-    position:relative;
-    margin-bottom:30px;
-}
-
-.settings-search input{
-    width:100%;
-
-    height:52px;
-
-    border:1px solid var(--border);
-
-    border-radius:15px;
-
-    background:var(--card);
-
-    color:var(--text);
-
-    padding:0 18px 0 48px;
-
-    outline:none;
-
-    box-shadow:var(--shadow);
-}
-
-.settings-search input:focus{
-    border-color:var(--primary);
-}
-
-.search-icon{
-    position:absolute;
-
-    left:18px;
-    top:50%;
-
-    transform:translateY(-50%);
-
-    color:var(--muted);
-}
-
-/* =========================================================
-   SETTINGS GRID
-   ========================================================= */
-
-.settings-grid{
-    display:grid;
-
-    grid-template-columns:
-    repeat(2,minmax(0,1fr));
-
-    gap:22px;
-}
-
-/* =========================================================
-   SECTION
-   ========================================================= */
-
-.settings-section{
-    background:var(--card);
-
-    border:1px solid var(--border);
-
-    border-radius:20px;
-
-    overflow:hidden;
-
-    box-shadow:var(--shadow);
-
-    transition:.2s;
-}
-
-.settings-section:hover{
-    transform:translateY(-1px);
-}
-
-.section-title{
-    padding:19px 20px 10px;
-
-    font-size:13px;
-    font-weight:800;
-
-    text-transform:uppercase;
-
-    letter-spacing:.5px;
-
-    color:var(--text-secondary);
-}
-
-.section-description{
-    padding:0 20px 13px;
-
-    color:var(--muted);
-
-    font-size:12px;
-}
-
-/* =========================================================
-   SETTING ITEM
-   ========================================================= */
-
-.setting-item{
-    min-height:67px;
-
-    padding:13px 20px;
-
-    display:flex;
-    align-items:center;
-
-    gap:14px;
-
-    border-top:1px solid var(--border);
-
-    transition:.2s;
-}
-
-.setting-item:hover{
-    background:var(--surface);
-}
-
-.setting-icon{
-    width:38px;
-    height:38px;
-
-    border-radius:11px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    background:var(--surface);
-
-    font-size:17px;
-
-    flex-shrink:0;
-}
-
-.setting-info{
-    flex:1;
-    min-width:0;
-}
-
-.setting-name{
-    font-size:14px;
-    font-weight:700;
-}
-
-.setting-description{
-    font-size:12px;
-    color:var(--text-secondary);
-
-    margin-top:3px;
-
-    line-height:1.35;
-}
-
-.setting-arrow{
-    color:var(--muted);
-    font-size:18px;
-}
-
-/* =========================================================
-   TOGGLE
-   ========================================================= */
-
-.toggle{
-    width:47px;
-    height:27px;
-
-    border-radius:20px;
-
-    background:#c7cbd1;
-
-    padding:3px;
-
-    transition:.25s;
-
-    flex-shrink:0;
-}
-
-.toggle::after{
-    content:"";
-
-    display:block;
-
-    width:21px;
-    height:21px;
-
-    border-radius:50%;
-
-    background:white;
-
-    box-shadow:0 2px 5px rgba(0,0,0,.2);
-
-    transition:.25s;
-}
-
-.toggle.active{
-    background:var(--primary);
-}
-
-.toggle.active::after{
-    transform:translateX(20px);
-}
-
-/* =========================================================
-   SELECT
-   ========================================================= */
-
-.setting-select{
-    background:var(--surface);
-
-    color:var(--text);
-
-    border:1px solid var(--border);
-
-    border-radius:9px;
-
-    padding:7px 9px;
-
-    outline:none;
-
-    font-size:12px;
-}
-
-/* =========================================================
-   ACCENT SWATCHES
-   ========================================================= */
-
-.accent-swatches{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    flex-wrap:wrap;
-    justify-content:flex-end;
-}
-
-.accent-swatch{
-    width:26px;
-    height:26px;
-    border-radius:50%;
-    border:2px solid transparent;
-    padding:0;
-    cursor:pointer;
-    background-color:var(--swatch-color, var(--primary));
-    box-shadow:0 1px 3px rgba(0,0,0,.15);
-    transition:transform .12s, border-color .12s;
-}
-
-.accent-swatch:hover{
-    transform:scale(1.1);
-}
-
-.accent-swatch.selected{
-    border-color:var(--text);
-}
-
-.accent-swatch-custom{
-    background:conic-gradient(from 180deg,#e5484d,#f59e0b,#20b958,#0071e3,#7c5cff,#e5484d);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    overflow:hidden;
-    position:relative;
-}
-
-.accent-swatch-custom input[type="color"]{
-    position:absolute;
-    inset:0;
-    width:100%;
-    height:100%;
-    opacity:0;
-    cursor:pointer;
-    border:0;
-    padding:0;
-}
-
-/* =========================================================
-   DANGER
-   ========================================================= */
-
-.danger .setting-name{
-    color:var(--danger);
-}
-
-.danger .setting-icon{
-    color:var(--danger);
-    background:rgba(255,59,48,.1);
-}
-
-/* =========================================================
-   STORAGE
-   ========================================================= */
-
-.storage-card{
-    margin-top:22px;
-
-    background:var(--card);
-
-    border:1px solid var(--border);
-
-    border-radius:20px;
-
-    padding:20px;
-
-    box-shadow:var(--shadow);
-}
-
-.storage-header{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-
-    margin-bottom:14px;
-}
-
-.storage-title{
-    font-weight:800;
-}
-
-.storage-value{
-    color:var(--text-secondary);
-    font-size:13px;
-}
-
-.storage-bar{
-    height:9px;
-
-    background:var(--surface);
-
-    border-radius:20px;
-
-    overflow:hidden;
-}
-
-.storage-used{
-    height:100%;
-
-    width:42%;
-
-    background:linear-gradient(
-        90deg,
-        var(--primary),
-        var(--primary-light,#818cf8)
-    );
-
-    border-radius:20px;
-}
-
-.storage-details{
-    display:grid;
-
-    grid-template-columns:
-    repeat(3,1fr);
-
-    margin-top:15px;
-
-    gap:10px;
-}
-
-.storage-detail{
-    font-size:12px;
-    color:var(--text-secondary);
-}
-
-.storage-detail strong{
-    display:block;
-
-    color:var(--text);
-
-    font-size:14px;
-
-    margin-bottom:3px;
-}
-
-/* =========================================================
-   MOBILE NAVIGATION
-   ========================================================= */
-
-.mobile-nav{
-    display:none;
-
-    position:fixed;
-
-    left:0;
-    right:0;
-    bottom:0;
-
-    height:68px;
-
-    background:rgba(255,255,255,.94);
-
-    backdrop-filter:blur(18px);
-
-    border-top:1px solid var(--border);
-
-    z-index:200;
-
-    grid-template-columns:
-    repeat(5,1fr);
-}
-
-[data-theme="dark"] .mobile-nav{
-    background:rgba(21,24,29,.95);
-}
-
-.mobile-nav-item{
-    display:flex;
-    flex-direction:column;
-
-    align-items:center;
-    justify-content:center;
-
-    gap:4px;
-
-    background:transparent;
-
-    color:var(--text-secondary);
-
-    font-size:10px;
-    font-weight:600;
-}
-
-.mobile-nav-item span:first-child{
-    font-size:19px;
-}
-
-.mobile-nav-item.active{
-    color:var(--primary);
-}
-
-/* =========================================================
-   MODAL
-   ========================================================= */
-
-.modal-overlay{
-    position:fixed;
-
-    inset:0;
-
-    background:rgba(0,0,0,.5);
-
-    display:none;
-
-    align-items:center;
-    justify-content:center;
-
-    padding:20px;
-
-    z-index:500;
-
-    backdrop-filter:blur(8px);
-}
-
-.modal-overlay.show{
-    display:flex;
-}
-
-.modal{
-    width:100%;
-    max-width:480px;
-
-    background:var(--card);
-
-    border-radius:22px;
-
-    border:1px solid var(--border);
-
-    box-shadow:0 25px 70px rgba(0,0,0,.25);
-
-    overflow:hidden;
-
-    animation:modalIn .2s ease;
-}
-
-@keyframes modalIn{
-    from{
-        opacity:0;
-        transform:scale(.96) translateY(10px);
-    }
-
-    to{
-        opacity:1;
-        transform:scale(1) translateY(0);
-    }
-}
-
-.modal-header{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-
-    padding:20px;
-
-    border-bottom:1px solid var(--border);
-}
-
-.modal-title{
-    font-size:18px;
-    font-weight:800;
-}
-
-.modal-body{
-    padding:22px;
-}
-
-.modal-close{
-    width:35px;
-    height:35px;
-
-    border-radius:50%;
-
-    background:var(--surface);
-
-    color:var(--text);
-
-    font-size:18px;
-}
-
-.form-group{
-    margin-bottom:16px;
-}
-
-.form-group label{
-    display:block;
-
-    font-size:12px;
-    font-weight:700;
-
-    margin-bottom:7px;
-}
-
-.form-group input{
-    width:100%;
-
-    height:45px;
-
-    padding:0 13px;
-
-    border-radius:10px;
-
-    border:1px solid var(--border);
-
-    background:var(--surface);
-
-    color:var(--text);
-
-    outline:none;
-}
-
-.form-group input:focus{
-    border-color:var(--primary);
-}
-
-.modal-footer{
-    padding:15px 20px;
-
-    border-top:1px solid var(--border);
-
-    display:flex;
-
-    justify-content:flex-end;
-
-    gap:10px;
-}
-
-.btn{
-    padding:10px 16px;
-
-    border-radius:10px;
-
-    font-size:13px;
-    font-weight:700;
-}
-
-.btn-secondary{
-    background:var(--surface);
-    color:var(--text);
-}
-
-.btn-primary{
-    background:var(--primary);
-    color:white;
-}
-
-/* =========================================================
-   TOAST
-   ========================================================= */
-
-.toast{
-    position:fixed;
-
-    bottom:25px;
-    right:25px;
-
-    background:#111827;
-    color:white;
-
-    padding:13px 17px;
-
-    border-radius:12px;
-
-    font-size:13px;
-    font-weight:600;
-
-    opacity:0;
-
-    transform:translateY(15px);
-
-    pointer-events:none;
-
-    transition:.25s;
-
-    z-index:1000;
-
-    box-shadow:0 10px 30px rgba(0,0,0,.2);
-}
-
-.toast.show{
-    opacity:1;
-    transform:translateY(0);
-}
-
-/* =========================================================
-   HIDDEN
-   ========================================================= */
-
-.hidden{
-    display:none !important;
-}
-
-/* =========================================================
-   TABLET
-   ========================================================= */
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.4}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer;border:none;background:none}
+:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+.hidden{display:none!important}
+
+/* shell */
+.app{display:flex;min-height:100vh}
+.sidebar{width:232px;position:fixed;inset:0 auto 0 0;background:var(--card);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:20px 12px;z-index:50}
+.wordmark{display:flex;align-items:center;gap:10px;padding:2px 10px 20px;font-weight:800;font-size:1.4rem;letter-spacing:-.5px}
+.wordmark i{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;color:var(--on-primary);font-style:normal;font-size:1.1rem;background:var(--primary)}
+.nav{display:flex;flex-direction:column;gap:3px;overflow:auto}
+.nav button{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;color:var(--text-secondary);font-weight:600;font-size:.88rem;text-align:left}
+.nav button i{width:18px;text-align:center}
+.nav button:hover{background:var(--surface);color:var(--text)}
+.nav button.active{background:var(--primary-l);color:var(--primary)}
+.nav .sp{margin-top:auto}
+.main{margin-left:232px;width:calc(100% - 232px)}
+.topbar{height:64px;position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:14px;padding:0 32px;background:var(--bg);border-bottom:1px solid var(--border)}
+.topbar h1{font-size:1.35rem;letter-spacing:-.4px}
+.search{margin-left:auto;position:relative;width:min(320px,50%)}
+.search i{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:.85rem}
+.search input{width:100%;height:40px;border-radius:12px;border:1px solid var(--border);background:var(--card);padding:0 14px 0 38px;outline:none}
+.search input:focus{border-color:var(--primary)}
+.wrap{max-width:1040px;margin:0 auto;padding:26px 28px 90px}
+
+/* profile */
+.me{display:flex;align-items:center;gap:16px;padding:20px;background:var(--card);border:1px solid var(--border);border-radius:20px;box-shadow:var(--shadow);margin-bottom:22px}
+.me-av{width:64px;height:64px;border-radius:50%;flex-shrink:0;display:grid;place-items:center;color:#fff;font-weight:800;font-size:1.3rem;background:var(--ag-soft) center/cover;cursor:pointer;position:relative}
+.me-av::after{content:"\f030";font-family:"Font Awesome 6 Free";font-weight:900;position:absolute;right:-2px;bottom:-2px;width:22px;height:22px;border-radius:50%;background:var(--card);color:var(--text-secondary);border:1px solid var(--border);display:grid;place-items:center;font-size:.6rem}
+.me-info{flex:1;min-width:0}
+.me-name{font-weight:800;font-size:1.1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.me-user{color:var(--text-secondary);font-size:.85rem}
+.me-bio{color:var(--text-secondary);font-size:.82rem;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.btn{padding:10px 16px;border-radius:11px;font-size:.84rem;font-weight:700;background:var(--surface)}
+.btn:hover{filter:brightness(.97)}
+.btn.primary{background:var(--primary);color:#fff}
+.btn.danger{background:rgba(229,72,77,.12);color:var(--danger)}
+
+/* layout */
+.cols{display:grid;grid-template-columns:210px minmax(0,1fr);gap:24px;align-items:start}
+.rail{position:sticky;top:84px;display:flex;flex-direction:column;gap:2px}
+.rail button{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;color:var(--text-secondary);font-weight:600;font-size:.88rem;text-align:left}
+.rail button i{width:18px;text-align:center}
+.rail button:hover{background:var(--card);color:var(--text)}
+.rail button.active{background:var(--card);color:var(--primary);box-shadow:var(--shadow);border:1px solid var(--border)}
+.pane{display:none}
+.pane.show{display:block}
+.pane-head{margin:2px 4px 14px}
+.pane-head h2{font-size:1.3rem;letter-spacing:-.3px}
+.pane-head p{color:var(--text-secondary);font-size:.88rem;margin-top:2px}
+.group{background:var(--card);border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow);overflow:hidden;margin-bottom:16px}
+.row{display:flex;align-items:center;gap:14px;padding:14px 18px;min-height:64px}
+.row+.row{border-top:1px solid var(--border)}
+.row.link{cursor:pointer}
+.row.link:hover{background:var(--surface)}
+.row .ic{width:36px;height:36px;border-radius:11px;background:var(--surface);display:grid;place-items:center;color:var(--text-secondary);flex-shrink:0}
+.row .tx{flex:1;min-width:0}
+.row .nm{font-weight:700;font-size:.93rem}
+.row .ds{font-size:.8rem;color:var(--text-secondary);margin-top:2px}
+.row .chev{color:var(--muted);font-size:.8rem}
+.row.stack{flex-wrap:wrap}
+.row.stack .ctl-block{flex-basis:100%;padding-left:50px}
+.row.danger .nm,.row.danger .ic{color:var(--danger)}
+.row.danger .ic{background:rgba(229,72,77,.1)}
+.row.hit{background:var(--primary-l)}
+
+/* controls */
+.tg{width:46px;height:27px;border-radius:99px;background:#c3c8d2;padding:3px;transition:.2s;flex-shrink:0}
+.tg::after{content:"";display:block;width:21px;height:21px;border-radius:50%;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,.25);transition:.2s}
+.tg.on{background:var(--primary)}
+.tg.on::after{transform:translateX(19px)}
+.tg.saving{opacity:.6}
+select{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:8px 10px;outline:none;font-size:.82rem;color:var(--text)}
+.seg{display:inline-flex;background:var(--surface);border-radius:11px;padding:3px;gap:2px}
+.seg button{padding:7px 14px;border-radius:9px;font-size:.82rem;font-weight:700;color:var(--text-secondary)}
+.seg button.on{background:var(--card);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.swatches{display:flex;gap:10px;flex-wrap:wrap}
+.sw{width:30px;height:30px;border-radius:50%;border:3px solid var(--card);box-shadow:0 0 0 2px transparent,0 1px 3px rgba(0,0,0,.2);position:relative;transition:transform .12s}
+.sw:hover{transform:scale(1.1)}
+.sw.sel{box-shadow:0 0 0 2px var(--text)}
+.sw.custom{background:conic-gradient(from 180deg,#e5484d,#f59e0b,#20b958,#0071e3,#7c5cff,#e5484d);overflow:hidden}
+.sw input{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer}
+.walls{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:10px}
+.wall{border-radius:12px;border:2px solid var(--border);height:62px;background-color:var(--surface);position:relative;display:grid;place-items:end start;padding:5px 8px;font-size:.72rem;font-weight:700;color:var(--text-secondary);overflow:hidden}
+.wall.sel{border-color:var(--primary);color:var(--primary)}
+.wall.up{place-items:center;gap:0;font-size:.78rem}
+
+/* live preview */
+.preview{border-radius:16px;border:1px solid var(--border);background-color:var(--surface);padding:16px;display:flex;flex-direction:column;gap:8px;margin:0 0 16px;min-height:150px}
+.preview .b{max-width:72%;padding:9px 13px;border-radius:16px;font-size:.88rem}
+.preview .in{background:var(--card);border:1px solid var(--border);border-bottom-left-radius:5px;align-self:flex-start}
+.preview .out{background:var(--primary);color:var(--on-primary);border-bottom-right-radius:5px;align-self:flex-end}
+.preview small{opacity:.7;font-size:.68rem;display:block;margin-top:2px}
+.pv-label{font-size:.78rem;color:var(--text-secondary);margin:0 4px 6px}
+
+/* storage */
+.bar{height:9px;border-radius:99px;background:var(--surface);overflow:hidden;margin:12px 0}
+.bar div{height:100%;width:42%;background:var(--primary);border-radius:99px}
+.sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;font-size:.78rem;color:var(--text-secondary)}
+.sgrid b{display:block;color:var(--text);font-size:.92rem}
+
+/* modal + toast */
+.ov{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:18px;z-index:500}
+.ov.show{display:flex}
+.modal{width:100%;max-width:440px;background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;max-height:90vh;display:flex;flex-direction:column}
+.ov .modal{padding:0}
+.mh{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border);font-weight:800}
+.mh button{width:32px;height:32px;border-radius:50%;background:var(--surface)}
+.mb{padding:20px;overflow:auto}
+.mf{padding:14px 20px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px}
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:.78rem;font-weight:700;margin-bottom:6px}
+.fg input{width:100%;height:44px;padding:0 12px;border-radius:10px;border:1px solid var(--border);background:var(--surface);outline:none}
+.fg input:focus{border-color:var(--primary)}
+.fg input[readonly]{color:var(--text-secondary)}
+.empty{text-align:center;padding:22px 8px;color:var(--text-secondary)}
+.empty i{font-size:1.8rem;margin-bottom:8px;display:block}
+.none{display:none;text-align:center;color:var(--text-secondary);padding:40px 0}
+
+/* search mode */
+body.searching .rail{visibility:hidden}
+body.searching .pane{display:block}
+body.searching .pane-head p{display:none}
+.mnav{display:none}
 
 @media(max-width:900px){
-
-    .sidebar{
-        width:220px;
-    }
-
-    .main{
-        width:calc(100% - 220px);
-        margin-left:220px;
-    }
-
-    .content{
-        padding:25px 20px 60px;
-    }
-
-    .settings-grid{
-        grid-template-columns:1fr;
-    }
+  .sidebar{display:none}.main{margin-left:0;width:100%}
+  .topbar{padding:0 16px}.wrap{padding:18px 14px 100px}
+  .cols{grid-template-columns:1fr;gap:14px}
+  .rail{position:sticky;top:64px;z-index:30;flex-direction:row;overflow-x:auto;gap:6px;padding:8px 0;background:var(--bg);scrollbar-width:none}
+  .rail::-webkit-scrollbar{display:none}
+  .rail button{white-space:nowrap;background:var(--card);border:1px solid var(--border);padding:8px 13px;border-radius:99px}
+  .rail button i{display:none}
+  .mnav{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;inset:auto 0 0 0;height:62px;background:var(--card);border-top:1px solid var(--border);z-index:200}
+  .mnav button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:.66rem;font-weight:600;color:var(--text-secondary)}
+  .mnav button.active{color:var(--primary)}
+  .mnav i{font-size:1.1rem}
+  .row{padding:12px 14px}.row.stack .ctl-block{padding-left:0}
+  .me-bio{display:none}
+  .sgrid{grid-template-columns:1fr 1fr}
 }
-
-/* =========================================================
-   MOBILE
-   ========================================================= */
-
-@media(max-width:700px){
-
-    body{
-        padding-bottom:68px;
-    }
-
-    .sidebar{
-        display:none;
-    }
-
-    .main{
-        width:100%;
-        margin-left:0;
-    }
-
-    .topbar{
-        height:62px;
-
-        padding:0 16px;
-    }
-
-    .topbar-title{
-        font-size:20px;
-    }
-
-    .content{
-        padding:18px 14px 90px;
-    }
-
-    .profile-card{
-        padding:18px;
-
-        border-radius:18px;
-
-        gap:13px;
-    }
-
-    .avatar{
-        width:58px;
-        height:58px;
-
-        font-size:20px;
-    }
-
-    .profile-name{
-        font-size:17px;
-    }
-
-    .profile-bio{
-        display:none;
-    }
-
-    .edit-profile{
-        padding:8px 11px;
-
-        font-size:11px;
-    }
-
-    .settings-search{
-        margin-bottom:20px;
-    }
-
-    .settings-search input{
-        height:48px;
-    }
-
-    .settings-grid{
-        gap:14px;
-    }
-
-    .settings-section{
-        border-radius:17px;
-    }
-
-    .section-title{
-        padding:17px 16px 9px;
-    }
-
-    .section-description{
-        padding:0 16px 12px;
-    }
-
-    .setting-item{
-        min-height:63px;
-
-        padding:11px 15px;
-
-        gap:11px;
-    }
-
-    .setting-icon{
-        width:34px;
-        height:34px;
-
-        font-size:15px;
-    }
-
-    .setting-name{
-        font-size:13px;
-    }
-
-    .setting-description{
-        font-size:11px;
-    }
-
-    .toggle{
-        transform:scale(.9);
-    }
-
-    .storage-card{
-        margin-top:14px;
-
-        padding:17px;
-
-        border-radius:17px;
-    }
-
-    .storage-details{
-        grid-template-columns:1fr 1fr;
-    }
-
-    .mobile-nav{
-        display:grid;
-    }
-
-    .toast{
-        left:14px;
-        right:14px;
-        bottom:82px;
-
-        text-align:center;
-    }
-}
-
-/* =========================================================
-   SMALL PHONES
-   ========================================================= */
-
-@media(max-width:380px){
-
-    .profile-card{
-        flex-wrap:wrap;
-    }
-
-    .edit-profile{
-        margin-left:auto;
-    }
-
-    .storage-details{
-        grid-template-columns:1fr;
-    }
-
-    .setting-description{
-        max-width:180px;
-    }
-}
-
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
+<link rel="stylesheet" href="alphagram.css">
 </head>
-
 <body>
-
 <div class="app">
+  <aside class="sidebar">
+    <div class="wordmark"><i>A</i>Alphagram</div>
+    <nav class="nav" id="sideNav"></nav>
+  </aside>
 
-<!-- ======================================================
-     SIDEBAR
-     ====================================================== -->
-
-<aside class="sidebar">
-
-    <div class="logo">
-
-        <div class="logo-icon">
-            A
-        </div>
-
-        <div class="logo-text">
-            Alpha
-        </div>
-
-    </div>
-
-    <nav class="nav">
-
-        <button class="nav-item" data-nav="index.html" onclick="goTo('index.html')">
-            <span class="nav-icon"><i class="fa-solid fa-house"></i></span>
-            Home
-        </button>
-
-        <button class="nav-item" data-nav="reels.html" onclick="goTo('reels.html')">
-            <span class="nav-icon"><i class="fa-solid fa-film"></i></span>
-            Reels
-        </button>
-
-        <button class="nav-item" data-nav="chat.html" onclick="goTo('chat.html')">
-            <span class="nav-icon"><i class="fa-solid fa-comment-dots"></i></span>
-            Messages
-        </button>
-
-        <button class="nav-item" data-nav="calls.html" onclick="goTo('calls.html')">
-            <span class="nav-icon"><i class="fa-solid fa-phone"></i></span>
-            Calls
-        </button>
-
-        <button class="nav-item" data-nav="events.html" onclick="goTo('events.html')">
-            <span class="nav-icon"><i class="fa-solid fa-calendar-days"></i></span>
-            Events
-        </button>
-
-        <button class="nav-item" data-nav="vaults.html" onclick="goTo('vaults.html')">
-            <span class="nav-icon"><i class="fa-solid fa-shield-halved"></i></span>
-            Vaults
-        </button>
-
-        <button class="nav-item" data-nav="ai.html" onclick="goTo('ai.html')">
-            <span class="nav-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
-            Alpha AI
-        </button>
-
-        <button class="nav-item" data-nav="status.html" onclick="goTo('status.html')">
-            <span class="nav-icon"><i class="fa-solid fa-circle-dot"></i></span>
-            Status
-        </button>
-
-        <button class="nav-item" data-nav="saved.html" onclick="goTo('saved.html')">
-            <span class="nav-icon"><i class="fa-solid fa-bookmark"></i></span>
-            Saved
-        </button>
-
-        <button class="nav-item active" data-nav="settings.html" onclick="goTo('settings.html')">
-            <span class="nav-icon"><i class="fa-solid fa-gear"></i></span>
-            Settings
-        </button>
-
-    </nav>
-
-    <div class="sidebar-bottom">
-
-        <button class="nav-item" onclick="showToast('Help & Support coming soon')">
-            <span class="nav-icon"><i class="fa-solid fa-circle-question"></i></span>
-            Help & Support
-        </button>
-
-        <button class="nav-item" id="sidebarLogout" onclick="AlphaCommon.logout('login.html')">
-            <span class="nav-icon"><i class="fa-solid fa-arrow-right-from-bracket"></i></span>
-            Log out
-        </button>
-
-    </div>
-
-</aside>
-
-
-<!-- ======================================================
-     MAIN
-     ====================================================== -->
-
-<main class="main">
-
-    <!-- TOP BAR -->
-
+  <main class="main">
     <header class="topbar">
-
-        <div class="topbar-title">
-            Settings
-        </div>
-
-        <div class="topbar-right">
-
-            <button
-                class="icon-button"
-                id="topThemeButton"
-                title="Toggle theme">
-
-                <i class="fa-regular fa-circle-half-stroke"></i>
-
-            </button>
-
-            <button
-                class="icon-button"
-                id="notificationButton">
-
-                <i class="fa-solid fa-bell"></i>
-
-            </button>
-
-        </div>
-
+      <h1>Settings</h1>
+      <label class="search"><i class="fa-solid fa-magnifying-glass"></i>
+        <input id="q" type="search" placeholder="Search settings" autocomplete="off"></label>
     </header>
 
-
-    <!-- CONTENT -->
-
-    <section class="content">
-
-        <!-- PROFILE -->
-
-        <div class="profile-card">
-
-            <div class="avatar" id="profileAvatar" title="Click to change photo">
-                ··
-            </div>
-            <input type="file" id="avatarInput" accept="image/*" style="display:none">
-
-            <div class="profile-info">
-
-                <div class="profile-name" id="profileName">
-                    Loading…
-                </div>
-
-                <div class="profile-username" id="profileUsername">
-                    @…
-                </div>
-
-                <div class="profile-bio" id="profileBio">
-                </div>
-
-            </div>
-
-            <button
-                class="edit-profile"
-                id="editProfile">
-
-                Edit profile
-
-            </button>
-
+    <section class="wrap">
+      <div class="me">
+        <div class="me-av" id="avatar" title="Change photo" role="button" tabindex="0">··</div>
+        <input type="file" id="avatarInput" accept="image/*" hidden>
+        <div class="me-info">
+          <div class="me-name" id="meName">Loading…</div>
+          <div class="me-user" id="meUser">@…</div>
+          <div class="me-bio" id="meBio"></div>
         </div>
-
-
-        <!-- SEARCH -->
-
-        <div class="settings-search">
-
-            <span class="search-icon">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </span>
-
-            <input
-                type="text"
-                id="settingsSearch"
-                placeholder="Search settings...">
-
-        </div>
-
-
-        <!-- SETTINGS GRID -->
-
-        <div class="settings-grid" id="settingsGrid">
-
-
-            <!-- ==================================================
-                 ACCOUNT
-                 ================================================== -->
-
-            <div class="settings-section">
-
-                <div class="section-title">
-                    Account
-                </div>
-
-                <div class="section-description">
-                    Manage your Alpha account information.
-                </div>
-
-
-                <div
-                    class="setting-item clickable"
-                    data-modal="account">
-
-                    <div class="setting-icon">
-                        <i class="fa-solid fa-id-card"></i>
-                    </div>
-
-                    <div class="setting-info">
-
-                        <div class="setting-name">
-                            Account information
-                        </div>
-
-                        <div class="setting-description">
-                            Name, username, email and phone
-                        </div>
-
-                    </div>
-
-                    <div class="setting-arrow">
-                        ›
-                    </div>
-
-                </div>
-
-
-                <div
-                    class="setting-item clickable"
-                    data-modal="profile">
-
-                    <div class="setting-icon">
-                        <i class="fa-solid fa-pen"></i>
-                    </div>
-
-                    <div class="setting-info">
-
-                        <div class="setting-name">
-                            Profile
-                        </div>
-
-                        <div class="setting-description">
-                            Profile photo, bio and personal details
-                        </div>
-
-                    </div>
-
-                    <div class="setting-arrow">
-                        ›
-                    </div>
-
-                </div>
-
-
-                <div class="setting-item">
-
-                    <div class="setting-icon">
-                        <i class="fa-solid fa-globe"></i>
-                    </div>
-
-                    <div class="setting-info">
-
-                        <div class="setting-name">
-                            Language
-                        </div>
-
-                        <div class="setting-description">
-                            Choose your Alpha language
-                        </div>
-
-                    </div>
-
-                    <select
-                        class="setting-select"
-                        id="languageSelect">
-
-                        <option>English</option>
-                        <option>Kinyarwanda</option>
-                        <option>French</option>
-                        <option>Swahili</option>
-
-                    </select>
-
-                </div>
-
-            </div>
-
-
-            <!-- ==================================================
-                 PRIVACY
-                 ================================================== -->
-
-            <div class="settings-section">
-
-                <div class="section-title">
-                    Privacy
-                </div>
-
-                <div class="section-description">
-                    Control who can interact with you.
-                </div>
-
-
-                <div class="setting-item">
-
-                    <div class="setting-icon">
-                        <i class="fa-solid fa-lock"></i>
-                    </div>
-
-                    <div class="setting-info">
-
-                        <div class="setting-name">
-                            Private account
-                        </div>
-
-                        <div class="setting-description">
-                            Only approved people can follow you
-                        </div>
-
-                    </div>
-
-                    <button
-                        class="toggle"
-                        data-toggle="privateAccount">
-                    </button>
-
-                </div>
-
-
-                <div class="setting-item">
-
-                    <div class="setting-icon">
-                        <i class="fa-solid fa-eye"></i>
-                    </div>
-
-                    <div class="setting-info">
-
-                        <div class="setting-name">
-                            Activity status
-                        </div>
-
-                        <div class="setting-description">
-                            Show when you are active
-                        </div>
-
-                    </div>
-
-                    <button
-                        class="toggle active"
-                        data-toggle="activityStatus">
-                    </button>
-
-                </div>
-
-
-                <div class="setting-item">
-
-                    <div class="setting-icon">
-                        <i class="fa-solid fa-check-double"></i>
-                    </div>
-
-                    <div class="setting-info">
-
-                        <div class="setting-name">
-                            Read receipts
-                        </div>
-
-                        <div class="setting-description">
-                            Let people know when messages are read
-                        </div>
-
-                    </div>
-
-                    <button
-                        class="toggle active"
-                        data-toggle="readReceipts">
-                    </button>
-
-                </div>
-
-
-                <div
-                    class="setting-item clickable"
-                    data-modal="blocked">
-
-                    <div class="setting-icon">
-                        <i class="fa-solid fa-user-slash"></i>
-                    </div>
-
-                    <div class="setting-info">
-
-                        <div class="setting-name">
-                            Blocked accounts
-                        </div>
-
-                        <div class="setting-description">
-                            Manage accounts you have blocked
-                        </div>
-
-                    </div>
-
-                    <div class="setting-arrow">
-                        ›
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- ==================================================
-                 SECURITY
-                 ================================================== -->
-
-            <div class="settings-section">
-
-                <div class="section-title">
-                    Security
-                </div>
-
-                <div class="section-description">
-                    Protect your account and devices.
-                </div>
-
-
-                <div
-                    class="setting-item clickable"
-                    data-modal="password">
-
-                    <div class="setting-icon">
-                        <i class="fa-solid fa-key"></i>
-                    </div>
-
-                    <div class="setting-info">
-
-                        <div class="setting-name">
-                            Password
-                        </div>
-
-                        <div class="setting-description">
-                            Change your account password
-                        </div>
-
-                    </div>
-
-                    <div class="setting-arrow">
-                        ›
-                    </div>
-
-                </div>
-
-
-                <div class="setting-item">
-
-                    <div class="setting-icon">
-                        <i class="fa-solid fa-shield-halved"></i>
-                    </div>
-
-                    <div class="setting-info">
-
-                        <div class="setting-name">
-                            Two-factor authentication
-                        </div>
-
-                        <div class="setting-description">
-                            Add another layer of protection
-                        </div>
-
-                    </div>
-
-                    <button
-                        class="toggle"
-                        data-toggle="twoFactor">
-                    </button>
-
-                </div>
-
-
-                <div
-                    class="setting-item clickable"
-                    data-modal="devices">
-
-                    <div class="setting-icon">
-                        <i class="fa-solid fa-laptop"></i>
-                    </div>
-
-                    <div class="setting-info">
-
-                        <div class="setting-name">
-                            Connected devices
-                        </div>
-
-                        <div class="setting-description">
-                            Manage where your account is logged in
-                        </div>
-
-                    </div>
-
-                    <div class="setting-arrow">
-                        ›
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- ==================================================
-                 NOTIFICATIONS
-                 ================================================== -->
-
-            <div class="settings-section">
-
-                <div class="section-title">
-                    Notifications
-                </div>
-
-                <div class="section-description">
-                    Choose what Alpha should notify you about.
-                </div>
-
-
-                <div class="setting-item">
-
-                    <div class="setting-icon">
-                        <i class="fa-solid fa-bell"></i>
-                    </div>
-
-                    <div class="setting-info">
-
-                        <div class="setting-name">
-                            Push notifications
-                        </div>
-
-                        <div class="setting-description">
-                            Receive notifications on your device
-                        </div>
-
-                    </div>
-
-                    <button
-                        class="toggle active"
-                        data-toggle="pushNotifications">
-                    </button>
-
-                </div>
-
-
-                <div class="setting-item">
-
-                    <div class="setting-icon">
-                        <i class="fa-solid fa-comment-dots"></i>
-                    </div>
-
-                    <div class="setting-info">
-
-                        <div class="setting-name">
-                            Messages
-                        </div>
-
-                        <div class="setting-description">
-                            New message notifications
-                        </div>
-
-                    </div>
-
-                    <button
-                        class="toggle active"
-                        data-toggle="messageNotifications">
-                    </button>
-
-                </div>
-
-
-                <div class="setting-item">
-
-                    <div class="setting-icon">
-                        <i class="fa-solid fa-heart"></i>
-                    </div>
-
-                    <div class="setting-info">
-
-                        <div class="setting-name">
-                            Likes & comments
-                        </div>
-
-                        <div class="setting-description">
-                            Notifications about your content
-                        </div>
-
-                    </div>
-
-                    <button
-                        class="toggle active"
-                        data-toggle="socialNotifications">
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <!-- ==================================================
-                 APPEARANCE
-                 ================================================== -->
-
-            <div class="settings-section">
-
-                <div class="section-title">
-                    Appearance
-                </div>
-
-                <div class="section-description">
-                    Make Alpha look the way you prefer.
-                </div>
-
-
-                <div class="setting-item">
-
-                    <div class="setting-icon">
-                        <i class="fa-regular fa-circle-half-stroke"></i>
-                    </div>
-
-                    <div class="setting-info">
-
-                        <div class="setting-name">
-                            Dark mode
-                        </div>
-
-                        <div class="setting-description">
-                            Use a darker interface
-                        </div>
-
-                    </div>
-
-                    <button
-                        class="toggle"
-                        id="darkModeToggle">
-                    </button>
-
-                </div>
-
-
-                <div class="setting-item">
-
-                    <div class="setting-icon">
-                        <i class="fa-solid fa-text-height"></i>
-                    </div>
-
-                    <div class="setting-info">
-
-                        <div class="setting-name">
-                            Text size
-                        </div>
-
-                        <div class="setting-description">
-                            Adjust interface text size
-                        </div>
-
-                    </div>
-
-                    <select
-                        class="setting-select"
-                        id="textSize">
-
-                        <option>Default</option>
-                        <option>Small</option>
-                        <option>Large</option>
-
-                    </select>
-
-                </div>
-
-
-                <div class="setting-item">
-
-                    <div class="setting-icon">
-                        <i class="fa-solid fa-palette"></i>
-                    </div>
-
-                    <div class="setting-info">
-
-                        <div class="setting-name">
-                            Accent color
-                        </div>
-
-                        <div class="setting-description">
-                            Applies across Alpha — chat, calls, reels and every other page
-                        </div>
-
-                    </div>
-
-                    <div class="accent-swatches" id="accentSwatches">
-                        <button class="accent-swatch" data-color="#4f46e5" style="background-color:#4f46e5" title="Indigo (default)"></button>
-                        <button class="accent-swatch" data-color="#0071e3" style="background-color:#0071e3" title="Blue"></button>
-                        <button class="accent-swatch" data-color="#7c5cff" style="background-color:#7c5cff" title="Purple"></button>
-                        <button class="accent-swatch" data-color="#e5484d" style="background-color:#e5484d" title="Red"></button>
-                        <button class="accent-swatch" data-color="#20b958" style="background-color:#20b958" title="Green"></button>
-                        <button class="accent-swatch" data-color="#f59e0b" style="background-color:#f59e0b" title="Amber"></button>
-                        <label class="accent-swatch accent-swatch-custom" title="Custom">
-                            <input type="color" id="accentCustomInput" value="#4f46e5">
-                        </label>
-                    </div>
-
-                </div>
-
-
-                <div class="setting-item">
-
-                    <div class="setting-icon">
-                        <i class="fa-solid fa-font"></i>
-                    </div>
-
-                    <div class="setting-info">
-
-                        <div class="setting-name">
-                            Font
-                        </div>
-
-                        <div class="setting-description">
-                            Changes the typeface across the whole app
-                        </div>
-
-                    </div>
-
-                    <select
-                        class="setting-select"
-                        id="fontSelect">
-
-                        <option value="default">Default</option>
-                        <option value="inter">Inter</option>
-                        <option value="poppins">Poppins</option>
-                        <option value="system">System</option>
-
-                    </select>
-
-                </div>
-
-
-                <div class="setting-item">
-
-                    <div class="setting-icon">
-                        <i class="fa-solid fa-table-cells-large"></i>
-                    </div>
-
-                    <div class="setting-info">
-
-                        <div class="setting-name">
-                            Density
-                        </div>
-
-                        <div class="setting-description">
-                            Compact tightens spacing across every page
-                        </div>
-
-                    </div>
-
-                    <select
-                        class="setting-select"
-                        id="densitySelect">
-
-                        <option value="comfortable">Comfortable</option>
-                        <option value="compact">Compact</option>
-
-                    </select>
-
-                </div>
-
-            </div>
-
-
-            <!-- ==================================================
-                 MESSAGES
-                 ================================================== -->
-
-            <div class="settings-section">
-
-                <div class="section-title">
-                    Messages
-                </div>
-
-                <div class="section-description">
-                    Customize your messaging experience.
-                </div>
-
-
-                <div class="setting-item">
-
-                    <div class="setting-icon">
-                        <i class="fa-solid fa-image"></i>
-                    </div>
-
-                    <div class="setting-info">
-
-                        <div class="setting-name">
-                            Auto-download media
-                        </div>
-
-                        <div class="setting-description">
-                            Automatically download received media
-                        </div>
-
-                    </div>
-
-                    <button
-                        class="toggle active"
-                        data-toggle="autoDownload">
-                    </button>
-
-                </div>
-
-
-                <div class="setting-item">
-
-                    <div class="setting-icon">
-                        <i class="fa-solid fa-stopwatch"></i>
-                    </div>
-
-                    <div class="setting-info">
-
-                        <div class="setting-name">
-                            Disappearing messages
-                        </div>
-
-                        <div class="setting-description">
-                            Automatically delete messages
-                        </div>
-
-                    </div>
-
-                    <select class="setting-select" id="disappearingMessages">
-
-                        <option>Off</option>
-                        <option>24 hours</option>
-                        <option>7 days</option>
-                        <option>90 days</option>
-
-                    </select>
-
-                </div>
-
-            </div>
-
-
-            <!-- ==================================================
-                 CALLS
-                 ================================================== -->
-
-            <div class="settings-section">
-
-                <div class="section-title">
-                    Calls
-                </div>
-
-                <div class="section-description">
-                    Configure your calling experience.
-                </div>
-
-
-                <div class="setting-item">
-
-                    <div class="setting-icon">
-                        <i class="fa-solid fa-phone"></i>
-                    </div>
-
-                    <div class="setting-info">
-
-                        <div class="setting-name">
-                            Call notifications
-                        </div>
-
-                        <div class="setting-description">
-                            Notify me about incoming calls
-                        </div>
-
-                    </div>
-
-                    <button
-                        class="toggle active"
-                        data-toggle="callNotifications">
-                    </button>
-
-                </div>
-
-
-                <div class="setting-item">
-
-                    <div class="setting-icon">
-                        <i class="fa-solid fa-video"></i>
-                    </div>
-
-                    <div class="setting-info">
-
-                        <div class="setting-name">
-                            Video quality
-                        </div>
-
-                        <div class="setting-description">
-                            Default video call quality
-                        </div>
-
-                    </div>
-
-                    <select class="setting-select" id="videoQuality">
-
-                        <option>Auto</option>
-                        <option>720p</option>
-                        <option>1080p</option>
-
-                    </select>
-
-                </div>
-
-            </div>
-
-
-            <!-- ==================================================
-                 REELS
-                 ================================================== -->
-
-            <div class="settings-section">
-
-                <div class="section-title">
-                    Reels
-                </div>
-
-                <div class="section-description">
-                    Control your short-video experience.
-                </div>
-
-
-                <div class="setting-item">
-
-                    <div class="setting-icon">
-                        <i class="fa-solid fa-film"></i>
-                    </div>
-
-                    <div class="setting-info">
-
-                        <div class="setting-name">
-                            Autoplay videos
-                        </div>
-
-                        <div class="setting-description">
-                            Automatically play videos in your feed
-                        </div>
-
-                    </div>
-
-                    <button
-                        class="toggle active"
-                        data-toggle="autoplay">
-                    </button>
-
-                </div>
-
-
-                <div class="setting-item">
-
-                    <div class="setting-icon">
-                        <i class="fa-solid fa-wifi"></i>
-                    </div>
-
-                    <div class="setting-info">
-
-                        <div class="setting-name">
-                            Data saver
-                        </div>
-
-                        <div class="setting-description">
-                            Reduce video data usage
-                        </div>
-
-                    </div>
-
-                    <button
-                        class="toggle"
-                        data-toggle="dataSaver">
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <!-- ==================================================
-                 VAULT
-                 ================================================== -->
-
-            <div class="settings-section">
-
-                <div class="section-title">
-                    Vault
-                </div>
-
-                <div class="section-description">
-                    Manage your private files and storage.
-                </div>
-
-
-                <div class="setting-item">
-
-                    <div class="setting-icon">
-                        <i class="fa-solid fa-lock"></i>
-                    </div>
-
-                    <div class="setting-info">
-
-                        <div class="setting-name">
-                            Vault lock
-                        </div>
-
-                        <div class="setting-description">
-                            Require authentication to open Vault
-                        </div>
-
-                    </div>
-
-                    <button
-                        class="toggle active"
-                        data-toggle="vaultLock">
-                    </button>
-
-                </div>
-
-
-                <div class="setting-item">
-
-                    <div class="setting-icon">
-                        <i class="fa-solid fa-cloud-arrow-up"></i>
-                    </div>
-
-                    <div class="setting-info">
-
-                        <div class="setting-name">
-                            Automatic backup
-                        </div>
-
-                        <div class="setting-description">
-                            Backup Vault files automatically
-                        </div>
-
-                    </div>
-
-                    <button
-                        class="toggle active"
-                        data-toggle="vaultBackup">
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <!-- ==================================================
-                 DATA
-                 ================================================== -->
-
-            <div class="settings-section">
-
-                <div class="section-title">
-                    Data & Storage
-                </div>
-
-                <div class="section-description">
-                    Manage your Alpha data.
-                </div>
-
-
-                <div class="setting-item">
-
-                    <div class="setting-icon">
-                        <i class="fa-solid fa-chart-simple"></i>
-                    </div>
-
-                    <div class="setting-info">
-
-                        <div class="setting-name">
-                            Data usage
-                        </div>
-
-                        <div class="setting-description">
-                            See how Alpha uses your data
-                        </div>
-
-                    </div>
-
-                    <div class="setting-arrow">
-                        ›
-                    </div>
-
-                </div>
-
-
-                <div
-                    class="setting-item clickable"
-                    data-modal="storage">
-
-                    <div class="setting-icon">
-                        <i class="fa-solid fa-hard-drive"></i>
-                    </div>
-
-                    <div class="setting-info">
-
-                        <div class="setting-name">
-                            Manage storage
-                        </div>
-
-                        <div class="setting-description">
-                            Clear cached files and media
-                        </div>
-
-                    </div>
-
-                    <div class="setting-arrow">
-                        ›
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- ==================================================
-                 HELP
-                 ================================================== -->
-
-            <div class="settings-section">
-
-                <div class="section-title">
-                    Support
-                </div>
-
-                <div class="section-description">
-                    Need help with Alpha?
-                </div>
-
-
-                <div
-                    class="setting-item clickable"
-                    data-modal="help">
-
-                    <div class="setting-icon">
-                        <i class="fa-solid fa-circle-question"></i>
-                    </div>
-
-                    <div class="setting-info">
-
-                        <div class="setting-name">
-                            Help Center
-                        </div>
-
-                        <div class="setting-description">
-                            Find answers to common questions
-                        </div>
-
-                    </div>
-
-                    <div class="setting-arrow">
-                        ›
-                    </div>
-
-                </div>
-
-
-                <div class="setting-item">
-
-                    <div class="setting-icon">
-                        <i class="fa-solid fa-flag"></i>
-                    </div>
-
-                    <div class="setting-info">
-
-                        <div class="setting-name">
-                            Report a problem
-                        </div>
-
-                        <div class="setting-description">
-                            Tell us about an issue
-                        </div>
-
-                    </div>
-
-                    <div class="setting-arrow">
-                        ›
-                    </div>
-
-                </div>
-
-
-                <div class="setting-item">
-
-                    <div class="setting-icon">
-                        <i class="fa-solid fa-circle-info"></i>
-                    </div>
-
-                    <div class="setting-info">
-
-                        <div class="setting-name">
-                            About Alpha
-                        </div>
-
-                        <div class="setting-description">
-                            Version 1.0.0
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- ==================================================
-                 DANGER ZONE
-                 ================================================== -->
-
-            <div class="settings-section">
-
-                <div class="section-title">
-                    Account actions
-                </div>
-
-
-                <div class="setting-item danger clickable" id="logoutAction">
-
-                    <div class="setting-icon">
-                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                    </div>
-
-                    <div class="setting-info">
-
-                        <div class="setting-name">
-                            Log out
-                        </div>
-
-                        <div class="setting-description">
-                            Sign out from this device
-                        </div>
-
-                    </div>
-
-                    <div class="setting-arrow">
-                        ›
-                    </div>
-
-                </div>
-
-
-                <div class="setting-item danger clickable" id="deactivateAction">
-
-                    <div class="setting-icon">
-                        <i class="fa-solid fa-triangle-exclamation"></i>
-                    </div>
-
-                    <div class="setting-info">
-
-                        <div class="setting-name">
-                            Deactivate account
-                        </div>
-
-                        <div class="setting-description">
-                            Temporarily disable your Alpha account
-                        </div>
-
-                    </div>
-
-                    <div class="setting-arrow">
-                        ›
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- ==================================================
-             STORAGE SUMMARY
-             ================================================== -->
-
-        <div class="storage-card">
-
-            <div class="storage-header">
-
-                <div class="storage-title">
-                    Alpha Storage
-                </div>
-
-                <div class="storage-value">
-                    4.2 GB / 10 GB
-                </div>
-
-            </div>
-
-            <div class="storage-bar">
-
-                <div class="storage-used"></div>
-
-            </div>
-
-
-            <div class="storage-details">
-
-                <div class="storage-detail">
-
-                    <strong>1.8 GB</strong>
-
-                    Photos
-
-                </div>
-
-                <div class="storage-detail">
-
-                    <strong>1.4 GB</strong>
-
-                    Videos
-
-                </div>
-
-                <div class="storage-detail">
-
-                    <strong>650 MB</strong>
-
-                    Vault
-
-                </div>
-
-                <div class="storage-detail">
-
-                    <strong>350 MB</strong>
-
-                    Messages
-
-                </div>
-
-            </div>
-
-        </div>
-
+        <button class="btn primary" data-m="profile">Edit profile</button>
+      </div>
+
+      <div class="cols">
+        <nav class="rail" id="rail" aria-label="Settings categories"></nav>
+        <div id="panels"></div>
+      </div>
+      <div class="none" id="none">No matches.</div>
     </section>
-
-</main>
-
+  </main>
 </div>
 
+<nav class="mnav" id="mNav"></nav>
 
-<!-- ======================================================
-     MOBILE NAVIGATION
-     ====================================================== -->
-
-<nav class="mobile-nav">
-
-    <button class="mobile-nav-item" onclick="window.location.href='index.html'">
-
-        <span><i class="fa-solid fa-house"></i></span>
-        Home
-
-    </button>
-
-    <button class="mobile-nav-item" onclick="window.location.href='reels.html'">
-
-        <span><i class="fa-solid fa-film"></i></span>
-        Reels
-
-    </button>
-
-    <button class="mobile-nav-item" onclick="window.location.href='chat.html'">
-
-        <span><i class="fa-solid fa-comment-dots"></i></span>
-        Messages
-
-    </button>
-
-    <button class="mobile-nav-item" onclick="window.location.href='vaults.html'">
-
-        <span><i class="fa-solid fa-shield-halved"></i></span>
-        Vault
-
-    </button>
-
-    <button class="mobile-nav-item active">
-
-        <span><i class="fa-solid fa-gear"></i></span>
-        Settings
-
-    </button>
-
-</nav>
-
-
-<!-- ======================================================
-     MODAL
-     ====================================================== -->
-
-<div class="modal-overlay" id="modalOverlay">
-
-    <div class="modal">
-
-        <div class="modal-header">
-
-            <div
-                class="modal-title"
-                id="modalTitle">
-
-                Settings
-
-            </div>
-
-            <button
-                class="modal-close"
-                id="modalClose">
-
-                <i class="fa-solid fa-xmark"></i>
-
-            </button>
-
-        </div>
-
-
-        <div
-            class="modal-body"
-            id="modalBody">
-
-        </div>
-
-
-        <div class="modal-footer">
-
-            <button
-                class="btn btn-secondary"
-                id="modalCancel">
-
-                Cancel
-
-            </button>
-
-            <button
-                class="btn btn-primary"
-                id="modalSave">
-
-                Save
-
-            </button>
-
-        </div>
-
-    </div>
-
+<div class="ov modal-overlay" id="ov">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <div class="mh"><span id="mTitle"></span><button id="mClose" aria-label="Close"><i class="fa-solid fa-xmark"></i></button></div>
+    <div class="mb" id="mBody"></div>
+    <div class="mf"><button class="btn" id="mCancel">Cancel</button><button class="btn primary" id="mSave">Save changes</button></div>
+  </div>
 </div>
-
-
-<!-- ======================================================
-     TOAST
-     ====================================================== -->
-
-<div
-    class="toast"
-    id="toast">
-
-    Settings updated
-
-</div>
-
 
 <script>
-// Fix: goTo was called from nav buttons but never defined on this page, so every sidebar/bottom-nav link silently did nothing.
-function goTo(url){ window.location.href = url; }
+/* ---------- helpers ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const ls = (k, d) => { try { return localStorage.getItem(k) ?? d; } catch { return d; } };
+const lsSet = (k, v) => { try { localStorage.setItem(k, v); } catch {} };
+const goTo = u => { window.location.href = u; };
 
+const toast = (m, t) => AlphaCommon.toast(m, t);
 
-/* =========================================================
-   ALPHA SETTINGS JAVASCRIPT
-   ========================================================= */
-
-
-/* ---------------------------------------------------------
-   ELEMENTS
-   --------------------------------------------------------- */
-
-const root = document.documentElement;
-
-const toast = document.getElementById("toast");
-
-const modalOverlay =
-    document.getElementById("modalOverlay");
-
-const modalTitle =
-    document.getElementById("modalTitle");
-
-const modalBody =
-    document.getElementById("modalBody");
-
-
-/* ---------------------------------------------------------
-   API / AUTH
-   --------------------------------------------------------- */
-
-const API_BASE = "https://alpha-auth.murwanashyakadieumerci540.workers.dev";
+/* ---------- api / auth ---------- */
+const API = "https://alpha-auth.murwanashyakadieumerci540.workers.dev";
 const TOKEN_KEY = "alpha_token";
-
-const authToken =
-    localStorage.getItem(TOKEN_KEY);
-
-if(!authToken){
-
-    window.location.href = "login.html";
-
-}
-
-let currentUser = {
-    email: null,
-    display_name: "",
-    bio: "",
-    avatar_url: null
-};
+const token = ls(TOKEN_KEY, null);
+if(!token) goTo("login.html");
 
 async function api(path, opts = {}){
+  const res = await fetch(API + path, { ...opts, headers: { "Content-Type": "application/json", Authorization: "Bearer " + token, ...(opts.headers || {}) } });
+  let data = null; try { data = await res.json(); } catch {}
+  if(res.status === 401){ localStorage.removeItem(TOKEN_KEY); goTo("login.html"); throw new Error("Session expired"); }
+  if(!res.ok) throw new Error((data && data.error) || "Request failed");
+  return data;
+}
 
-    const headers = {
-        "Content-Type": "application/json",
-        ...(opts.headers || {})
+/* ---------- schema: one source of truth for every setting ---------- */
+const CATS = [
+  ["account","Account","fa-user","Your profile and sign-in."],
+  ["appearance","Appearance","fa-palette","Applies across the app."],
+  ["chat","Chat","fa-comment-dots","Message behavior."],
+  ["privacy","Privacy","fa-lock","Who can see and reach you."],
+  ["security","Security","fa-shield-halved","Protect your account."],
+  ["notifications","Notifications","fa-bell","Choose your alerts."],
+  ["calls","Calls","fa-phone","Voice and video."],
+  ["reels","Reels","fa-film","Video playback."],
+  ["vault","Vault","fa-vault","Private files."],
+  ["data","Data & storage","fa-hard-drive","Files on this device and in the cloud."],
+  ["support","Support","fa-circle-question","Help and feedback."]
+];
+const T = (c,k,i,n,d,v) => ({c,t:"toggle",k,i,n,d,v});
+const S = (c,k,i,n,d,o,v,local) => ({c,t:"select",k,i,n,d,o,v,local});
+const L = (c,m,i,n,d) => ({c,t:"link",m,i,n,d});
+const ROWS = [
+  L("account","profile","fa-pen","Profile","Photo, name and bio"),
+  L("account","account","fa-id-card","Account information","Username and email"),
+  S("account","language","fa-globe","Language","App language",["English","Kinyarwanda","French","Swahili"],"English"),
+  {c:"account",t:"act",id:"logout",i:"fa-arrow-right-from-bracket",n:"Log out",d:"Sign out from this device",danger:1},
+  {c:"account",t:"act",id:"deactivate",i:"fa-triangle-exclamation",n:"Deactivate account",d:"Disable your account. Log in again to reactivate.",danger:1},
+
+  {c:"appearance",t:"preview"},
+  {c:"appearance",t:"theme",i:"fa-circle-half-stroke",n:"Theme",d:"Light or dark interface"},
+  {c:"appearance",t:"accent",i:"fa-palette",n:"Accent color",d:"Buttons, highlights and active items"},
+  {c:"appearance",t:"wallpaper",i:"fa-image",n:"Wallpaper",d:"Background behind the whole app"},
+  S("appearance","font","fa-font","Font","App typeface",[["default","Default"],["inter","Inter"],["poppins","Poppins"],["system","System"]],"default",1),
+  S("appearance","density","fa-table-cells-large","Density","Spacing between items",[["comfortable","Comfortable"],["compact","Compact"]],"comfortable",1),
+  S("appearance","textsize","fa-text-height","Text size","Size of interface text",[["14","Small"],["16","Default"],["18","Large"]],"16",1),
+  {c:"appearance",t:"reset",i:"fa-rotate-left",n:"Reset appearance",d:"Back to default"},
+
+  T("chat","autoDownload","fa-image","Auto-download media","Save received media",true),
+  S("chat","disappearingMessages","fa-stopwatch","Disappearing messages","Auto-delete new messages",["Off","24 hours","7 days","90 days"],"Off"),
+  T("chat","readReceipts","fa-check-double","Read receipts","Show when you read messages",true),
+
+  T("privacy","privateAccount","fa-lock","Private account","Approve followers",false),
+  T("privacy","activityStatus","fa-eye","Activity status","Show when you are active",true),
+  T("privacy","readReceipts","fa-check-double","Read receipts","Show when you read messages",true),
+  L("privacy","blocked","fa-user-slash","Blocked accounts","People you have blocked"),
+
+  L("security","password","fa-key","Password","Change your account password"),
+  T("security","twoFactor","fa-shield-halved","Two-factor authentication","Require a code at login",false),
+  L("security","devices","fa-laptop","Connected devices","Where your account is logged in"),
+
+  T("notifications","pushNotifications","fa-bell","Push notifications","Alerts on this device",true),
+  T("notifications","messageNotifications","fa-comment-dots","Messages","New message alerts",true),
+  T("notifications","socialNotifications","fa-heart","Likes and comments","Activity on your posts",true),
+  T("notifications","callNotifications","fa-phone","Incoming calls","Ring when someone calls you",true),
+
+  T("calls","callNotifications","fa-phone","Call notifications","Ring when someone calls you",true),
+  S("calls","videoQuality","fa-video","Video quality","Default for video calls",["Auto","720p","1080p"],"Auto"),
+
+  T("reels","autoplay","fa-film","Autoplay videos","Play videos as you scroll",true),
+  T("reels","dataSaver","fa-wifi","Data saver","Use less data for video",false),
+
+  T("vault","vaultLock","fa-lock","Vault lock","Ask to unlock Vault",true),
+  T("vault","vaultBackup","fa-cloud-arrow-up","Automatic backup","Back up Vault files",true),
+
+  L("data","storage","fa-hard-drive","Manage storage","Clear cached files and media"),
+  {c:"data",t:"storage"},
+
+  L("support","help","fa-circle-question","Help center","Common answers"),
+  {c:"support",t:"act",id:"report",i:"fa-flag",n:"Report a problem",d:"Tell us about an issue"},
+  {c:"support",t:"about",i:"fa-circle-info",n:"About Alphagram",d:"Version 1.0.0"}
+];
+const NAV = [["index.html","fa-house","Home"],["reels.html","fa-film","Reels"],["chat.html","fa-comment-dots","Messages"],["calls.html","fa-phone","Calls"],["events.html","fa-calendar-days","Events"],["vaults.html","fa-shield-halved","Vaults"],["ai.html","fa-wand-magic-sparkles","Alphagram AI"],["status.html","fa-circle-dot","Status"],["saved.html","fa-bookmark","Saved"],["settings.html","fa-gear","Settings"]];
+
+/* ---------- state ---------- */
+const server = {};            // values loaded from /settings
+let me = { email:null, display_name:"", bio:"", avatar_url:null };
+let activeCat = (location.hash || "#account").slice(1);
+if(!CATS.some(c => c[0] === activeCat)) activeCat = "account";
+
+const getVal = r => r.local
+  ? ls("alpha_" + r.k, r.v)
+  : (server[r.k] !== undefined ? server[r.k] : r.v);
+const isOn = r => { const v = getVal(r); return v === true || v === 1 || v === "1"; };
+
+/* ---------- render ---------- */
+const sel = (o, cur, k) => `<select data-sel="${k}" aria-label="${k}">` + o.map(x => {
+  const [v, l] = Array.isArray(x) ? x : [x, x];
+  return `<option value="${esc(v)}"${String(cur) === String(v) ? " selected" : ""}>${esc(l)}</option>`;
+}).join("") + "</select>";
+
+function rowHtml(r){
+  const head = (ctl, cls = "") => `<div class="row ${cls}" data-cat="${r.c}" data-text="${esc((r.n + " " + (r.d || "")).toLowerCase())}">
+    <div class="ic"><i class="fa-solid ${r.i}"></i></div><div class="tx"><div class="nm">${esc(r.n)}</div><div class="ds">${esc(r.d || "")}</div></div>${ctl}`;
+  switch(r.t){
+    case "toggle": return head(`<button class="tg${isOn(r) ? " on" : ""}" role="switch" aria-checked="${isOn(r)}" aria-label="${esc(r.n)}" data-tg="${r.k}"></button>`) + "</div>";
+    case "select": return head(sel(r.o, getVal(r), r.k)) + "</div>";
+    case "link":   return head(`<i class="fa-solid fa-chevron-right chev"></i>`, "link").replace('class="row link"', `class="row link" data-m="${r.m}" tabindex="0" role="button"`) + "</div>";
+    case "act":    return head(`<i class="fa-solid fa-chevron-right chev"></i>`, "link" + (r.danger ? " danger" : "")).replace('class="row link', `data-act="${r.id}" tabindex="0" role="button" class="row link`) + "</div>";
+    case "about":  return head("") + "</div>";
+    case "reset":  return head(`<button class="btn" data-act="reset">Reset</button>`) + "</div>";
+    case "theme": {
+      const cur = document.documentElement.getAttribute("data-theme");
+      return head("", "stack") + `<div class="ctl-block"><div class="seg">${["light","dark"].map(t => `<button data-theme-set="${t}" class="${cur === t ? "on" : ""}"><i class="fa-solid ${t === "dark" ? "fa-moon" : "fa-sun"}"></i> ${t[0].toUpperCase() + t.slice(1)}</button>`).join("")}</div></div></div>`;
+    }
+    case "accent": {
+      const cur = String(ls("alpha_settings_accent", AlphaCommon.DEFAULT_ACCENT)).toLowerCase();
+      return head("", "stack") + `<div class="ctl-block"><div class="swatches">${AlphaCommon.ACCENTS.map(a => `<button class="sw${cur === a.color ? " sel" : ""}" data-accent="${a.color}" style="background:${a.color}" title="${a.label}" aria-label="${a.label}"></button>`).join("")}</div></div></div>`;
+    }
+    case "wallpaper": {
+      const cur = ls("alpha_wallpaper", "none");
+      const custom = ls("alpha_wallpaper_custom", "");
+      return head("", "stack") + `<div class="ctl-block"><div class="walls">${AlphaCommon.WALLPAPERS.map(w => `<button class="wall${cur === w.id ? " sel" : ""}" data-wall="${w.id}" style="background-image:${w.css}">${esc(w.label)}</button>`).join("")}
+        <button class="wall up${cur === "custom" ? " sel" : ""}" data-wall="upload" style="${custom ? `background-image:url(${custom});background-size:cover` : ""}"><span><i class="fa-solid fa-upload"></i> Your photo</span></button></div>
+        <input type="file" id="wallInput" accept="image/*" hidden></div></div>`;
+    }
+    case "preview": return `<div class="pv-label">Preview</div>
+      <div class="preview" id="messages"><div class="b in">Are we still on for the call at 5?</div><div class="b out">Yes! Sending the link now<small>10:42 ✓✓</small></div><div class="b in">Perfect, thank you.</div></div>`;
+    case "storage": return `<div class="row stack" data-cat="data" data-text="alpha storage photos videos vault messages"><div class="tx"><div class="nm">Storage <span class="ds" style="float:right">4.2 GB of 10 GB</span></div>
+      <div class="bar"><div></div></div><div class="sgrid"><span><b>1.8 GB</b>Photos</span><span><b>1.4 GB</b>Videos</span><span><b>650 MB</b>Vault</span><span><b>350 MB</b>Messages</span></div></div></div>`;
+  }
+  return "";
+}
+
+function renderPanels(){
+  $("#panels").innerHTML = CATS.map(([id, label,, desc]) => {
+    const rows = ROWS.filter(r => r.c === id);
+    // keep previews / storage outside the card group so they read as their own blocks
+    const loose = rows.filter(r => r.t === "preview");
+    const grouped = rows.filter(r => r.t !== "preview");
+    return `<div class="pane${id === activeCat ? " show" : ""}" id="p-${id}" data-cat="${id}">
+      <div class="pane-head"><h2>${label}</h2><p>${desc}</p></div>
+      ${loose.map(rowHtml).join("")}<div class="group">${grouped.map(rowHtml).join("")}</div></div>`;
+  }).join("");
+  AlphaCommon.applyWallpaper();
+}
+
+function renderRail(){
+  $("#rail").innerHTML = CATS.map(([id, label, icon]) => `<button data-cat-go="${id}" class="${id === activeCat ? "active" : ""}"><i class="fa-solid ${icon}"></i>${label}</button>`).join("");
+}
+function renderNav(){
+  $("#sideNav").innerHTML = NAV.map(([u, i, l]) => `<button class="${u === "settings.html" ? "active" : ""}" onclick="goTo('${u}')"><i class="fa-solid ${i}"></i>${l}</button>`).join("");
+  $("#mNav").innerHTML = [["index.html","fa-house","Home"],["reels.html","fa-film","Reels"],["chat.html","fa-comment-dots","Messages"],["vaults.html","fa-shield-halved","Vault"],["settings.html","fa-gear","Settings"]]
+    .map(([u, i, l]) => `<button class="${u === "settings.html" ? "active" : ""}" onclick="goTo('${u}')"><i class="fa-solid ${i}"></i>${l}</button>`).join("");
+}
+function renderAll(){ renderRail(); renderPanels(); }
+
+function goCat(id){
+  activeCat = id; history.replaceState(null, "", "#" + id);
+  $("#q").value = ""; document.body.classList.remove("searching");
+  renderRail();
+  document.querySelectorAll(".pane").forEach(p => p.classList.toggle("show", p.dataset.cat === id));
+  $("#none").style.display = "none";
+}
+
+/* ---------- saving ---------- */
+async function saveServer(key, value, msg){
+  try { await api("/settings", { method: "PUT", body: JSON.stringify({ [key]: value }) }); server[key] = value; toast(msg); return true; }
+  catch(e){ toast("Couldn't save: " + e.message); return false; }
+}
+async function loadSettings(){
+  try { Object.assign(server, await api("/settings") || {}); renderPanels(); }
+  catch(e){ toast("Couldn't load settings: " + e.message); }
+}
+
+/* ---------- appearance helpers ---------- */
+function setTheme(t){ AlphaCommon.applyTheme(t); lsSet("alpha_theme", t); renderPanels(); toast(t === "dark" ? "Dark mode on" : "Light mode on"); }
+function applyTextSize(px){ document.documentElement.style.fontSize = px + "px"; }
+function resetAppearance(){
+  AlphaCommon.applyTheme("light"); lsSet("alpha_theme", "light");
+  AlphaCommon.setFont("default"); AlphaCommon.setDensity("comfortable");
+  AlphaCommon.setAccent(AlphaCommon.DEFAULT_ACCENT); lsSet("alpha_wallpaper", "none"); lsSet("alpha_textsize", "16"); applyTextSize(16);
+  renderPanels(); toast("Appearance reset");
+}
+function shrinkImage(file, max = 1200){
+  return new Promise((ok, no) => {
+    const img = new Image(), url = URL.createObjectURL(file);
+    img.onload = () => {
+      const k = Math.min(1, max / Math.max(img.width, img.height));
+      const c = document.createElement("canvas"); c.width = img.width * k; c.height = img.height * k;
+      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(url); ok(c.toDataURL("image/jpeg", .7));
     };
-
-    if(authToken){
-        headers["Authorization"] = "Bearer " + authToken;
-    }
-
-    const res = await fetch(
-        API_BASE + path,
-        { ...opts, headers }
-    );
-
-    let data = null;
-
-    try{
-        data = await res.json();
-    }catch{}
-
-    if(res.status === 401){
-        localStorage.removeItem(TOKEN_KEY);
-        window.location.href = "login.html";
-        throw new Error("Session expired");
-    }
-
-    if(!res.ok){
-        throw new Error(
-            (data && data.error) || "Request failed"
-        );
-    }
-
-    return data;
+    img.onerror = () => no(new Error("Not a valid image"));
+    img.src = url;
+  });
 }
 
-
-/* ---------------------------------------------------------
-   TOAST
-   --------------------------------------------------------- */
-
-let toastTimer;
-
-function showToast(message){
-
-    toast.textContent = message;
-
-    toast.classList.add("show");
-
-    clearTimeout(toastTimer);
-
-    toastTimer = setTimeout(() => {
-
-        toast.classList.remove("show");
-
-    },2500);
-
-}
-
-
-/* ---------------------------------------------------------
-   TOGGLE SETTINGS
-   --------------------------------------------------------- */
-
-document.querySelectorAll(".toggle").forEach(toggle => {
-
-    toggle.addEventListener("click", async () => {
-
-        const name =
-            toggle.dataset.toggle;
-
-        if(!name) return;
-
-        // optimistic UI update
-        toggle.classList.toggle("active");
-
-        const enabled =
-            toggle.classList.contains("active");
-
-        toggle.classList.add("saving");
-
-        try{
-
-            await api("/settings", {
-                method: "PUT",
-                body: JSON.stringify({ [name]: enabled })
-            });
-
-            showToast(
-                enabled
-                ? "Setting enabled"
-                : "Setting disabled"
-            );
-
-        }catch(e){
-
-            // revert on failure
-            toggle.classList.toggle("active");
-
-            showToast(
-                "Couldn't save setting: " + e.message
-            );
-
-        }finally{
-
-            toggle.classList.remove("saving");
-
-        }
-
-    });
-
+/* ---------- events (delegated) ---------- */
+document.addEventListener("click", async e => {
+  const t = e.target.closest("[data-tg],[data-cat-go],[data-m],[data-act],[data-theme-set],[data-wall],[data-accent]");
+  if(!t) return;
+  if(t.dataset.catGo) return goCat(t.dataset.catGo);
+  if(t.dataset.m) return openModal(t.dataset.m);
+  if(t.dataset.themeSet) return setTheme(t.dataset.themeSet);
+  if(t.dataset.accent){ AlphaCommon.setAccent(t.dataset.accent); renderPanels(); return toast("Color updated"); }
+  if(t.dataset.wall){
+    if(t.dataset.wall === "upload") return $("#wallInput").click();
+    lsSet("alpha_wallpaper", t.dataset.wall); renderPanels(); return toast("Wallpaper updated");
+  }
+  if(t.dataset.act) return runAction(t.dataset.act);
+  if(t.dataset.tg){
+    const on = !t.classList.contains("on");
+    document.querySelectorAll(`[data-tg="${t.dataset.tg}"]`).forEach(b => { b.classList.toggle("on", on); b.setAttribute("aria-checked", on); b.classList.add("saving"); });
+    const ok = await saveServer(t.dataset.tg, on, on ? "Turned on" : "Turned off");
+    document.querySelectorAll(`[data-tg="${t.dataset.tg}"]`).forEach(b => { b.classList.remove("saving"); if(!ok){ b.classList.toggle("on", !on); b.setAttribute("aria-checked", !on); } });
+  }
+});
+document.addEventListener("keydown", e => {
+  if(e.key === "Escape") closeModal();
+  if((e.key === "Enter" || e.key === " ") && e.target.matches(".row.link,.me-av")){ e.preventDefault(); e.target.click(); }
+});
+document.addEventListener("change", async e => {
+  const el = e.target;
+  if(el.id === "wallInput" && el.files[0]){
+    try { lsSet("alpha_wallpaper_custom", await shrinkImage(el.files[0])); lsSet("alpha_wallpaper", "custom"); renderPanels(); toast("Wallpaper updated"); }
+    catch(err){ toast(err.message); }
+    return;
+  }
+  const k = el.dataset.sel; if(!k) return;
+  const r = ROWS.find(x => x.t === "select" && x.k === k);
+  if(r && r.local){
+    lsSet("alpha_" + k, el.value);
+    if(k === "font") AlphaCommon.setFont(el.value);
+    if(k === "density") AlphaCommon.setDensity(el.value);
+    if(k === "textsize") applyTextSize(el.value);
+    toast(r.n + " updated");
+  } else saveServer(k, el.value, r.n + ": " + el.value);
 });
 
-
-/* ---------------------------------------------------------
-   LOAD SETTINGS FROM SERVER
-   --------------------------------------------------------- */
-
-async function loadSettingsFromServer(){
-
-    try{
-
-        const settings =
-            await api("/settings");
-
-        document.querySelectorAll(".toggle").forEach(toggle => {
-
-            const name =
-                toggle.dataset.toggle;
-
-            if(!name) return;
-
-            const value =
-                settings[name];
-
-            const enabled =
-                value === true ||
-                value === 1 ||
-                value === "1";
-
-            toggle.classList.toggle(
-                "active",
-                enabled
-            );
-
-        });
-
-        if(settings.language){
-
-            languageSelect.value =
-                settings.language;
-
-        }
-
-        if(settings.videoQuality && videoQualitySelect){
-
-            videoQualitySelect.value =
-                settings.videoQuality;
-
-        }
-
-        if(settings.disappearingMessages && disappearingSelect){
-
-            disappearingSelect.value =
-                settings.disappearingMessages;
-
-        }
-
-    }catch(e){
-
-        showToast(
-            "Couldn't load settings: " + e.message
-        );
-
-    }
-
+function runAction(id){
+  if(id === "logout") return AlphaCommon.confirm({title:"Log out?",ok:"Log out"}).then(y => y && AlphaCommon.logout("login.html"));
+  if(id === "reset") return resetAppearance();
+  if(id === "report") return toast("Coming soon");
+  if(id === "deactivate"){
+    return AlphaCommon.confirm({title:"Deactivate account?",text:"Log in again to reactivate.",ok:"Deactivate",danger:true}).then(y => y && api("/account/deactivate", { method: "POST" }).then(() => { localStorage.removeItem(TOKEN_KEY); toast("Account deactivated"); setTimeout(() => goTo("login.html"), 800); })
+      .catch(e => toast("Couldn't deactivate: " + e.message)));
+  }
 }
 
-
-/* ---------------------------------------------------------
-   DARK MODE
-   --------------------------------------------------------- */
-
-const darkToggle =
-    document.getElementById("darkModeToggle");
-
-const topThemeButton =
-    document.getElementById("topThemeButton");
-
-
-function setDarkMode(enabled){
-
-    // Use AlphaCommon's shared theme system (localStorage key
-    // "alpha_theme") instead of this page's own separate
-    // "alpha_dark_mode" flag, so the choice actually syncs to
-    // every other page in the app, not just this one.
-    AlphaCommon.applyTheme(enabled ? "dark" : "light");
-    localStorage.setItem("alpha_theme", enabled ? "dark" : "light");
-
-    if(enabled){
-
-        darkToggle.classList.add("active");
-
-    }else{
-
-        darkToggle.classList.remove("active");
-
-    }
-
-}
-
-
-/* Restore theme */
-
-const savedTheme = localStorage.getItem("alpha_theme");
-
-if(savedTheme === "dark"){
-
-    setDarkMode(true);
-
-}
-
-
-/* Toggle */
-
-darkToggle.addEventListener("click", () => {
-
-    const enabled =
-        !darkToggle.classList.contains("active");
-
-    setDarkMode(enabled);
-
-    showToast(
-        enabled
-        ? "Dark mode enabled"
-        : "Light mode enabled"
-    );
-
+/* ---------- search ---------- */
+$("#q").addEventListener("input", e => {
+  const q = e.target.value.toLowerCase().trim();
+  document.body.classList.toggle("searching", !!q);
+  let total = 0;
+  document.querySelectorAll(".pane").forEach(p => {
+    let n = 0;
+    p.querySelectorAll(".row[data-text]").forEach(r => { const hit = !q || r.dataset.text.includes(q); r.classList.toggle("hidden", !hit); r.classList.toggle("hit", !!q && hit); if(hit) n++; });
+    // hide the preview block and the panel when nothing matched
+    p.querySelectorAll(".preview,.pv-label").forEach(x => x.classList.toggle("hidden", !!q));
+    p.classList.toggle("hidden", !!q && !n); total += n;
+  });
+  if(!q){ document.querySelectorAll(".pane").forEach(p => p.classList.remove("hidden")); goCat(activeCat); }
+  $("#none").style.display = q && !total ? "block" : "none";
 });
 
-
-topThemeButton.addEventListener("click", () => {
-
-    const enabled =
-        !darkToggle.classList.contains("active");
-
-    setDarkMode(enabled);
-
-    showToast(
-        enabled
-        ? "Dark mode enabled"
-        : "Light mode enabled"
-    );
-
+/* ---------- profile ---------- */
+function renderMe(){
+  $("#meName").textContent = me.display_name || me.email || "Unknown";
+  $("#meUser").textContent = "@" + (me.email ? me.email.split("@")[0] : "user");
+  $("#meBio").textContent = me.bio || "";
+  const a = $("#avatar");
+  if(me.avatar_url){ a.style.backgroundImage = `url("${me.avatar_url}")`; a.firstChild && (a.firstChild.textContent = ""); a.textContent = ""; }
+  else { a.style.backgroundImage = ""; a.textContent = (me.display_name || me.email || "??").slice(0, 2).toUpperCase(); }
+}
+async function loadMe(){
+  try {
+    const v = await api("/verify"); me.email = v.email; me.display_name = v.display_name;
+    try { const m = (await api("/users")).find(u => u.email === v.email); if(m){ me.bio = m.bio || ""; me.avatar_url = m.avatar_url || null; } } catch {}
+    renderMe();
+  } catch(e){ toast("Couldn't load profile: " + e.message); }
+}
+$("#avatar").addEventListener("click", () => $("#avatarInput").click());
+$("#avatarInput").addEventListener("change", async e => {
+  const f = e.target.files[0]; if(!f) return;
+  try {
+    const fd = new FormData(); fd.append("file", f);
+    const r = await fetch(API + "/upload", { method: "POST", body: fd }); const d = await r.json();
+    if(!r.ok) throw new Error(d.error || "Upload failed");
+    await api("/profile", { method: "PUT", body: JSON.stringify({ avatar_url: d.url }) });
+    me.avatar_url = d.url; renderMe(); toast("Profile photo updated");
+  } catch(err){ toast("Couldn't update photo: " + err.message); }
+  finally { e.target.value = ""; }
 });
 
-
-/* ---------------------------------------------------------
-   ACCENT COLOR — synced across the whole app via
-   AlphaCommon.applyAccent (alpha-common.js). Every page maps
-   this single color onto its own CSS variable names.
-   --------------------------------------------------------- */
-
-const accentSwatchesWrap = document.getElementById("accentSwatches");
-const accentCustomInput = document.getElementById("accentCustomInput");
-
-function markSelectedSwatch(color){
-    const normalized = (color || "").toLowerCase();
-    accentSwatchesWrap.querySelectorAll(".accent-swatch").forEach(function(btn){
-        const swatchColor = (btn.dataset.color || "").toLowerCase();
-        btn.classList.toggle("selected", swatchColor === normalized);
-    });
-}
-
-function chooseAccent(color){
-    AlphaCommon.applyAccent(color);
-    markSelectedSwatch(color);
-    accentCustomInput.value = color;
-    showToast("Accent color updated");
-}
-
-accentSwatchesWrap.querySelectorAll(".accent-swatch[data-color]").forEach(function(btn){
-    btn.addEventListener("click", () => chooseAccent(btn.dataset.color));
-});
-
-accentCustomInput.addEventListener("input", () => chooseAccent(accentCustomInput.value));
-
-// Reflect whatever is already saved (or the shared default) on load.
-markSelectedSwatch(localStorage.getItem("alpha_settings_accent") || AlphaCommon.DEFAULT_ACCENT);
-accentCustomInput.value = localStorage.getItem("alpha_settings_accent") || AlphaCommon.DEFAULT_ACCENT;
-
-
-/* ---------------------------------------------------------
-   FONT
-   --------------------------------------------------------- */
-
-const fontSelect = document.getElementById("fontSelect");
-fontSelect.value = localStorage.getItem("alpha_font") || "default";
-fontSelect.addEventListener("change", () => {
-    AlphaCommon.setFont(fontSelect.value);
-    showToast("Font updated");
-});
-
-
-/* ---------------------------------------------------------
-   DENSITY
-   --------------------------------------------------------- */
-
-const densitySelect = document.getElementById("densitySelect");
-densitySelect.value = localStorage.getItem("alpha_density") || "comfortable";
-densitySelect.addEventListener("change", () => {
-    AlphaCommon.setDensity(densitySelect.value);
-    showToast(densitySelect.value === "compact" ? "Compact layout enabled" : "Comfortable layout enabled");
-});
-
-
-/* ---------------------------------------------------------
-   LANGUAGE
-   --------------------------------------------------------- */
-
-const languageSelect =
-    document.getElementById(
-        "languageSelect"
-    );
-
-const videoQualitySelect =
-    document.getElementById(
-        "videoQuality"
-    );
-
-const disappearingSelect =
-    document.getElementById(
-        "disappearingMessages"
-    );
-
-async function saveServerSetting(key, value, successMessage){
-
-    try{
-
-        await api("/settings", {
-            method: "PUT",
-            body: JSON.stringify({ [key]: value })
-        });
-
-        showToast(successMessage);
-
-    }catch(e){
-
-        showToast(
-            "Couldn't save setting: " + e.message
-        );
-
-    }
-
-}
-
-languageSelect.addEventListener(
-    "change",
-    () => {
-
-        saveServerSetting(
-            "language",
-            languageSelect.value,
-            "Language set to " + languageSelect.value
-        );
-
-    }
-);
-
-if(videoQualitySelect){
-
-    videoQualitySelect.addEventListener(
-        "change",
-        () => {
-
-            saveServerSetting(
-                "videoQuality",
-                videoQualitySelect.value,
-                "Video quality set to " + videoQualitySelect.value
-            );
-
-        }
-    );
-
-}
-
-if(disappearingSelect){
-
-    disappearingSelect.addEventListener(
-        "change",
-        () => {
-
-            saveServerSetting(
-                "disappearingMessages",
-                disappearingSelect.value,
-                "Disappearing messages: " + disappearingSelect.value
-            );
-
-        }
-    );
-
-}
-
-
-/* ---------------------------------------------------------
-   TEXT SIZE
-   --------------------------------------------------------- */
-
-const textSize =
-    document.getElementById(
-        "textSize"
-    );
-
-textSize.addEventListener(
-    "change",
-    () => {
-
-        if(textSize.value === "Small"){
-
-            root.style.fontSize = "14px";
-
-        }
-
-        else if(
-            textSize.value === "Large"
-        ){
-
-            root.style.fontSize = "18px";
-
-        }
-
-        else{
-
-            root.style.fontSize = "16px";
-
-        }
-
-        showToast(
-            "Text size updated"
-        );
-
-    }
-);
-
-
-/* ---------------------------------------------------------
-   SETTINGS SEARCH
-   --------------------------------------------------------- */
-
-const settingsSearch =
-    document.getElementById(
-        "settingsSearch"
-    );
-
-const sections =
-    document.querySelectorAll(
-        ".settings-section"
-    );
-
-
-settingsSearch.addEventListener(
-    "input",
-    () => {
-
-        const query =
-            settingsSearch.value
-                .toLowerCase()
-                .trim();
-
-
-        sections.forEach(section => {
-
-            const text =
-                section.innerText
-                    .toLowerCase();
-
-            if(text.includes(query)){
-
-                section.classList.remove(
-                    "hidden"
-                );
-
-            }else{
-
-                section.classList.add(
-                    "hidden"
-                );
-
-            }
-
-        });
-
-    }
-);
-
-
-/* ---------------------------------------------------------
-   PROFILE CARD
-   --------------------------------------------------------- */
-
-const profileAvatarEl =
-    document.getElementById("profileAvatar");
-
-const avatarInputEl =
-    document.getElementById("avatarInput");
-
-const profileNameEl =
-    document.getElementById("profileName");
-
-const profileUsernameEl =
-    document.getElementById("profileUsername");
-
-const profileBioEl =
-    document.getElementById("profileBio");
-
-function renderProfileCard(){
-
-    profileNameEl.textContent =
-        currentUser.display_name || currentUser.email || "Unknown";
-
-    profileUsernameEl.textContent =
-        "@" + (currentUser.email
-            ? currentUser.email.split("@")[0]
-            : "user");
-
-    profileBioEl.textContent =
-        currentUser.bio || "";
-
-    if(currentUser.avatar_url){
-
-        profileAvatarEl.style.backgroundImage =
-            `url(${currentUser.avatar_url})`;
-
-        profileAvatarEl.style.backgroundSize = "cover";
-        profileAvatarEl.style.backgroundPosition = "center";
-        profileAvatarEl.textContent = "";
-
-    }else{
-
-        profileAvatarEl.style.backgroundImage = "";
-        profileAvatarEl.textContent =
-            (currentUser.display_name || currentUser.email || "??")
-                .slice(0,2)
-                .toUpperCase();
-
-    }
-
-}
-
-async function loadCurrentUser(){
-
-    try{
-
-        const verified =
-            await api("/verify");
-
-        currentUser.email = verified.email;
-        currentUser.display_name = verified.display_name;
-
-        try{
-
-            const users =
-                await api("/users");
-
-            const match =
-                users.find(u => u.email === verified.email);
-
-            if(match){
-
-                currentUser.bio = match.bio || "";
-                currentUser.avatar_url = match.avatar_url || null;
-
-            }
-
-        }catch(e){}
-
-        renderProfileCard();
-
-    }catch(e){
-
-        showToast(
-            "Couldn't load profile: " + e.message
-        );
-
-    }
-
-}
-
-if(profileAvatarEl && avatarInputEl){
-
-    profileAvatarEl.addEventListener(
-        "click",
-        () => avatarInputEl.click()
-    );
-
-    avatarInputEl.addEventListener(
-        "change",
-        async () => {
-
-            const file =
-                avatarInputEl.files[0];
-
-            if(!file) return;
-
-            try{
-
-                const form = new FormData();
-                form.append("file", file);
-
-                const uploadRes = await fetch(
-                    API_BASE + "/upload",
-                    { method: "POST", body: form }
-                );
-
-                const uploadData =
-                    await uploadRes.json();
-
-                if(!uploadRes.ok){
-                    throw new Error(
-                        uploadData.error || "Upload failed"
-                    );
-                }
-
-                await api("/profile", {
-                    method: "PUT",
-                    body: JSON.stringify({
-                        avatar_url: uploadData.url
-                    })
-                });
-
-                currentUser.avatar_url = uploadData.url;
-                renderProfileCard();
-
-                showToast("Profile photo updated");
-
-            }catch(e){
-
-                showToast(
-                    "Couldn't update photo: " + e.message
-                );
-
-            }finally{
-
-                avatarInputEl.value = "";
-
-            }
-
-        }
-    );
-
-}
-
-
-/* ---------------------------------------------------------
-   MODAL
-   --------------------------------------------------------- */
-
-let currentModalType = null;
-
+/* ---------- modals ---------- */
+let modal = null;
+const field = (id, label, val, extra = "") => `<div class="fg"><label for="${id}">${label}</label><input id="${id}" value="${esc(val)}" ${extra}></div>`;
+const rowInfo = (i, n, d) => `<div class="row"><div class="ic"><i class="fa-solid ${i}"></i></div><div class="tx"><div class="nm">${n}</div><div class="ds">${d}</div></div></div>`;
+const MODALS = {
+  profile: () => ["Edit profile", field("mName", "Name", me.display_name) + field("mBio", "Bio", me.bio)],
+  account: () => ["Account information", field("mName", "Full name", me.display_name) + field("mUser", "Username", "@" + (me.email || "").split("@")[0], "readonly") + field("mMail", "Email", me.email || "", "readonly")],
+  password: () => ["Change password", field("mCur", "Current password", "", 'type="password" autocomplete="current-password"') + field("mNew", "New password", "", 'type="password" autocomplete="new-password"') + field("mCon", "Confirm new password", "", 'type="password" autocomplete="new-password"')],
+  devices: () => ["Connected devices", rowInfo("fa-laptop", "This device", "Active now") + rowInfo("fa-mobile-screen-button", "iPhone", "Kigali · 2 hours ago")],
+  blocked: () => ["Blocked accounts", `<div class="empty"><i class="fa-solid fa-ban"></i><strong style="display:block;color:var(--text)">No blocked accounts</strong>When you block someone, they will show up here.</div>`],
+  storage: () => ["Manage storage", field("a", "Cached files", "350 MB", "readonly") + field("b", "Downloaded media", "1.2 GB", "readonly") + `<button class="btn primary" style="width:100%" id="clearCache">Clear cache</button>`],
+  help: () => ["Help center", rowInfo("fa-circle-question", "Frequently asked questions", "Common answers") + rowInfo("fa-comment-dots", "Contact support", "Talk to the support team")]
+};
 function openModal(type){
-
-    currentModalType = type;
-
-    let title = "";
-    let body = "";
-
-    if(type === "account"){
-
-        title = "Account information";
-
-        body = `
-
-            <div class="form-group">
-
-                <label>Full name</label>
-
-                <input
-                    id="modalAccountName"
-                    value="${currentUser.display_name || ""}"
-                    type="text">
-
-            </div>
-
-            <div class="form-group">
-
-                <label>Username</label>
-
-                <input
-                    value="@${currentUser.email ? currentUser.email.split("@")[0] : ""}"
-                    type="text"
-                    readonly>
-
-            </div>
-
-            <div class="form-group">
-
-                <label>Email</label>
-
-                <input
-                    value="${currentUser.email || ""}"
-                    type="email"
-                    readonly>
-
-            </div>
-
-        `;
-
-    }
-
-
-    else if(type === "profile"){
-
-        title = "Edit profile";
-
-        body = `
-
-            <div class="form-group">
-
-                <label>Name</label>
-
-                <input
-                    id="modalProfileName"
-                    value="${currentUser.display_name || ""}"
-                    type="text">
-
-            </div>
-
-            <div class="form-group">
-
-                <label>Bio</label>
-
-                <input
-                    id="modalProfileBio"
-                    value="${(currentUser.bio || "").replace(/"/g, "&quot;")}"
-                    type="text">
-
-            </div>
-
-        `;
-
-    }
-
-
-    else if(type === "password"){
-
-        title = "Change password";
-
-        body = `
-
-            <div class="form-group">
-
-                <label>Current password</label>
-
-                <input
-                    id="modalCurrentPassword"
-                    type="password"
-                    placeholder="Current password">
-
-            </div>
-
-            <div class="form-group">
-
-                <label>New password</label>
-
-                <input
-                    id="modalNewPassword"
-                    type="password"
-                    placeholder="New password">
-
-            </div>
-
-            <div class="form-group">
-
-                <label>Confirm password</label>
-
-                <input
-                    id="modalConfirmPassword"
-                    type="password"
-                    placeholder="Confirm password">
-
-            </div>
-
-        `;
-
-    }
-
-
-    else if(type === "devices"){
-
-        title = "Connected devices";
-
-        body = `
-
-            <div class="setting-item">
-
-                <div class="setting-icon">
-                    <i class="fa-solid fa-laptop"></i>
-                </div>
-
-                <div class="setting-info">
-
-                    <div class="setting-name">
-                        MacBook Pro
-                    </div>
-
-                    <div class="setting-description">
-                        Current device · Active now
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="setting-item">
-
-                <div class="setting-icon">
-                    <i class="fa-solid fa-mobile-screen-button"></i>
-                </div>
-
-                <div class="setting-info">
-
-                    <div class="setting-name">
-                        iPhone
-                    </div>
-
-                    <div class="setting-description">
-                        Kigali · 2 hours ago
-                    </div>
-
-                </div>
-
-            </div>
-
-        `;
-
-    }
-
-
-    else if(type === "blocked"){
-
-        title = "Blocked accounts";
-
-        body = `
-
-            <div style="
-                text-align:center;
-                padding:25px 10px;
-                color:var(--text-secondary);
-            ">
-
-                <div style="
-                    font-size:35px;
-                    margin-bottom:10px;
-                ">
-                    <i class="fa-solid fa-ban"></i>
-                </div>
-
-                <strong style="
-                    display:block;
-                    color:var(--text);
-                    margin-bottom:6px;
-                ">
-                    No blocked accounts
-                </strong>
-
-                You haven't blocked anyone yet.
-
-            </div>
-
-        `;
-
-    }
-
-
-    else if(type === "storage"){
-
-        title = "Manage storage";
-
-        body = `
-
-            <div class="form-group">
-
-                <label>Cached files</label>
-
-                <input
-                    value="350 MB"
-                    readonly>
-
-            </div>
-
-            <div class="form-group">
-
-                <label>Downloaded media</label>
-
-                <input
-                    value="1.2 GB"
-                    readonly>
-
-            </div>
-
-            <button
-                class="btn btn-primary"
-                style="width:100%"
-                onclick="
-                    showToast('Cache cleared');
-                    closeModal();
-                ">
-
-                Clear cache
-
-            </button>
-
-        `;
-
-    }
-
-
-    else if(type === "help"){
-
-        title = "Help & Support";
-
-        body = `
-
-            <div class="setting-item">
-
-                <div class="setting-icon">
-                    <i class="fa-solid fa-circle-question"></i>
-                </div>
-
-                <div class="setting-info">
-
-                    <div class="setting-name">
-                        Frequently asked questions
-                    </div>
-
-                    <div class="setting-description">
-                        Find answers to common questions.
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="setting-item">
-
-                <div class="setting-icon">
-                    <i class="fa-solid fa-comment-dots"></i>
-                </div>
-
-                <div class="setting-info">
-
-                    <div class="setting-name">
-                        Contact Alpha Support
-                    </div>
-
-                    <div class="setting-description">
-                        Talk to our support team.
-                    </div>
-
-                </div>
-
-            </div>
-
-        `;
-
-    }
-
-
-    modalTitle.textContent = title;
-
-    modalBody.innerHTML = body;
-
-    modalOverlay.classList.add("show");
-
+  modal = type; const [title, body] = MODALS[type]();
+  $("#mTitle").textContent = title; $("#mBody").innerHTML = body;
+  $("#mSave").classList.toggle("hidden", ["devices","blocked","help","storage"].includes(type));
+  $("#mCancel").textContent = $("#mSave").classList.contains("hidden") ? "Close" : "Cancel";
+  $("#ov").classList.add("show");
+  const f = $("#mBody input:not([readonly])"); f && f.focus();
+  const cc = $("#clearCache");
+  if(cc) cc.onclick = async () => { try { if(window.caches) (await caches.keys()).forEach(k => caches.delete(k)); } catch {} toast("Cache cleared"); closeModal(); };
 }
+function closeModal(){ $("#ov").classList.remove("show"); modal = null; }
+$("#mClose").onclick = $("#mCancel").onclick = closeModal;
+$("#ov").addEventListener("click", e => { if(e.target.id === "ov") closeModal(); });
 
-
-/* ---------------------------------------------------------
-   OPEN MODALS
-   --------------------------------------------------------- */
-
-document.querySelectorAll(
-    "[data-modal]"
-).forEach(item => {
-
-    item.addEventListener(
-        "click",
-        () => {
-
-            openModal(
-                item.dataset.modal
-            );
-
-        }
-    );
-
+$("#mSave").addEventListener("click", async () => {
+  const btn = $("#mSave"); btn.disabled = true;
+  try {
+    if(modal === "password"){
+      const c = $("#mCur").value, n = $("#mNew").value, k = $("#mCon").value;
+      if(!c || !n || !k) throw new Error("Fill in all password fields");
+      if(n.length < 6) throw new Error("New password must be at least 6 characters");
+      if(n !== k) throw new Error("New passwords don't match");
+      await api("/account/password", { method: "PUT", body: JSON.stringify({ current_password: c, new_password: n }) });
+      toast("Password updated");
+    } else if(modal === "profile" || modal === "account"){
+      const body = { display_name: $("#mName").value.trim() };
+      if(modal === "profile") body.bio = $("#mBio").value.trim();
+      await api("/profile", { method: "PUT", body: JSON.stringify(body) });
+      Object.assign(me, body); renderMe(); toast(modal === "profile" ? "Profile updated" : "Account updated");
+    }
+    closeModal();
+  } catch(e){ toast(e.message); }
+  finally { btn.disabled = false; }
 });
 
-
-/* ---------------------------------------------------------
-   CLOSE MODAL
-   --------------------------------------------------------- */
-
-function closeModal(){
-
-    modalOverlay.classList.remove(
-        "show"
-    );
-
-}
-
-document.getElementById(
-    "modalClose"
-).addEventListener(
-    "click",
-    closeModal
-);
-
-
-document.getElementById(
-    "modalCancel"
-).addEventListener(
-    "click",
-    closeModal
-);
-
-
-modalOverlay.addEventListener(
-    "click",
-    e => {
-
-        if(e.target === modalOverlay){
-
-            closeModal();
-
-        }
-
-    }
-);
-
-
-/* ---------------------------------------------------------
-   SAVE MODAL
-   --------------------------------------------------------- */
-
-document.getElementById(
-    "modalSave"
-).addEventListener(
-    "click",
-    async () => {
-
-        const saveButton =
-            document.getElementById("modalSave");
-
-        if(currentModalType === "password"){
-
-            const currentPassword =
-                document.getElementById("modalCurrentPassword").value;
-
-            const newPassword =
-                document.getElementById("modalNewPassword").value;
-
-            const confirmPassword =
-                document.getElementById("modalConfirmPassword").value;
-
-            if(!currentPassword || !newPassword || !confirmPassword){
-
-                showToast("Please fill in all password fields");
-                return;
-
-            }
-
-            if(newPassword.length < 6){
-
-                showToast("New password must be at least 6 characters");
-                return;
-
-            }
-
-            if(newPassword !== confirmPassword){
-
-                showToast("New passwords don't match");
-                return;
-
-            }
-
-            saveButton.disabled = true;
-
-            try{
-
-                await api("/account/password", {
-                    method: "PUT",
-                    body: JSON.stringify({
-                        current_password: currentPassword,
-                        new_password: newPassword
-                    })
-                });
-
-                closeModal();
-                showToast("Password updated");
-
-            }catch(e){
-
-                showToast(e.message);
-
-            }finally{
-
-                saveButton.disabled = false;
-
-            }
-
-            return;
-
-        }
-
-
-        if(currentModalType === "profile"){
-
-            const nameInput =
-                document.getElementById("modalProfileName");
-
-            const bioInput =
-                document.getElementById("modalProfileBio");
-
-            const display_name =
-                nameInput ? nameInput.value.trim() : currentUser.display_name;
-
-            const bio =
-                bioInput ? bioInput.value.trim() : currentUser.bio;
-
-            saveButton.disabled = true;
-
-            try{
-
-                await api("/profile", {
-                    method: "PUT",
-                    body: JSON.stringify({ display_name, bio })
-                });
-
-                currentUser.display_name = display_name;
-                currentUser.bio = bio;
-                renderProfileCard();
-
-                closeModal();
-                showToast("Profile updated");
-
-            }catch(e){
-
-                showToast("Couldn't update profile: " + e.message);
-
-            }finally{
-
-                saveButton.disabled = false;
-
-            }
-
-            return;
-
-        }
-
-
-        if(currentModalType === "account"){
-
-            const nameInput =
-                document.getElementById("modalAccountName");
-
-            const display_name =
-                nameInput ? nameInput.value.trim() : currentUser.display_name;
-
-            saveButton.disabled = true;
-
-            try{
-
-                await api("/profile", {
-                    method: "PUT",
-                    body: JSON.stringify({ display_name })
-                });
-
-                currentUser.display_name = display_name;
-                renderProfileCard();
-
-                closeModal();
-                showToast("Account updated");
-
-            }catch(e){
-
-                showToast("Couldn't update account: " + e.message);
-
-            }finally{
-
-                saveButton.disabled = false;
-
-            }
-
-            return;
-
-        }
-
-
-        // Modals with no backend action (devices, blocked, help, storage)
-        closeModal();
-        showToast("Changes saved successfully");
-
-    }
-);
-
-
-/* ---------------------------------------------------------
-   EDIT PROFILE
-   --------------------------------------------------------- */
-
-document.getElementById(
-    "editProfile"
-).addEventListener(
-    "click",
-    () => {
-
-        openModal("profile");
-
-    }
-);
-
-
-/* ---------------------------------------------------------
-   NOTIFICATION BUTTON
-   --------------------------------------------------------- */
-
-document.getElementById(
-    "notificationButton"
-).addEventListener(
-    "click",
-    () => {
-
-        showToast(
-            "No new notifications"
-        );
-
-    }
-);
-
-
-/* ---------------------------------------------------------
-   MOBILE NAVIGATION DEMO
-   --------------------------------------------------------- */
-
-document.querySelectorAll(
-    ".mobile-nav-item"
-).forEach(item => {
-
-    item.addEventListener(
-        "click",
-        () => {
-
-            document.querySelectorAll(
-                ".mobile-nav-item"
-            ).forEach(nav => {
-
-                nav.classList.remove(
-                    "active"
-                );
-
-            });
-
-            item.classList.add(
-                "active"
-            );
-
-            showToast(
-                item.innerText.trim()
-                + " selected"
-            );
-
-        }
-    );
-
-});
-
-
-/* ---------------------------------------------------------
-   SIDEBAR DEMO
-   --------------------------------------------------------- */
-
-document.querySelectorAll(
-    ".sidebar .nav-item"
-).forEach(item => {
-
-    item.addEventListener(
-        "click",
-        () => {
-
-            document.querySelectorAll(
-                ".sidebar .nav-item"
-            ).forEach(nav => {
-
-                nav.classList.remove(
-                    "active"
-                );
-
-            });
-
-            item.classList.add(
-                "active"
-            );
-
-        }
-    );
-
-});
-
-
-/* ---------------------------------------------------------
-   ESCAPE KEY
-   --------------------------------------------------------- */
-
-document.addEventListener(
-    "keydown",
-    e => {
-
-        if(e.key === "Escape"){
-
-            closeModal();
-
-        }
-
-    }
-);
-
-
-/* ---------------------------------------------------------
-   LOGOUT
-   --------------------------------------------------------- */
-
-const logoutActionEl =
-    document.getElementById("logoutAction");
-
-if(logoutActionEl){
-
-    logoutActionEl.addEventListener(
-        "click",
-        () => {
-
-            localStorage.removeItem(TOKEN_KEY);
-            window.location.href = "login.html";
-
-        }
-    );
-
-}
-
-
-/* ---------------------------------------------------------
-   DEACTIVATE ACCOUNT
-   --------------------------------------------------------- */
-
-const deactivateActionEl =
-    document.getElementById("deactivateAction");
-
-if(deactivateActionEl){
-
-    deactivateActionEl.addEventListener(
-        "click",
-        async () => {
-
-            const confirmed = window.confirm(
-                "Deactivate your Alpha account? You can reactivate by logging back in."
-            );
-
-            if(!confirmed) return;
-
-            try{
-
-                await api("/account/deactivate", {
-                    method: "POST"
-                });
-
-                localStorage.removeItem(TOKEN_KEY);
-
-                showToast("Account deactivated");
-
-                setTimeout(() => {
-                    window.location.href = "login.html";
-                }, 800);
-
-            }catch(e){
-
-                showToast(
-                    "Couldn't deactivate account: " + e.message
-                );
-
-            }
-
-        }
-    );
-
-}
-
-
-/* ---------------------------------------------------------
-   INIT
-   --------------------------------------------------------- */
-
-loadCurrentUser();
-loadSettingsFromServer();
-
+/* ---------- init ---------- */
+applyTextSize(ls("alpha_textsize", "16"));
+renderNav(); renderAll(); loadMe(); loadSettings();
 </script>
-
 </body>
 </html>
