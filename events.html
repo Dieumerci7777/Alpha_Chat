@@ -2,8 +2,8 @@
 <html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Alpha — Events</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Alphagram — Events</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&display=swap" rel="stylesheet">
     <script src="alpha-common.js"></script>
@@ -37,8 +37,8 @@
             --radius-lg: 24px;
             --radius-xl: 32px;
             --radius-full: 99px;
-            --primary: #4f46e5;
-            --primary-light: #818cf8;
+            --primary: var(--ag-primary);
+            --primary-light: var(--ag-primary);
             --primary-dark: #3730a3;
             --primary-bg: var(--primary-a08);
             --primary-bg-hover: var(--primary-a16);
@@ -46,7 +46,7 @@
             --green-bg: rgba(34, 197, 94, 0.12);
             --red: #ef4444;
             --red-bg: rgba(239, 68, 68, 0.10);
-            --orange: #f59e0b;
+            --orange: var(--ag-text-2);
             --orange-bg: rgba(245, 158, 11, 0.12);
             --gradient-primary: linear-gradient(135deg, var(--primary), var(--primary-dark));
             --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -316,9 +316,9 @@
             background: var(--gradient-primary);
         }
         .avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
-        .avatar.g1 { background: linear-gradient(135deg, #f59e0b, #ef4444); }
-        .avatar.g2 { background: linear-gradient(135deg, #4f46e5, #7c3aed); }
-        .avatar.g3 { background: linear-gradient(135deg, #22c55e, #06b6d4); }
+        .avatar.g1 { background: linear-gradient(135deg, var(--ag-text-2), #ef4444); }
+        .avatar.g2 { background: linear-gradient(135deg, var(--ag-primary), var(--ag-primary)); }
+        .avatar.g3 { background: linear-gradient(135deg, #22c55e, var(--ag-text-2)); }
         .avatar.g4 { background: linear-gradient(135deg, #ec4899, #f43f5e); }
         .avatar.g5 { background: linear-gradient(135deg, #8b5cf6, #d946ef); }
         .avatar.g6 { background: linear-gradient(135deg, #14b8a6, #22c55e); }
@@ -1472,47 +1472,6 @@
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
             .stat-card .stat-number { font-size: 22px; }
 
-            .mobile-nav {
-                position: fixed;
-                left: 10px;
-                right: 10px;
-                bottom: 10px;
-                height: 58px;
-                display: flex;
-                align-items: center;
-                justify-content: space-around;
-                background: var(--surface-raised);
-                border: 1px solid var(--border);
-                backdrop-filter: blur(25px);
-                border-radius: var(--radius-lg);
-                z-index: 1000;
-                box-shadow: var(--shadow-lg);
-            }
-            .mobile-nav button {
-                border: 0;
-                background: none;
-                color: var(--text-muted);
-                width: 46px;
-                height: 46px;
-                border-radius: var(--radius-sm);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
-                font-size: 16px;
-                transition: var(--transition);
-            }
-            .mobile-nav button.active {
-                color: var(--primary);
-                background: var(--primary-bg);
-            }
-            .mobile-nav .create {
-                background: var(--gradient-primary);
-                color: #fff;
-                box-shadow: 0 4px 16px var(--primary-a35);
-            }
-            .mobile-nav .create:hover { transform: scale(1.05); }
-
             .toast-wrap {
                 bottom: 80px;
                 right: 12px;
@@ -1544,7 +1503,41 @@
         }
 
         .hidden { display: none !important; }
+        /* ============================================================
+           POLISH LAYER (shared with vaults.html / chat.html)
+           ============================================================ */
+        .top { box-shadow: var(--shadow-sm); }
+        .btn { border-radius: 12px; }
+        .modal { border-radius: 22px; }
+        .toast { border-radius: 14px; }
+        @media (max-width: 760px) {
+            .center { padding-bottom: calc(84px + env(safe-area-inset-bottom)) !important; }
+            .mobile-nav {
+                display: grid !important; grid-template-columns: repeat(5, 1fr);
+                position: fixed; left: 0 !important; right: 0 !important; bottom: 0 !important;
+                height: calc(62px + env(safe-area-inset-bottom)) !important;
+                padding: 5px 7px calc(5px + env(safe-area-inset-bottom)) !important;
+                z-index: 1000;
+                background: color-mix(in srgb, var(--surface) 94%, transparent) !important;
+                border: 0 !important; border-top: 1px solid var(--border) !important;
+                border-radius: 0 !important; box-shadow: none !important;
+                backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+            }
+            .mobile-nav button {
+                display: flex; flex-direction: column; align-items: center; justify-content: center;
+                gap: 3px; font-size: 9px; font-weight: 750; color: var(--text-muted) !important;
+                background: transparent !important; width: auto !important; height: auto !important;
+                border-radius: 12px; box-shadow: none !important; transition: var(--transition);
+            }
+            .mobile-nav button:active { transform: scale(.96); }
+            .mobile-nav button.active { color: var(--primary) !important; }
+            .mobile-nav .mobile-nav-icon { font-size: 16px; line-height: 1; }
+            .toast-wrap { bottom: calc(76px + env(safe-area-inset-bottom)) !important; }
+            .modal-overlay { align-items: flex-end; padding: 0; }
+            .modal { margin: 0 !important; max-width: 100% !important; border-bottom-left-radius: 0; border-bottom-right-radius: 0; padding-bottom: calc(18px + env(safe-area-inset-bottom)); }
+        }
     </style>
+<link rel="stylesheet" href="alphagram.css">
 </head>
 <body>
 
@@ -1558,7 +1551,7 @@
         <button class="brand" onclick="goHome()">
             <div class="logo">A</div>
             <div class="brand-name-wrap">
-                <div class="brand-name">Alpha</div>
+                <div class="brand-name">Alphagram</div>
                 <div class="brand-tag">Social</div>
             </div>
         </button>
@@ -1837,35 +1830,16 @@
     <aside class="right">
 
         <div class="panel">
-            <div class="panel-title">Trending <span onclick="goToExplore()">See all</span></div>
-            <div class="trend" onclick="searchPosts('#Alpha')">
-                <small>1 · Community</small><strong>#Alpha</strong><em>2.4K posts</em>
-            </div>
-            <div class="trend" onclick="searchPosts('#Kigali')">
-                <small>2 · Rwanda</small><strong>#Kigali</strong><em>890 posts</em>
-            </div>
-            <div class="trend" onclick="searchPosts('#Rwanda')">
-                <small>3 · Rwanda</small><strong>#Rwanda</strong><em>543 posts</em>
-            </div>
-            <div class="trend" onclick="searchPosts('#Tech')">
-                <small>4 · Technology</small><strong>#Tech</strong><em>421 posts</em>
-            </div>
-            <div class="trend" onclick="searchPosts('#AlphaLaunch')">
-                <small>5 · Alpha</small><strong>#AlphaLaunch</strong><em>312 posts</em>
-            </div>
-        </div>
-
-        <div class="panel">
-            <div class="panel-title"><span class="dot-live" style="margin-right:0;"></span> Online Now</div>
+            <div class="panel-title">Online now</div>
             <div id="online-list"></div>
         </div>
 
         <div class="panel">
-            <div class="panel-title">Alpha</div>
+            <div class="panel-title">Alphagram</div>
             <div style="font-size:11.5px;color:var(--text-muted);line-height:1.7">
                 A place for meaningful conversations, creativity and communities.
                 <br><br>
-                © 2026 Alpha
+                © 2026 Alphagram
             </div>
         </div>
 
@@ -1875,11 +1849,11 @@
 
 <!-- Mobile Nav -->
 <nav class="mobile-nav">
-    <button onclick="goHome()"><i class="fa-solid fa-house"></i></button>
-    <button onclick="goToExplore()"><i class="fa-solid fa-compass"></i></button>
-    <button class="create" onclick="goToEvents()"><i class="fa-solid fa-calendar-plus"></i></button>
-    <button onclick="goToChat()"><i class="fa-solid fa-comment-dots"></i></button>
-    <button onclick="goToSettings()"><i class="fa-solid fa-user"></i></button>
+    <button onclick="goHome()"><span class="mobile-nav-icon"><i class="fa-solid fa-house"></i></span>Home</button>
+    <button onclick="goToExplore()"><span class="mobile-nav-icon"><i class="fa-solid fa-magnifying-glass"></i></span>Search</button>
+    <button onclick="goToChat()"><span class="mobile-nav-icon"><i class="fa-solid fa-comment-dots"></i></span>Messages</button>
+    <button class="active" onclick="goToEvents()"><span class="mobile-nav-icon"><i class="fa-solid fa-calendar-days"></i></span>Events</button>
+    <button onclick="goToSettings()"><span class="mobile-nav-icon"><i class="fa-regular fa-circle-user"></i></span>Profile</button>
 </nav>
 
 <!-- Toast -->
@@ -2648,7 +2622,7 @@
                 body: JSON.stringify({
                     to_uid: session.email,
                     text: `${title}: ${message}`,
-                    from_name: 'Alpha Events'
+                    from_name: 'Alphagram Events'
                 })
             }).catch(() => {});
         }
