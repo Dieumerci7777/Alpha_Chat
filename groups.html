@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
 
@@ -8,7 +8,9 @@
     content="width=device-width, initial-scale=1.0, viewport-fit=cover"
 >
 
-<title>Alpha — Groups</title>
+<title>Alphagram — Groups</title>
+
+<script src="alpha-common.js"></script>
 
 <style>
 
@@ -18,9 +20,9 @@
    ========================================================= */
 
 :root{
-    --alpha:#0071e3;
-    --alpha-light:#3b96ff;
-    --alpha-dark:#0059b3;
+    --alpha:var(--primary,var(--ag-primary));
+    --alpha-light:var(--primary-light,#3b96ff);
+    --alpha-dark:var(--primary-dark,#0059b3);
 
     --bg:#f5f6f8;
     --surface:#ffffff;
@@ -83,6 +85,7 @@ button:active{
     transform:scale(.96);
 }
 
+html[data-theme="dark"],
 body.dark{
     --bg:#090a0c;
     --surface:#111317;
@@ -851,6 +854,23 @@ body.dark{
     .app{
         padding:24px;
         align-items:center;
+        background:
+            radial-gradient(60% 50% at 50% 0%,
+                color-mix(in srgb,var(--alpha) 10%,transparent),
+                transparent 70%),
+            var(--bg);
+    }
+
+    /* the list / create / detail screens become one centered card */
+    .g-screen{
+        inset:24px auto 24px 50%;
+        transform:translateX(-50%);
+        width:100%;
+        max-width:640px;
+        border:1px solid var(--line);
+        border-radius:24px;
+        box-shadow:var(--shadow);
+        background:var(--bg);
     }
 
     .g-body{
@@ -865,6 +885,7 @@ body.dark{
 }
 
 </style>
+<link rel="stylesheet" href="alphagram.css">
 </head>
 <body>
 
@@ -1255,8 +1276,8 @@ function initials(name){
 
 function avatarSrc(user){
     if(user && user.avatar_url){ return user.avatar_url; }
-    const name = encodeURIComponent((user && user.display_name) || "Alpha User");
-    return `https://ui-avatars.com/api/?background=0071e3&color=fff&bold=true&name=${name}`;
+    const name = encodeURIComponent((user && user.display_name) || "Alphagram User");
+    return `https://ui-avatars.com/api/?background=27272a&color=fff&bold=true&name=${name}`;
 }
 
 function groupAvatarSrc(g){
@@ -1308,8 +1329,11 @@ document.getElementById("backFromDetail").addEventListener("click",() => { showS
    --------------------------------------------------------- */
 
 document.getElementById("themeButtonG").addEventListener("click",() => {
-    body.classList.toggle("dark");
-    localStorage.setItem("alpha-theme",body.classList.contains("dark") ? "dark" : "light");
+    const next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    if(window.AlphaCommon && AlphaCommon.applyTheme){ AlphaCommon.applyTheme(next); }
+    else { document.documentElement.setAttribute("data-theme",next); }
+    body.classList.toggle("dark",next === "dark");
+    localStorage.setItem("alpha_theme",next);
 });
 
 
@@ -1319,9 +1343,9 @@ document.getElementById("themeButtonG").addEventListener("click",() => {
 
 async function init(){
 
-    if(localStorage.getItem("alpha-theme") === "dark"){
-        body.classList.add("dark");
-    }
+    const savedTheme = localStorage.getItem("alpha_theme") || document.documentElement.getAttribute("data-theme");
+    if(window.AlphaCommon && AlphaCommon.applyTheme){ AlphaCommon.applyTheme(savedTheme); }
+    body.classList.toggle("dark",savedTheme === "dark");
 
     const savedUser = localStorage.getItem("alpha_user");
 
@@ -1334,7 +1358,7 @@ async function init(){
 
     if(!CF_TOKEN || !CU){
         showToast("Please sign in to manage groups");
-        setTimeout(() => { window.location.href = "index.html"; },900);
+        setTimeout(() => { window.location.href = "login.html"; },900);
         return;
     }
 
@@ -1699,8 +1723,8 @@ function renderDetailMembers(g){
             ${canTogglePrivilege ? `
                 <button
                     type="button"
-                    class="contact-button"
-                    style="background:${role === "Admin" ? "var(--surface-2)" : "var(--alpha)"};color:${role === "Admin" ? "var(--text)" : "#fff"};"
+                    class="contact-button ${role === 'Admin' ? 'secondary' : 'primary'}"
+                    
                     onclick="toggleGroupAdmin('${escapeHTML(uid)}',${role === "Admin" ? "false" : "true"})">
                     ${role === "Admin" ? "Revoke admin" : "Make admin"}
                 </button>` : ""}
