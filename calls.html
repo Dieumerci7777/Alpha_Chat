@@ -2,13 +2,12 @@
 <html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Alpha — Calls</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Alphagram — Calls</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&display=swap" rel="stylesheet">
     <script src="alpha-common.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/livekit-client/dist/livekit-client.umd.min.js">
-    </script>
+   <script src="https://cdn.jsdelivr.net/npm/livekit-client@2/dist/livekit-client.umd.min.js"></script>
     <style>
         /* ============================================================
            RESET & VARIABLES
@@ -39,8 +38,8 @@
             --radius-lg: 24px;
             --radius-xl: 32px;
             --radius-full: 99px;
-            --primary: #4f46e5;
-            --primary-light: #818cf8;
+            --primary: var(--ag-primary);
+            --primary-light: var(--ag-primary);
             --primary-dark: #3730a3;
             --primary-bg: var(--primary-a08);
             --primary-bg-hover: var(--primary-a16);
@@ -48,7 +47,7 @@
             --green-bg: rgba(34, 197, 94, 0.12);
             --red: #ef4444;
             --red-bg: rgba(239, 68, 68, 0.10);
-            --orange: #f59e0b;
+            --orange: var(--ag-text-2);
             --orange-bg: rgba(245, 158, 11, 0.12);
             --purple: #8b5cf6;
             --purple-bg: rgba(139, 92, 246, 0.12);
@@ -327,9 +326,9 @@
             background: var(--gradient-primary);
         }
         .avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
-        .avatar.g1 { background: linear-gradient(135deg, #f59e0b, #ef4444); }
-        .avatar.g2 { background: linear-gradient(135deg, #4f46e5, #7c3aed); }
-        .avatar.g3 { background: linear-gradient(135deg, #22c55e, #06b6d4); }
+        .avatar.g1 { background: linear-gradient(135deg, var(--ag-text-2), #ef4444); }
+        .avatar.g2 { background: linear-gradient(135deg, var(--ag-primary), var(--ag-primary)); }
+        .avatar.g3 { background: linear-gradient(135deg, #22c55e, var(--ag-text-2)); }
         .avatar.g4 { background: linear-gradient(135deg, #ec4899, #f43f5e); }
         .avatar.g5 { background: linear-gradient(135deg, #8b5cf6, #d946ef); }
         .avatar.g6 { background: linear-gradient(135deg, #14b8a6, #22c55e); }
@@ -556,11 +555,11 @@
             color: #fff;
         }
         .quick-card.meet-now {
-            background: linear-gradient(135deg, #6d28d9 0%, var(--primary) 55%, #06b6d4 120%);
-            box-shadow: 0 10px 26px var(--primary-a30, rgba(79,70,229,0.35));
+            background: linear-gradient(135deg, #6d28d9 0%, var(--primary) 55%, var(--ag-text-2) 120%);
+            box-shadow: 0 10px 26px var(--primary-a30, color-mix(in srgb, var(--ag-primary) 35%, transparent));
         }
         .quick-card.join-id {
-            background: linear-gradient(135deg, #f59e0b 0%, #ef4444 120%);
+            background: linear-gradient(135deg, var(--ag-text-2) 0%, #ef4444 120%);
             box-shadow: 0 10px 26px rgba(239, 68, 68, 0.25);
         }
         .quick-card.meet-now::after, .quick-card.join-id::after {
@@ -583,7 +582,7 @@
         .quick-card.meet-now .info span, .quick-card.join-id .info span { color: rgba(255,255,255,0.85); }
         .quick-card.meet-now .live-badge {
             position: absolute;
-            top: 10px;
+            top: -8px;
             right: 12px;
             display: flex;
             align-items: center;
@@ -593,7 +592,8 @@
             letter-spacing: 0.06em;
             text-transform: uppercase;
             color: #fff;
-            background: rgba(255,255,255,0.16);
+            background: #111827;
+            box-shadow: 0 4px 10px rgba(0,0,0,.25);
             padding: 3px 8px 3px 6px;
             border-radius: 20px;
         }
@@ -1135,7 +1135,7 @@
             inset: 0;
             display: flex;
             flex-direction: column;
-            background: radial-gradient(circle at 20% 10%, rgba(79, 70, 229, 0.18), transparent 50%),
+            background: radial-gradient(circle at 20% 10%, color-mix(in srgb, var(--ag-primary) 18%, transparent), transparent 50%),
                 radial-gradient(circle at 80% 90%, rgba(34, 211, 238, 0.10), transparent 50%),
                 var(--stage-void);
             color: var(--stage-text);
@@ -1246,7 +1246,7 @@
             position: absolute;
             inset: -12px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #22d3ee, var(--primary));
+            background: linear-gradient(135deg, var(--ag-text-2), var(--primary));
             opacity: 0.3;
             filter: blur(24px);
         }
@@ -1618,7 +1618,7 @@
             font-size: 10.5px;
             font-weight: 800;
             margin-bottom: 1px;
-            background: linear-gradient(135deg, #22d3ee, #818cf8);
+            background: linear-gradient(135deg, var(--ag-text-2), var(--ag-primary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -1684,7 +1684,7 @@
             width: 34px;
             height: 34px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #06b6d4, var(--primary));
+            background: linear-gradient(135deg, var(--ag-text-2), var(--primary));
             color: #fff;
             display: grid;
             place-items: center;
@@ -1847,7 +1847,7 @@
             background: rgba(250, 204, 21, 0.15);
             color: var(--host-gold);
         }
-        .participant-row .p-tag.you { background: rgba(34, 211, 238, 0.12); color: #22d3ee; }
+        .participant-row .p-tag.you { background: rgba(34, 211, 238, 0.12); color: var(--ag-text-2); }
         .participant-row .p-mic {
             width: 24px;
             height: 24px;
@@ -1902,7 +1902,7 @@
             border-bottom-left-radius: 4px;
         }
         .chat-msg.me .chat-msg-bubble {
-            background: linear-gradient(135deg, #06b6d4, var(--primary));
+            background: linear-gradient(135deg, var(--ag-text-2), var(--primary));
             border-bottom-left-radius: 14px;
             border-bottom-right-radius: 4px;
         }
@@ -1927,7 +1927,7 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #06b6d4, var(--primary));
+            background: linear-gradient(135deg, var(--ag-text-2), var(--primary));
             color: #fff;
             display: grid;
             place-items: center;
@@ -1987,47 +1987,6 @@
 
             .favorite-item .fav-avatar { width: 44px; height: 44px; }
 
-            .mobile-nav {
-                position: fixed;
-                left: 10px;
-                right: 10px;
-                bottom: 10px;
-                height: 58px;
-                display: flex;
-                align-items: center;
-                justify-content: space-around;
-                background: var(--surface-raised);
-                border: 1px solid var(--border);
-                backdrop-filter: blur(25px);
-                border-radius: var(--radius-lg);
-                z-index: 1000;
-                box-shadow: var(--shadow-lg);
-            }
-            .mobile-nav button {
-                border: 0;
-                background: none;
-                color: var(--text-muted);
-                width: 46px;
-                height: 46px;
-                border-radius: var(--radius-sm);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
-                font-size: 16px;
-                transition: var(--transition);
-            }
-            .mobile-nav button.active {
-                color: var(--primary);
-                background: var(--primary-bg);
-            }
-            .mobile-nav .create {
-                background: var(--gradient-primary);
-                color: #fff;
-                box-shadow: 0 4px 16px var(--primary-a35);
-            }
-            .mobile-nav .create:hover { transform: scale(1.05); }
-
             .toast-wrap {
                 bottom: 80px;
                 right: 12px;
@@ -2074,7 +2033,46 @@
             to { opacity: 1; transform: none; }
         }
         .hidden { display: none !important; }
+        /* ============================================================
+           POLISH LAYER (shared with vaults.html / chat.html)
+           ============================================================ */
+        .top { box-shadow: var(--shadow-sm); }
+        .btn { border-radius: 12px; }
+        .modal { border-radius: 22px; }
+        .toast { border-radius: 14px; }
+        @media (max-width: 760px) {
+            .center { padding-bottom: calc(84px + env(safe-area-inset-bottom)) !important; }
+            .mobile-nav {
+                display: grid !important; grid-template-columns: repeat(5, 1fr);
+                position: fixed; left: 0 !important; right: 0 !important; bottom: 0 !important;
+                height: calc(62px + env(safe-area-inset-bottom)) !important;
+                padding: 5px 7px calc(5px + env(safe-area-inset-bottom)) !important;
+                z-index: 1000;
+                background: color-mix(in srgb, var(--surface) 94%, transparent) !important;
+                border: 0 !important; border-top: 1px solid var(--border) !important;
+                border-radius: 0 !important; box-shadow: none !important;
+                backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+            }
+            .mobile-nav button {
+                display: flex; flex-direction: column; align-items: center; justify-content: center;
+                gap: 3px; font-size: 9px; font-weight: 750; color: var(--text-muted) !important;
+                background: transparent !important; width: auto !important; height: auto !important;
+                border-radius: 12px; box-shadow: none !important; transition: var(--transition);
+            }
+            .mobile-nav button:active { transform: scale(.96); }
+            .mobile-nav button.active { color: var(--primary) !important; }
+            .mobile-nav .mobile-nav-icon { font-size: 16px; line-height: 1; }
+            .toast-wrap { bottom: calc(76px + env(safe-area-inset-bottom)) !important; }
+            .modal-overlay { align-items: flex-end; padding: 0; }
+            .modal { margin: 0 !important; max-width: 100% !important; border-bottom-left-radius: 0; border-bottom-right-radius: 0; padding-bottom: calc(18px + env(safe-area-inset-bottom)); }
+        }
+        .modal-overlay.show{display:flex}
+.meeting-id-popover.show{opacity:1!important;transform:none!important;pointer-events:auto!important}
+.stage-overlay{z-index:1500}
+.toast-wrap{z-index:3000}
+body.in-call .mobile-nav{display:none!important}
     </style>
+<link rel="stylesheet" href="alphagram.css">
 </head>
 <body>
 
@@ -2088,7 +2086,7 @@
         <button class="brand" onclick="goHome()">
             <div class="logo">A</div>
             <div class="brand-name-wrap">
-                <div class="brand-name">Alpha</div>
+                <div class="brand-name">Alphagram</div>
                 <div class="brand-tag">Social</div>
             </div>
         </button>
@@ -2247,25 +2245,6 @@
     <aside class="right">
 
         <div class="panel">
-            <div class="panel-title">Trending <span onclick="goToExplore()">See all</span></div>
-            <div class="trend" onclick="searchPosts('#Alpha')">
-                <small>1 · Community</small><strong>#Alpha</strong><em>2.4K posts</em>
-            </div>
-            <div class="trend" onclick="searchPosts('#Kigali')">
-                <small>2 · Rwanda</small><strong>#Kigali</strong><em>890 posts</em>
-            </div>
-            <div class="trend" onclick="searchPosts('#Rwanda')">
-                <small>3 · Rwanda</small><strong>#Rwanda</strong><em>543 posts</em>
-            </div>
-            <div class="trend" onclick="searchPosts('#Tech')">
-                <small>4 · Technology</small><strong>#Tech</strong><em>421 posts</em>
-            </div>
-            <div class="trend" onclick="searchPosts('#AlphaLaunch')">
-                <small>5 · Alpha</small><strong>#AlphaLaunch</strong><em>312 posts</em>
-            </div>
-        </div>
-
-        <div class="panel">
             <div class="panel-title">Quick Actions</div>
             <div style="display:flex;flex-direction:column;gap:6px;">
                 <button class="filter-btn" style="width:100%;justify-content:center;" onclick="openContactsModal('call')">
@@ -2281,11 +2260,11 @@
         </div>
 
         <div class="panel">
-            <div class="panel-title">Alpha</div>
+            <div class="panel-title">Alphagram</div>
             <div style="font-size:11.5px;color:var(--text-muted);line-height:1.7">
                 HD voice and video calls. Secure and end-to-end encrypted.
                 <br><br>
-                © 2026 Alpha
+                © 2026 Alphagram
             </div>
         </div>
 
@@ -2295,11 +2274,11 @@
 
 <!-- Mobile Nav -->
 <nav class="mobile-nav">
-    <button onclick="goHome()"><i class="fa-solid fa-house"></i></button>
-    <button onclick="goToExplore()"><i class="fa-solid fa-compass"></i></button>
-    <button class="create" onclick="openContactsModal('group')"><i class="fa-solid fa-plus"></i></button>
-    <button onclick="goToChat()"><i class="fa-solid fa-comment-dots"></i></button>
-    <button class="active" onclick="goToCalls()"><i class="fa-solid fa-phone"></i></button>
+    <button onclick="goHome()"><span class="mobile-nav-icon"><i class="fa-solid fa-house"></i></span>Home</button>
+    <button onclick="goToExplore()"><span class="mobile-nav-icon"><i class="fa-solid fa-magnifying-glass"></i></span>Search</button>
+    <button onclick="goToChat()"><span class="mobile-nav-icon"><i class="fa-solid fa-comment-dots"></i></span>Messages</button>
+    <button class="active" onclick="goToCalls()"><span class="mobile-nav-icon"><i class="fa-solid fa-phone"></i></span>Calls</button>
+    <button onclick="goToSettings()"><span class="mobile-nav-icon"><i class="fa-regular fa-circle-user"></i></span>Profile</button>
 </nav>
 
 <!-- Toast -->
@@ -2362,7 +2341,7 @@ STAGE OVERLAY (Call UI)
             <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.6px;color:var(--stage-muted);font-weight:700;margin-bottom:6px;">Meeting ID</div>
             <div style="font-size:20px;font-weight:800;letter-spacing:1.5px;color:#fff;margin-bottom:12px;" id="meetingIdPopoverCode">000 000 000</div>
             <div style="font-size:11px;color:var(--stage-muted);margin-bottom:12px;line-height:1.4;">Share this ID so others can join this conference.</div>
-            <button style="width:100%;padding:10px;border-radius:10px;background:linear-gradient(135deg,#06b6d4,var(--primary));color:#fff;font-weight:700;font-size:12px;" onclick="copyMeetingId()">Copy meeting ID</button>
+            <button style="width:100%;padding:10px;border-radius:10px;background:linear-gradient(135deg,var(--ag-text-2),var(--primary));color:#fff;font-weight:700;font-size:12px;" onclick="copyMeetingId()">Copy meeting ID</button>
         </div>
 
         <!-- Host Banner -->
@@ -2464,1723 +2443,2036 @@ STAGE OVERLAY (Call UI)
 </div>
 
 <script>
-    // ============================================================
-    // BACKEND CONFIG
-    // ============================================================
-    const API_BASE = 'https://alpha-auth.murwanashyakadieumerci540.workers.dev';
-    const LIVEKIT_URL = 'wss://alpha-chat-5bw21lfu.livekit.cloud';
+/* ============================================================
+   Alphagram — Calls (fixed & extended)
+   Replaces the big inline script block in calls.html.
+   Needs: alpha-common.js (AlphaCommon.applyTheme) and livekit-client UMD.
+   ============================================================ */
 
-    let CF_TOKEN = localStorage.getItem('alpha_token') || null;
-    let CU = null;
-    let UP = { display_name: '', avatar_url: null };
-    let allUsers = {};
+// ============================================================
+// CONFIG
+// ============================================================
+const API_BASE = 'https://alpha-auth.murwanashyakadieumerci540.workers.dev';
+const LIVEKIT_URL = 'wss://alpha-chat-5bw21lfu.livekit.cloud';
+const MAX_PARTICIPANTS = 20;
+const OUTGOING_RING_MS = 45000;
+const INCOMING_RING_MS = 30000;
 
-    // ============================================================
-    // API HELPERS
-    // ============================================================
-    async function cfApi(endpoint, method = 'GET', body = null) {
-        const opts = { method, headers: { 'Content-Type': 'application/json' } };
-        if (CF_TOKEN) opts.headers['Authorization'] = `Bearer ${CF_TOKEN}`;
-        if (body) opts.body = JSON.stringify(body);
+let CF_TOKEN = localStorage.getItem('alpha_token') || null;
+let CU = null;
+let UP = { display_name: '', avatar_url: null };
+let allUsers = {};
 
-        const controller = new AbortController();
-        const timer = setTimeout(() => controller.abort(), 15000);
-        opts.signal = controller.signal;
+const $ = (id) => document.getElementById(id);
 
-        let res;
-        try {
-            res = await fetch(`${API_BASE}${endpoint}`, opts);
-        } catch (e) {
-            throw new Error(e.name === 'AbortError' ? 'Request timed out' : e.message);
-        } finally {
-            clearTimeout(timer);
+// ============================================================
+// API HELPERS
+// ============================================================
+async function cfApi(endpoint, method = 'GET', body = null) {
+    const opts = { method, headers: { 'Content-Type': 'application/json' } };
+    if (CF_TOKEN) opts.headers['Authorization'] = `Bearer ${CF_TOKEN}`;
+    if (body) opts.body = JSON.stringify(body);
+
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 15000);
+    opts.signal = controller.signal;
+
+    let res;
+    try {
+        res = await fetch(`${API_BASE}${endpoint}`, opts);
+    } catch (e) {
+        throw new Error(e.name === 'AbortError' ? 'Request timed out' : e.message);
+    } finally {
+        clearTimeout(timer);
+    }
+
+    let data = {};
+    try { data = await res.json(); } catch (e) { data = {}; }
+    if (!res.ok) throw new Error(data.error || data.message || `Error ${res.status}`);
+    return data;
+}
+
+async function getLiveKitToken(room, identity) {
+    const data = await cfApi('/livekit-token', 'POST', { room, identity, name: nameOf(identity) });
+    if (!data?.token) throw new Error('No token received');
+    return data.token;
+}
+
+function sendControlMsg(toUid, payload) {
+    if (!toUid || isSelf(toUid)) return Promise.resolve();
+    return cfApi('/notifications', 'POST', {
+        to_uid: toUid,
+        from_name: UP.display_name,
+        text: JSON.stringify(payload)
+    }).catch(() => {});
+}
+
+// Real-time messages inside the LiveKit room (chat, reactions, hands, host controls)
+function sendData(obj, to) {
+    if (!lkRoom) return Promise.resolve();
+    try {
+        const data = new TextEncoder().encode(JSON.stringify(obj));
+        const opts = { reliable: true };
+        if (to) opts.destinationIdentities = Array.isArray(to) ? to : [to];
+        return Promise.resolve(lkRoom.localParticipant.publishData(data, opts)).catch(() => {});
+    } catch (e) { return Promise.resolve(); }
+}
+
+// ============================================================
+// HELPERS
+// ============================================================
+function isSelf(uid) {
+    return !!uid && !!CU?.id && String(uid).trim().toLowerCase() === String(CU.id).trim().toLowerCase();
+}
+
+function escapeHTML(v) {
+    const d = document.createElement('div');
+    d.textContent = v == null ? '' : String(v);
+    return d.innerHTML;
+}
+
+function avatarSrc(user) {
+    if (user && user.avatar_url) return user.avatar_url;
+    const name = encodeURIComponent((user && user.display_name) || 'Alphagram User');
+    return `https://ui-avatars.com/api/?background=27272a&color=fff&bold=true&name=${name}`;
+}
+
+function nameOf(uid) {
+    if (isSelf(uid)) return UP.display_name || 'You';
+    return allUsers[uid]?.display_name || String(uid || 'Someone').split('@')[0];
+}
+
+function relTime(ts) {
+    if (!ts) return 'now';
+    const s = (Date.now() - new Date(ts).getTime()) / 1000;
+    if (s < 60) return 'just now';
+    if (s < 3600) return Math.floor(s / 60) + 'm';
+    if (s < 86400) return Math.floor(s / 3600) + 'h';
+    return Math.floor(s / 86400) + 'd';
+}
+
+function parseTs(ts) {
+    if (typeof ts === 'string' && !/[zZ]|[+-]\d\d:?\d\d$/.test(ts)) ts = ts.replace(' ', 'T') + 'Z';
+    return new Date(ts).getTime();
+}
+
+function isEmbedded() {
+    try { return !!(window.parent && window.parent !== window && window.parent.AlphaShell); }
+    catch (e) { return false; }
+}
+
+function getCid(a, b) { return [a, b].sort().join('_'); }
+
+function generateMeetingId() {
+    let digits = '';
+    for (let i = 0; i < 9; i++) digits += Math.floor(Math.random() * 10);
+    return formatMeetingId(digits);
+}
+function meetingIdDigits(id) { return String(id || '').replace(/\D/g, ''); }
+function formatMeetingId(d) { return d.slice(0, 3) + ' ' + d.slice(3, 6) + ' ' + d.slice(6, 9); }
+function roomFromMeetingId(id) { return 'meet-' + meetingIdDigits(id); }
+function meetingIdFromRoom(room) { return (room && room.startsWith('meet-')) ? formatMeetingId(room.slice(5)) : null; }
+
+function hexId(uid) { return Array.from(String(uid)).map(c => c.charCodeAt(0).toString(16)).join(''); }
+function groupTileId(uid) { return 'gtile-' + hexId(uid); }
+function groupVideoId(uid) { return 'gvideo-' + hexId(uid); }
+function groupAudioId(uid) { return 'gaudio-' + hexId(uid); }
+
+function getOtherUsers() {
+    return Object.values(allUsers).filter(u => u && u.email && !isSelf(u.email));
+}
+
+// Everyone currently connected to the LiveKit room (excluding me)
+function remoteIds() {
+    if (!lkRoom) return [];
+    return Array.from(lkRoom.remoteParticipants.values()).map(p => p.identity).filter(i => !isSelf(i));
+}
+function allIds() { return [CU.id, ...remoteIds()]; }
+function getP(uid) {
+    if (!lkRoom) return null;
+    if (isSelf(uid)) return lkRoom.localParticipant;
+    return Array.from(lkRoom.remoteParticipants.values()).find(p => p.identity === uid) || null;
+}
+
+// ============================================================
+// TOAST
+// ============================================================
+function toast(msg, type = 'success') {
+    const wrap = $('toast-wrap');
+    if (!wrap) return;
+    const t = document.createElement('div');
+    t.className = 'toast';
+    const icons = { success: 'fa-circle-check', error: 'fa-circle-xmark', info: 'fa-circle-info' };
+    t.innerHTML = `<i class="fa-solid ${icons[type] || 'fa-circle-info'}"></i>
+        <span>${escapeHTML(msg)}</span>
+        <button class="toast-close" onclick="this.parentElement.remove()"><i class="fa-solid fa-xmark"></i></button>`;
+    wrap.appendChild(t);
+    setTimeout(() => {
+        t.style.opacity = '0';
+        t.style.transform = 'translateX(16px)';
+        setTimeout(() => t.remove(), 300);
+    }, 3200);
+}
+
+// ============================================================
+// EXTRA STYLES (pin layout, screen share, host buttons…)
+// ============================================================
+(function injectStyles() {
+    const s = document.createElement('style');
+    s.textContent = `
+    .group-tile video{transform:none}
+    .group-tile.me video{transform:scaleX(-1)}
+    .group-tiles .group-tile.pinned{grid-column:1/-1;grid-row:span 2}
+    .screen-share-view{position:absolute;inset:0;z-index:30;background:#000;display:none;align-items:center;justify-content:center}
+    .screen-share-view video{width:100%;height:100%;object-fit:contain}
+    .screen-share-view .ss-label{position:absolute;left:20px;top:calc(70px + env(safe-area-inset-top));padding:5px 14px;border-radius:10px;background:rgba(6,7,10,.65);backdrop-filter:blur(8px);font-size:12px;font-weight:700;color:#fff}
+    .p-act{width:26px;height:26px;border-radius:7px;background:rgba(255,255,255,.07);color:#fff;font-size:10px;display:grid;place-items:center;flex-shrink:0;transition:.15s}
+    .p-act:hover{background:rgba(255,255,255,.18)}
+    .p-act.danger:hover{background:var(--red)}
+    .mute-all-btn{width:100%;padding:8px;border-radius:10px;background:rgba(255,255,255,.07);color:#fff;font-size:12px;font-weight:700;margin-bottom:6px}
+    .mute-all-btn:hover{background:rgba(255,255,255,.14)}
+    .group-tile .g-mic-off{display:none}
+    .group-tile.mic-muted .g-mic-off{display:flex}
+    `;
+    document.head.appendChild(s);
+
+    // fallback colour tokens if alpha-common.js did not define them
+    const root = document.documentElement;
+    const cs = getComputedStyle(root);
+    [['08', .08], ['15', .15], ['16', .16], ['25', .25], ['30', .30], ['40', .40]].forEach(([k, a]) => {
+        if (!cs.getPropertyValue('--primary-a' + k).trim()) root.style.setProperty('--primary-a' + k, `rgba(79,70,229,${a})`);
+    });
+})();
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function goHome() { window.location.href = 'index.html'; }
+function goBack() { if (history.length > 1) history.back(); else goHome(); }
+function goToExplore() { window.location.href = 'explore.html'; }
+function goToReels() { window.location.href = 'reels.html'; }
+function goToChat() { window.location.href = 'chat.html'; }
+function goToCalls() { window.location.href = 'calls.html'; }
+function goToStatus() { window.location.href = 'status.html'; }
+function goToEvents() { window.location.href = 'events.html'; }
+function goToAI() { window.location.href = 'ai.html'; }
+function goToVault() { window.location.href = 'vaults.html'; }
+function goToSettings() { window.location.href = 'settings.html'; }
+function viewSaved() { window.location.href = 'saved.html'; }
+function searchPosts(q) { window.location.href = 'index.html?search=' + encodeURIComponent(q); }
+
+function doLogout() {
+    if (confirm('Sign out?')) {
+        if (callInProgress) endCall();
+        localStorage.removeItem('alpha_token');
+        localStorage.removeItem('alpha_user');
+        window.location.href = 'login.html';
+    }
+}
+
+function toggleTheme() {
+    const cur = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    if (window.AlphaCommon?.applyTheme) AlphaCommon.applyTheme(cur);
+    else document.documentElement.setAttribute('data-theme', cur);
+    localStorage.setItem('alpha_theme', cur);
+}
+
+function updateMeMini() {
+    const nm = UP.display_name || CU?.id || 'User';
+    const avEl = $('me-mini-avatar');
+    if (avEl) {
+        if (UP.avatar_url) {
+            avEl.innerHTML = `<img src="${escapeHTML(UP.avatar_url)}" alt="">`;
+            avEl.className = 'avatar';
+        } else {
+            avEl.className = 'avatar g2';
+            avEl.textContent = (nm || 'U')[0].toUpperCase();
         }
+    }
+    if ($('me-mini-name')) $('me-mini-name').textContent = nm;
+    if ($('me-mini-handle')) $('me-mini-handle').textContent = '@' + (CU?.id || 'user').split('@')[0];
+}
 
-        let data = {};
-        try { data = await res.json(); } catch (e) { data = {}; }
-        if (!res.ok) throw new Error(data.error || data.message || `Error ${res.status}`);
-        return data;
+// ============================================================
+// LOAD USERS / FAVORITES
+// ============================================================
+async function loadUsers() {
+    try {
+        const data = await cfApi('/users');
+        data.forEach(u => allUsers[u.email] = u);
+        if (!UP.display_name && allUsers[CU.id]) UP.display_name = allUsers[CU.id].display_name;
+        renderFavorites();
+        renderCallList();
+        updateMeMini();
+    } catch (e) {
+        toast('Could not load contacts', 'error');
+    }
+}
+
+function renderFavorites() {
+    const el = $('favoritesRow');
+    const others = getOtherUsers().slice(0, 8);
+    if (!others.length) {
+        el.innerHTML = `<div class="favorites-empty">No contacts yet — invite friends</div>`;
+        return;
+    }
+    el.innerHTML = others.map(u => `
+        <div class="favorite-item" data-call="${escapeHTML(u.email)}">
+            <div class="fav-avatar">
+                <img src="${escapeHTML(avatarSrc(u))}">
+                <span class="dot"></span>
+            </div>
+            <span class="fav-name">${escapeHTML((u.display_name || '').split(' ')[0] || u.display_name)}</span>
+        </div>
+    `).join('');
+}
+
+document.addEventListener('click', function (e) {
+    const fav = e.target.closest('[data-call]');
+    if (fav) callUser(fav.dataset.call, 'voice');
+});
+
+// ============================================================
+// CALL LOG
+// ============================================================
+function callsKey() { return 'alpha_calls_' + (CU?.id || 'guest'); }
+function loadCallLog() { try { return JSON.parse(localStorage.getItem(callsKey()) || '[]'); } catch (e) { return []; } }
+function saveCallLog(list) { localStorage.setItem(callsKey(), JSON.stringify(list.slice(-80))); }
+
+function logCall(uid, type, dur, direction) {
+    if (!uid || isSelf(uid)) return;
+    const list = loadCallLog();
+    list.push({ id: 'c' + Date.now() + Math.floor(Math.random() * 1000), uid, name: nameOf(uid), type, dur, direction, ts: Date.now() });
+    saveCallLog(list);
+    renderCallList();
+    updateMissedCount();
+}
+
+function updateMissedCount() {
+    const missed = loadCallLog().filter(c => !isSelf(c.uid) && c.direction === 'in' && c.dur === 0);
+    $('missedCountLabel').textContent = `${missed.length} missed`;
+}
+
+let callLogFilter = 'all';
+let searchQuery = '';
+
+$('searchInput').addEventListener('input', function () {
+    searchQuery = this.value.toLowerCase().trim();
+    renderCallList();
+});
+
+document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
+    btn.addEventListener('click', function () {
+        document.querySelectorAll('.filter-btn[data-filter]').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        callLogFilter = this.dataset.filter;
+        renderCallList();
+    });
+});
+
+function renderCallList() {
+    const el = $('callList');
+    let list = loadCallLog().filter(c => !isSelf(c.uid)).slice().reverse();
+
+    if (searchQuery) list = list.filter(c => (c.name || '').toLowerCase().includes(searchQuery));
+    if (callLogFilter === 'missed') list = list.filter(c => c.direction === 'in' && c.dur === 0);
+    else if (callLogFilter === 'incoming') list = list.filter(c => c.direction === 'in');
+    else if (callLogFilter === 'outgoing') list = list.filter(c => c.direction === 'out');
+    else if (callLogFilter === 'video') list = list.filter(c => c.type === 'video');
+
+    $('noResults').style.display = list.length ? 'none' : 'block';
+    if (!list.length) { el.innerHTML = ''; return; }
+
+    el.innerHTML = list.map(c => {
+        const isMissed = c.direction === 'in' && c.dur === 0;
+        const dirArrow = c.direction === 'out' ? '↗' : '↙';
+        const m = String(Math.floor(c.dur / 60)).padStart(2, '0');
+        const s = String(c.dur % 60).padStart(2, '0');
+        const user = allUsers[c.uid];
+        const avatar = user ? avatarSrc(user) : `https://ui-avatars.com/api/?name=${encodeURIComponent(c.name)}&background=27272a&color=fff`;
+        return `
+            <div class="call-item">
+                <div class="call-avatar"><img src="${escapeHTML(avatar)}"></div>
+                <div class="call-info">
+                    <div class="call-name">${escapeHTML(c.name)}</div>
+                    <div class="call-meta ${isMissed ? 'missed' : ''}">
+                        <span>${dirArrow}</span>
+                        <span>${relTime(c.ts)}</span>
+                        <span>•</span>
+                        <span>${isMissed ? 'Missed' : (c.dur > 0 ? m + ':' + s : 'No answer')}</span>
+                        ${c.type === 'video' ? '<i class="fa-solid fa-video" style="font-size:10px"></i>' : ''}
+                    </div>
+                </div>
+                <div class="call-actions">
+                    <button class="video" data-call-video="${escapeHTML(c.uid)}"><i class="fa-solid fa-video"></i></button>
+                    <button class="voice" data-call-voice="${escapeHTML(c.uid)}"><i class="fa-solid fa-phone"></i></button>
+                    <button class="danger" data-call-del="${escapeHTML(c.id)}"><i class="fa-solid fa-trash-can"></i></button>
+                </div>
+            </div>`;
+    }).join('');
+}
+
+$('callList').addEventListener('click', function (e) {
+    const v = e.target.closest('[data-call-video]');
+    const p = e.target.closest('[data-call-voice]');
+    const d = e.target.closest('[data-call-del]');
+    if (v) callUser(v.dataset.callVideo, 'video');
+    else if (p) callUser(p.dataset.callVoice, 'voice');
+    else if (d) deleteCall(d.dataset.callDel);
+});
+
+function deleteCall(id) {
+    saveCallLog(loadCallLog().filter(c => c.id !== id));
+    renderCallList();
+    updateMissedCount();
+}
+
+window.clearCalls = function () {
+    if (!confirm('Clear all recent calls?')) return;
+    saveCallLog([]);
+    renderCallList();
+    updateMissedCount();
+    toast('Calls cleared');
+};
+
+window.showMissed = function () {
+    document.querySelectorAll('.filter-btn[data-filter]').forEach(b => b.classList.remove('active'));
+    document.querySelector('.filter-btn[data-filter="missed"]').classList.add('active');
+    callLogFilter = 'missed';
+    renderCallList();
+    document.querySelectorAll('.section')[1]?.scrollIntoView({ behavior: 'smooth' });
+};
+
+// ============================================================
+// CONTACTS MODAL
+// ============================================================
+let contactsMode = 'call';
+let contactsSelected = new Set();
+let contactsExclude = new Set();
+
+window.openContactsModal = function (mode) {
+    contactsMode = mode || 'call';
+    contactsSelected = new Set();
+    contactsExclude = new Set();
+
+    const titles = { group: 'New Meeting', add: 'Add People', call: 'Contacts' };
+    const subs = {
+        group: 'Select up to 19 people, or start alone and share the meeting ID',
+        add: 'Invite more people to this meeting',
+        call: 'Tap to call'
+    };
+    $('contactsTitle').textContent = titles[contactsMode] || 'Contacts';
+    $('contactsSub').textContent = subs[contactsMode] || '';
+    $('contactsFooter').style.display = (contactsMode === 'group' || contactsMode === 'add') ? 'block' : 'none';
+    $('contactsConfirmBtn').textContent = contactsMode === 'group' ? 'Start Conference' : 'Add Selected';
+    $('contactsSearch').value = '';
+
+    if (contactsMode === 'add') {
+        contactsExclude = new Set([CU.id, ...remoteIds()]);
     }
 
-    async function getLiveKitToken(room, identity) {
-        const data = await cfApi('/livekit-token', 'POST', { room, identity });
-        if (!data?.token) throw new Error('No token received');
-        return data.token;
+    $('contactsModal').classList.add('show');
+    renderContactsList('');
+    setTimeout(() => $('contactsSearch').focus(), 100);
+};
+
+window.closeContactsModal = function () { $('contactsModal').classList.remove('show'); };
+
+$('contactsSearch').addEventListener('input', function () { renderContactsList(this.value); });
+
+function renderContactsList(query) {
+    const el = $('contactsScroll');
+    query = (query || '').toLowerCase().trim();
+    const users = getOtherUsers()
+        .filter(u => !contactsExclude.has(u.email))
+        .filter(u => (u.display_name || '').toLowerCase().includes(query));
+
+    if (!users.length) {
+        el.innerHTML = `<div style="padding:20px 4px;color:var(--text-muted);font-size:13px;">No people found</div>`;
+        return;
     }
 
-    function sendControlMsg(toUid, payload) {
-        if (!toUid || isSelf(toUid)) return Promise.resolve();
-        return cfApi('/notifications', 'POST', {
-            to_uid: toUid,
+    const multi = contactsMode === 'group' || contactsMode === 'add';
+    el.innerHTML = users.map(u => `
+        <div class="contact-row">
+            <div class="contact-avatar"><img src="${escapeHTML(avatarSrc(u))}"></div>
+            <div class="contact-info">
+                <div class="name">${escapeHTML(u.display_name)}</div>
+                <div class="handle">@${escapeHTML((u.email || '').split('@')[0])}</div>
+            </div>
+            ${multi
+                ? `<input type="checkbox" value="${escapeHTML(u.email)}" onchange="toggleContactSelect(this)" ${contactsSelected.has(u.email) ? 'checked' : ''}>`
+                : `<div class="contact-actions">
+                    <button class="voice" data-pick-voice="${escapeHTML(u.email)}"><i class="fa-solid fa-phone"></i></button>
+                    <button class="video" data-pick-video="${escapeHTML(u.email)}"><i class="fa-solid fa-video"></i></button>
+                   </div>`}
+        </div>`).join('');
+}
+
+$('contactsScroll').addEventListener('click', function (e) {
+    const v = e.target.closest('[data-pick-video]');
+    const p = e.target.closest('[data-pick-voice]');
+    if (v) { closeContactsModal(); callUser(v.dataset.pickVideo, 'video'); }
+    else if (p) { closeContactsModal(); callUser(p.dataset.pickVoice, 'voice'); }
+});
+
+window.toggleContactSelect = function (cb) {
+    if (cb.checked) {
+        const current = contactsMode === 'add' ? remoteIds().length + 1 : 1;
+        if (current + contactsSelected.size >= MAX_PARTICIPANTS) {
+            cb.checked = false;
+            toast(`Max ${MAX_PARTICIPANTS} people per meeting`, 'info');
+            return;
+        }
+        contactsSelected.add(cb.value);
+    } else {
+        contactsSelected.delete(cb.value);
+    }
+};
+
+window.confirmContactsSelection = function () {
+    const selected = Array.from(contactsSelected).filter(uid => !isSelf(uid));
+    if (!selected.length && contactsMode !== 'group') { toast('Select at least one person', 'info'); return; }
+    closeContactsModal();
+    if (contactsMode === 'add') addMembersToCall(selected);
+    else startGroupCall(selected);
+};
+
+$('contactsModal').addEventListener('click', function (e) { if (e.target === this) closeContactsModal(); });
+
+// ============================================================
+// JOIN MEETING MODAL
+// ============================================================
+window.openJoinIdModal = function () {
+    $('joinIdInput').value = '';
+    $('joinIdModal').classList.add('show');
+    setTimeout(() => $('joinIdInput').focus(), 50);
+};
+window.closeJoinIdModal = function () { $('joinIdModal').classList.remove('show'); };
+
+$('joinIdInput').addEventListener('input', function () {
+    this.value = formatMeetingId(meetingIdDigits(this.value).slice(0, 9)).trim();
+});
+$('joinIdInput').addEventListener('keydown', function (e) { if (e.key === 'Enter') submitJoinMeeting(); });
+$('joinIdModal').addEventListener('click', function (e) { if (e.target === this) closeJoinIdModal(); });
+
+window.submitJoinMeeting = async function () {
+    const digits = meetingIdDigits($('joinIdInput').value);
+    if (digits.length !== 9) { toast('Enter the full 9-digit meeting ID', 'info'); return; }
+    if (callInProgress) { toast('Already on a call', 'info'); return; }
+    closeJoinIdModal();
+    await joinMeetingById(formatMeetingId(digits));
+};
+
+// ============================================================
+// CALL STATE
+// ============================================================
+let lkRoom = null;
+let callInProgress = false;
+let callSecs = 0;
+let callTimer = null;
+let currentCallRoom = null;
+let chatPartner = null;
+let callType = 'voice';
+let callDirection = 'out';
+let callState = 'idle';
+let isGroupCall = false;
+let groupVideoTracks = {};     // identity -> camera video track
+let groupAudioTracks = {};     // identity -> mic audio track
+let screenTrackOwner = null;   // identity of whoever is presenting
+let extraAudioEls = [];
+let localCamTrack = null;
+let isScreenSharing = false;
+let isHost = false;
+let hostUid = null;
+let removedFromCall = false;
+let raisedHands = new Set();
+let pinnedParticipant = null;
+let currentMeetingId = null;
+let chatMessages = [];
+let unreadChatCount = 0;
+let activePanelTab = 'people';
+let participantsPanelOpen = false;
+let incomingCallData = null;
+let seenCallNotifIds = new Set();
+let callPollInterval = null;
+let polling = false;
+let ringtoneCtx = null;
+let ringtoneTimer = null;
+let ringtoneActive = false;
+let outRingTimer = null;
+let aloneTimer = null;
+let incomingTimer = null;
+let ending = false;
+let wakeLock = null;
+
+// ============================================================
+// CALL USER (1:1)
+// ============================================================
+window.callUser = async function (uid, type) {
+    // When embedded, the shell owns the call so it survives page navigation.
+    if (isEmbedded()) {
+        const partner = allUsers[uid] || {};
+        window.parent.postMessage({
+            type: 'alpha:startCall', uid, callType: type || 'voice',
+            name: partner.display_name, avatarUrl: partner.avatar_url
+        }, window.location.origin);
+        return;
+    }
+
+    if (callInProgress || callState !== 'idle') { toast('Already on a call', 'info'); return; }
+    if (isSelf(uid)) { toast("Can't call yourself", 'info'); return; }
+    const partner = allUsers[uid];
+    if (!partner) { toast('User not found', 'error'); return; }
+
+    chatPartner = uid;
+    callType = type || 'voice';
+    isGroupCall = false;
+    callDirection = 'out';
+    callInProgress = true;
+    isHost = true;
+    hostUid = CU.id;
+    removedFromCall = false;
+
+    const room = 'call_' + getCid(CU.id, uid) + '_' + Date.now();
+    currentCallRoom = room;
+
+    showCallUI('ringing-out', partner.display_name, avatarSrc(partner), callType);
+    startRingback();
+
+    try {
+        const invite = cfApi('/notifications', 'POST', {
+            to_uid: uid,
             from_name: UP.display_name,
-            text: JSON.stringify(payload)
-        }).catch(() => {});
-    }
-
-    // ============================================================
-    // HELPERS
-    // ============================================================
-    function isSelf(uid) {
-        return uid && CU?.id && String(uid).trim().toLowerCase() === String(CU.id).trim().toLowerCase();
-    }
-
-    function escapeHTML(v) {
-        const d = document.createElement('div');
-        d.textContent = v == null ? '' : String(v);
-        return d.innerHTML;
-    }
-
-    function avatarSrc(user) {
-        if (user && user.avatar_url) return user.avatar_url;
-        const name = encodeURIComponent((user && user.display_name) || 'Alpha User');
-        return `https://ui-avatars.com/api/?background=4f46e5&color=fff&bold=true&name=${name}`;
-    }
-
-    function relTime(ts) {
-        if (!ts) return 'now';
-        const s = (Date.now() - new Date(ts).getTime()) / 1000;
-        if (s < 60) return 'just now';
-        if (s < 3600) return Math.floor(s / 60) + 'm';
-        if (s < 86400) return Math.floor(s / 3600) + 'h';
-        return Math.floor(s / 86400) + 'd';
-    }
-
-    function getCid(a, b) { return [a, b].sort().join('_'); }
-
-    function generateMeetingId() {
-        let digits = '';
-        for (let i = 0; i < 9; i++) digits += Math.floor(Math.random() * 10);
-        return digits.slice(0, 3) + ' ' + digits.slice(3, 6) + ' ' + digits.slice(6, 9);
-    }
-
-    function meetingIdDigits(id) { return String(id || '').replace(/\D/g, ''); }
-    function formatMeetingId(digits) { return digits.slice(0, 3) + ' ' + digits.slice(3, 6) + ' ' + digits.slice(6, 9); }
-    function roomFromMeetingId(id) { return 'meet-' + meetingIdDigits(id); }
-    function meetingIdFromRoom(room) { return (room && room.startsWith('meet-')) ? formatMeetingId(room.slice(5)) : null; }
-
-    function groupTileId(uid) { return 'gtile-' + btoa(uid).replace(/=/g, ''); }
-    function groupVideoId(uid) { return 'gvideo-' + btoa(uid).replace(/=/g, ''); }
-    function groupAudioId(uid) { return 'gaudio-' + btoa(uid).replace(/=/g, ''); }
-
-    function getOtherUsers() {
-        return Object.values(allUsers).filter(u => u && u.email && !isSelf(u.email));
-    }
-
-    // ============================================================
-    // TOAST
-    // ============================================================
-    function toast(msg, type = 'success') {
-        const wrap = document.getElementById('toast-wrap');
-        if (!wrap) return;
-        const t = document.createElement('div');
-        t.className = 'toast';
-        const icons = { success: 'fa-circle-check', error: 'fa-circle-xmark', info: 'fa-circle-info' };
-        t.innerHTML = `<i class="fa-solid ${icons[type] || 'fa-wand-magic-sparkles'}"></i>
-            <span>${msg}</span>
-            <button class="toast-close" onclick="this.parentElement.remove()"><i class="fa-solid fa-xmark"></i></button>`;
-        wrap.appendChild(t);
-        setTimeout(() => {
-            t.style.opacity = '0';
-            t.style.transform = 'translateX(16px)';
-            setTimeout(() => t.remove(), 300);
-        }, 3000);
-    }
-
-    // ============================================================
-    // NAVIGATION
-    // ============================================================
-    function goHome() { window.location.href = 'index.html'; }
-    function goBack() { if (history.length > 1) history.back(); else goHome(); }
-    function goToExplore() { window.location.href = 'explore.html'; }
-    function goToReels() { window.location.href = 'reels.html'; }
-    function goToChat() { window.location.href = 'chat.html'; }
-    function goToCalls() { window.location.href = 'calls.html'; }
-    function goToStatus() { window.location.href = 'status.html'; }
-    function goToEvents() { window.location.href = 'events.html'; }
-    function goToAI() { window.location.href = 'ai.html'; }
-    function goToVault() { window.location.href = 'vaults.html'; }
-    function goToSettings() { window.location.href = 'settings.html'; }
-    function viewSaved() { window.location.href = 'saved.html'; }
-    function searchPosts(q) { window.location.href = 'index.html?search=' + encodeURIComponent(q); }
-
-    function doLogout() {
-        if (confirm('Sign out?')) {
-            localStorage.removeItem('alpha_token');
-            localStorage.removeItem('alpha_user');
-            window.location.href = 'login.html';
-        }
-    }
-
-    function toggleTheme() {
-        const cur = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-        AlphaCommon.applyTheme(cur);
-        localStorage.setItem('alpha_theme', cur);
-    }
-
-    // ============================================================
-    // UPDATE MINI PROFILE
-    // ============================================================
-    function updateMeMini() {
-        const nm = UP.display_name || CU?.id || 'User';
-        const avEl = document.getElementById('me-mini-avatar');
-        if (avEl) {
-            if (UP.avatar_url) {
-                avEl.innerHTML = `<img src="${UP.avatar_url}" alt="">`;
-                avEl.className = 'avatar';
-            } else {
-                avEl.className = 'avatar g2';
-                avEl.textContent = (nm || 'U')[0].toUpperCase();
-            }
-        }
-        const nameEl = document.getElementById('me-mini-name');
-        if (nameEl) nameEl.textContent = nm;
-        const handleEl = document.getElementById('me-mini-handle');
-        if (handleEl) handleEl.textContent = '@' + (CU?.id || 'user').split('@')[0];
-    }
-
-    // ============================================================
-    // LOAD USERS
-    // ============================================================
-    async function loadUsers() {
-        try {
-            const data = await cfApi('/users');
-            data.forEach(u => allUsers[u.email] = u);
-            renderFavorites();
-            renderCallList();
-        } catch (e) {
-            toast('Could not load contacts', 'error');
-        }
-    }
-
-    // ============================================================
-    // FAVORITES
-    // ============================================================
-    function renderFavorites() {
-        const el = document.getElementById('favoritesRow');
-        const others = getOtherUsers().slice(0, 8);
-        if (!others.length) {
-            el.innerHTML = `<div class="favorites-empty">No contacts yet — invite friends</div>`;
-            return;
-        }
-        el.innerHTML = others.map(u => `
-            <div class="favorite-item" onclick="callUser('${escapeHTML(u.email)}','voice')">
-                <div class="fav-avatar">
-                    <img src="${avatarSrc(u)}">
-                    <span class="dot"></span>
-                </div>
-                <span class="fav-name">${escapeHTML((u.display_name||'').split(' ')[0]||u.display_name)}</span>
-            </div>
-        `).join('');
-    }
-
-    // ============================================================
-    // CALL LOG
-    // ============================================================
-    function callsKey() { return 'alpha_calls_' + (CU?.id || 'guest'); }
-
-    function loadCallLog() {
-        try { return JSON.parse(localStorage.getItem(callsKey()) || '[]'); } catch (e) { return []; }
-    }
-
-    function saveCallLog(list) {
-        localStorage.setItem(callsKey(), JSON.stringify(list.slice(-80)));
-    }
-
-    function logCall(uid, type, dur, direction) {
-        if (isSelf(uid)) return;
-        const list = loadCallLog();
-        list.push({ id: 'c' + Date.now(), uid, name: allUsers[uid]?.display_name || 'User', type, dur, direction,
-            ts: Date.now() });
-        saveCallLog(list);
-        renderCallList();
-        updateMissedCount();
-    }
-
-    function updateMissedCount() {
-        const list = loadCallLog().filter(c => !isSelf(c.uid));
-        const missed = list.filter(c => c.direction === 'in' && c.dur === 0);
-        document.getElementById('missedCountLabel').textContent = `${missed.length} missed`;
-    }
-
-    // ============================================================
-    // RENDER CALL LIST
-    // ============================================================
-    let callLogFilter = 'all';
-    let searchQuery = '';
-
-    document.getElementById('searchInput').addEventListener('input', function() {
-        searchQuery = this.value.toLowerCase().trim();
-        renderCallList();
-    });
-
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            callLogFilter = this.dataset.filter;
-            renderCallList();
+            text: JSON.stringify({
+                type: 'call_invite', from_uid: CU.id, from_name: UP.display_name,
+                action: 'invite', call_type: callType, room, host_uid: CU.id
+            })
         });
-    });
-
-    function renderCallList() {
-        const el = document.getElementById('callList');
-        let list = loadCallLog().filter(c => !isSelf(c.uid)).slice().reverse();
-
-        if (searchQuery) list = list.filter(c => (c.name || '').toLowerCase().includes(searchQuery));
-
-        if (callLogFilter === 'missed') list = list.filter(c => c.direction === 'in' && c.dur === 0);
-        else if (callLogFilter === 'incoming') list = list.filter(c => c.direction === 'in');
-        else if (callLogFilter === 'outgoing') list = list.filter(c => c.direction === 'out');
-        else if (callLogFilter === 'video') list = list.filter(c => c.type === 'video');
-
-        document.getElementById('noResults').style.display = list.length ? 'none' : 'block';
-
-        if (!list.length) { el.innerHTML = ''; return; }
-
-        el.innerHTML = list.map(c => {
-            const isMissed = c.direction === 'in' && c.dur === 0;
-            const dirArrow = c.direction === 'out' ? '↗' : '↙';
-            const m = String(Math.floor(c.dur / 60)).padStart(2, '0');
-            const s = String(c.dur % 60).padStart(2, '0');
-            const user = allUsers[c.uid];
-            const avatar = user ? avatarSrc(user) : `https://ui-avatars.com/api/?name=${encodeURIComponent(c.name)}&background=4f46e5&color=fff`;
-
-            return `
-                <div class="call-item">
-                    <div class="call-avatar"><img src="${avatar}"></div>
-                    <div class="call-info">
-                        <div class="call-name">${escapeHTML(c.name)}</div>
-                        <div class="call-meta ${isMissed ? 'missed' : ''}">
-                            <span>${dirArrow}</span>
-                            <span>${relTime(c.ts)}</span>
-                            <span>•</span>
-                            <span>${isMissed ? 'Missed' : (c.dur > 0 ? m + ':' + s : 'No answer')}</span>
-                        </div>
-                    </div>
-                    <div class="call-actions">
-                        <button class="video" onclick="callUser('${escapeHTML(c.uid)}','video')"><i class="fa-solid fa-video"></i></button>
-                        <button class="voice" onclick="callUser('${escapeHTML(c.uid)}','voice')"><i class="fa-solid fa-phone"></i></button>
-                        <button class="danger" onclick="deleteCall('${escapeHTML(c.id)}')"><i class="fa-solid fa-trash-can"></i></button>
-                    </div>
-                </div>
-            `;
-        }).join('');
+        await Promise.all([invite, joinLiveKitRoom(room, callType)]);
+        $('callSub').innerHTML = `<span class="ring-badge">Ringing…</span>`;
+        setCallStatus('Ringing…');
+        outRingTimer = setTimeout(() => {
+            if (callInProgress && !isGroupCall && remoteIds().length === 0) {
+                toast('No answer', 'info');
+                endCall();
+            }
+        }, OUTGOING_RING_MS);
+    } catch (e) {
+        toast('Call failed: ' + e.message, 'error');
+        resetCallState();
     }
+};
 
-    function deleteCall(id) {
-        let list = loadCallLog();
-        list = list.filter(c => c.id !== id);
-        saveCallLog(list);
-        renderCallList();
-        updateMissedCount();
+// ============================================================
+// JOIN MEETING BY ID
+// ============================================================
+async function joinMeetingById(meetingId) {
+    if (callInProgress || callState !== 'idle') { toast('Already on a call', 'info'); return; }
+
+    currentMeetingId = meetingId;
+    currentCallRoom = roomFromMeetingId(meetingId);
+    isGroupCall = true;
+    callType = 'video';
+    callInProgress = true;
+    callDirection = 'in';
+    isHost = false;
+    hostUid = null;
+    removedFromCall = false;
+    chatPartner = null;
+
+    showCallUI('active', 'Conference', avatarSrc({ display_name: 'Group' }), 'video');
+
+    try {
+        await joinLiveKitRoom(currentCallRoom, 'video');
+        toast('Joined meeting ' + currentMeetingId);
+    } catch (e) {
+        toast('Could not join: ' + e.message, 'error');
+        resetCallState();
     }
+}
 
-    window.clearCalls = function() {
-        if (!confirm('Clear all recent calls?')) return;
-        saveCallLog([]);
-        renderCallList();
-        updateMissedCount();
-        toast('Calls cleared');
-    };
+// ============================================================
+// START GROUP CALL / MEETING
+// ============================================================
+async function startGroupCall(participants) {
+    if (callInProgress || callState !== 'idle') { toast('Already on a call', 'info'); return; }
 
-    window.showMissed = function() {
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        document.querySelector('.filter-btn[data-filter="missed"]').classList.add('active');
-        callLogFilter = 'missed';
-        renderCallList();
-        document.querySelector('.section').scrollIntoView({ behavior: 'smooth' });
-    };
+    const invitees = participants.filter(uid => !isSelf(uid));
+    isGroupCall = true;
+    callType = 'video';
+    callInProgress = true;
+    callDirection = 'out';
+    isHost = true;
+    hostUid = CU.id;
+    removedFromCall = false;
+    chatPartner = null;
+    currentMeetingId = generateMeetingId();
+    currentCallRoom = roomFromMeetingId(currentMeetingId);
 
-    // ============================================================
-    // CONTACTS MODAL
-    // ============================================================
-    let contactsMode = 'call';
-    let contactsSelected = new Set();
-    let contactsExclude = new Set();
+    showCallUI('active', 'Conference', avatarSrc({ display_name: 'Group' }), 'video');
 
-    window.openContactsModal = function(mode) {
-        contactsMode = mode || 'call';
-        contactsSelected = new Set();
-        contactsExclude = new Set();
-
-        document.getElementById('contactsTitle').textContent = mode === 'group' ? 'New Meeting' : 'Contacts';
-        document.getElementById('contactsSub').textContent = mode === 'group' ?
-            'Select up to 19 people, or start alone and share the meeting ID' :
-            'Tap to call';
-        document.getElementById('contactsFooter').style.display = (mode === 'group' || mode === 'add') ? 'block' : 'none';
-        document.getElementById('contactsConfirmBtn').textContent = mode === 'group' ? 'Start Conference' : 'Add Selected';
-        document.getElementById('contactsSearch').value = '';
-
-        document.getElementById('contactsModal').classList.add('show');
-        renderContactsList('');
-        setTimeout(() => document.getElementById('contactsSearch').focus(), 100);
-    };
-
-    window.closeContactsModal = function() {
-        document.getElementById('contactsModal').classList.remove('show');
-    };
-
-    document.getElementById('contactsSearch').addEventListener('input', function() {
-        renderContactsList(this.value);
-    });
-
-    function renderContactsList(query) {
-        const el = document.getElementById('contactsScroll');
-        query = (query || '').toLowerCase().trim();
-        let users = getOtherUsers().filter(u => (u.display_name || '').toLowerCase().includes(query));
-
-        if (!users.length) {
-            el.innerHTML = `<div style="padding:20px 4px;color:var(--text-muted);font-size:13px;">No people found</div>`;
-            return;
-        }
-
-        const multi = contactsMode === 'group' || contactsMode === 'add';
-
-        el.innerHTML = users.map(u => `
-            <div class="contact-row">
-                <div class="contact-avatar"><img src="${avatarSrc(u)}"></div>
-                <div class="contact-info">
-                    <div class="name">${escapeHTML(u.display_name)}</div>
-                    <div class="handle">@${escapeHTML((u.email||'').split('@')[0])}</div>
-                </div>
-                ${multi
-                    ? `<input type="checkbox" value="${escapeHTML(u.email)}" onchange="toggleContactSelect(this)" ${contactsSelected.has(u.email) ? 'checked' : ''}>`
-                    : `<div class="contact-actions">
-                        <button class="voice" onclick="closeContactsModal();callUser('${escapeHTML(u.email)}','voice')"><i class="fa-solid fa-phone"></i></button>
-                        <button class="video" onclick="closeContactsModal();callUser('${escapeHTML(u.email)}','video')"><i class="fa-solid fa-video"></i></button>
-                       </div>`
-                }
-            </div>
-        `).join('');
+    try {
+        await joinLiveKitRoom(currentCallRoom, 'video');
+        await Promise.all(invitees.map(uid => sendInvite(uid, true)));
+        toast(invitees.length
+            ? `Conference started — invited ${invitees.length} ${invitees.length === 1 ? 'person' : 'people'}`
+            : `Conference started · ID ${currentMeetingId}`);
+        if (!invitees.length) { openMeetingIdPopoverSoon(); }
+    } catch (e) {
+        toast('Meeting failed: ' + e.message, 'error');
+        resetCallState();
     }
+}
 
-    window.toggleContactSelect = function(cb) {
-        if (cb.checked) {
-            if (contactsSelected.size >= 19) { cb.checked = false;
-                toast('Max 20 people per meeting'); return; }
-            contactsSelected.add(cb.value);
-        } else {
-            contactsSelected.delete(cb.value);
-        }
-    };
+function openMeetingIdPopoverSoon() {
+    setTimeout(() => { if (callInProgress && currentMeetingId) $('meetingIdPopover').classList.add('show'); }, 600);
+}
 
-    window.confirmContactsSelection = function() {
-        const selected = Array.from(contactsSelected).filter(uid => !isSelf(uid));
-        // "Meet now" explicitly allows starting solo and sharing the meeting ID,
-        // so only block on an empty selection when adding people to a call already
-        // in progress (there'd be nothing to do).
-        if (!selected.length && contactsMode !== 'group') { toast('Select at least one person'); return; }
-        closeContactsModal();
-        if (contactsMode === 'add') {
-            addMembersToCall(selected);
-        } else {
-            startGroupCall(selected);
-        }
-    };
+function sendInvite(uid, group) {
+    return cfApi('/notifications', 'POST', {
+        to_uid: uid,
+        from_name: UP.display_name,
+        text: JSON.stringify({
+            type: 'call_invite', from_uid: CU.id, from_name: UP.display_name,
+            action: 'invite', call_type: group ? 'video' : callType,
+            room: currentCallRoom, is_group: !!group, host_uid: hostUid || CU.id
+        })
+    }).catch(() => {});
+}
 
-    // ============================================================
-    // CONTACT MODAL (click outside to close)
-    // ============================================================
-    document.getElementById('contactsModal').addEventListener('click', function(e) {
-        if (e.target === this) closeContactsModal();
-    });
+// ============================================================
+// ADD MEMBERS TO A RUNNING CALL
+// ============================================================
+window.openAddMembers = function () {
+    if (!callInProgress) { toast('No active meeting', 'info'); return; }
+    openContactsModal('add');
+};
 
-    // ============================================================
-    // JOIN MEETING MODAL
-    // ============================================================
-    window.openJoinIdModal = function() {
-        document.getElementById('joinIdInput').value = '';
-        document.getElementById('joinIdModal').classList.add('show');
-        setTimeout(() => document.getElementById('joinIdInput').focus(), 50);
-    };
+async function addMembersToCall(selected) {
+    if (!callInProgress) { toast('No active meeting', 'info'); return; }
+    const room = remoteIds().length + 1;
+    const toInvite = selected.filter(uid => !isSelf(uid) && !remoteIds().includes(uid));
+    if (!toInvite.length) return;
+    if (room + toInvite.length > MAX_PARTICIPANTS) { toast(`Max ${MAX_PARTICIPANTS} people per meeting`, 'info'); return; }
 
-    window.closeJoinIdModal = function() {
-        document.getElementById('joinIdModal').classList.remove('show');
-    };
+    if (!isGroupCall) switchToGroupLayout();
+    await Promise.all(toInvite.map(uid => sendInvite(uid, true)));
+    toast(`Invited ${toInvite.length} ${toInvite.length === 1 ? 'person' : 'people'}`);
+}
 
-    document.getElementById('joinIdInput').addEventListener('input', function() {
-        const digits = meetingIdDigits(this.value).slice(0, 9);
-        this.value = formatMeetingId(digits).trim();
-    });
+// 1:1 -> conference
+function switchToGroupLayout() {
+    isGroupCall = true;
+    const remoteV = $('remoteVideo'), remoteA = $('remoteAudio');
+    Object.values(groupVideoTracks).forEach(t => { try { t.detach(remoteV); } catch (e) {} });
+    Object.values(groupAudioTracks).forEach(t => { try { t.detach(remoteA); } catch (e) {} });
+    $('callVideoWrap').style.display = 'none';
+    $('stageHero').style.display = 'none';
+    $('groupTiles').style.display = 'grid';
+    updateCallTypePill();
+    renderGroupTiles();
+}
 
-    document.getElementById('joinIdInput').addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') submitJoinMeeting();
-    });
+// ============================================================
+// LIVEKIT
+// ============================================================
+async function joinLiveKitRoom(room, type) {
+    const LK = window.LivekitClient;
+    if (!LK) throw new Error('LiveKit library not loaded');
 
-    document.getElementById('joinIdModal').addEventListener('click', function(e) {
-        if (e.target === this) closeJoinIdModal();
-    });
+    const token = await getLiveKitToken(room, CU.id);
+    const r = new LK.Room({ adaptiveStream: true, dynacast: true });
+    lkRoom = r;
+    bindRoomEvents(r, LK);
 
-    window.submitJoinMeeting = async function() {
-        const digits = meetingIdDigits(document.getElementById('joinIdInput').value);
-        if (digits.length !== 9) { toast('Enter the full 9-digit meeting ID'); return; }
-        if (callInProgress) { toast('Already on a call'); return; }
+    await r.connect(LIVEKIT_URL, token);
+    try { await r.startAudio(); } catch (e) {}
+    if (lkRoom !== r) return;
 
-        closeJoinIdModal();
-        await joinMeetingById(formatMeetingId(digits));
-    };
-
-    // ============================================================
-    // CALL STATE
-    // ============================================================
-    let lkRoom = null;
-    let callInProgress = false;
-    let callSecs = 0;
-    let callTimer = null;
-    let currentCallRoom = null;
-    let chatPartner = null;
-    let callType = 'voice';
-    let callDirection = 'out';
-    let callState = 'idle';
-    let isGroupCall = false;
-    let groupParticipants = [];
-    let groupVideoTracks = {};
-    let groupAudioTracks = {};
-    let localCamTrack = null;
-    let isScreenSharing = false;
-    let screenStream = null;
-    let isHost = false;
-    let hostUid = null;
-    let removedFromCall = false;
-    let raisedHands = new Set();
-    let pinnedParticipant = null;
-    let currentMeetingId = null;
-    let chatMessages = [];
-    let unreadChatCount = 0;
-    let activePanelTab = 'people';
-    let participantsPanelOpen = false;
-    let incomingCallData = null;
-    let seenCallNotifIds = new Set();
-    let callPollInterval = null;
-    let ringtoneCtx = null;
-    let ringtoneTimer = null;
-    let ringtoneActive = false;
-
-    // ============================================================
-    // CALL USER (1:1)
-    // ============================================================
-    window.callUser = async function(uid, type) {
-        // If embedded in the Alpha app shell, let it own the call so it
-        // survives navigating away from the Calls page.
-        if (window.parent && window.parent !== window && window.parent.AlphaShell) {
-            const partner = allUsers[uid] || {};
-            window.parent.postMessage({
-                type: 'alpha:startCall',
-                uid: uid,
-                callType: type || 'voice',
-                name: partner.display_name,
-                avatarUrl: partner.avatar_url
-            }, window.location.origin);
-            return;
-        }
-
-        if (callInProgress) { toast('Already on a call'); return; }
-        if (isSelf(uid)) { toast('Can\'t call yourself'); return; }
-
-        const partner = allUsers[uid];
-        if (!partner) { toast('User not found'); return; }
-
-        chatPartner = uid;
-        callType = type || 'voice';
-        isGroupCall = false;
-        callDirection = 'out';
-        callInProgress = true;
+    // First person in an empty meeting becomes the host
+    if (isGroupCall && remoteIds().length === 0 && !hostUid) {
         isHost = true;
         hostUid = CU.id;
-        removedFromCall = false;
-
-        const room = 'call_' + getCid(CU.id, uid) + '_' + Date.now();
-        currentCallRoom = room;
-
-        showCallUI('ringing-out', partner.display_name, avatarSrc(partner), callType);
-
-        try {
-            await cfApi('/notifications', 'POST', {
-                to_uid: uid,
-                from_name: UP.display_name,
-                text: JSON.stringify({
-                    type: 'call_invite',
-                    from_uid: CU.id,
-                    from_name: UP.display_name,
-                    action: 'invite',
-                    call_type: callType,
-                    room: room,
-                    host_uid: CU.id
-                })
-            });
-            await joinLiveKitRoom(room, callType, false);
-        } catch (e) {
-            toast('Call failed: ' + e.message, 'error');
-            resetCallState();
-        }
-    };
-
-    // ============================================================
-    // JOIN MEETING BY ID
-    // ============================================================
-    async function joinMeetingById(meetingId) {
-        if (callInProgress) { toast('Already on a call'); return; }
-
-        currentMeetingId = meetingId;
-        const room = roomFromMeetingId(currentMeetingId);
-        isGroupCall = true;
-        groupParticipants = [];
-        callType = 'video';
-        callInProgress = true;
-        callDirection = 'in';
-        isHost = false;
-        hostUid = null;
-        removedFromCall = false;
-        currentCallRoom = room;
-        chatPartner = null;
-
-        showCallUI('active', 'Conference', avatarSrc({ display_name: 'Group' }), 'video');
-        renderGroupTiles();
-
-        try {
-            await joinLiveKitRoom(room, 'video', true);
-            startTimer();
-            toast('Joined meeting ' + currentMeetingId);
-        } catch (e) {
-            toast('Could not join: ' + e.message, 'error');
-            resetCallState();
-        }
     }
 
-    // ============================================================
-    // START GROUP CALL
-    // ============================================================
-    async function startGroupCall(participants) {
-        if (callInProgress) { toast('Already on a call'); return; }
+    const partner = chatPartner ? allUsers[chatPartner] : null;
+    showCallUI('active',
+        isGroupCall ? 'Conference' : (partner?.display_name || nameOf(chatPartner)),
+        isGroupCall ? avatarSrc({ display_name: 'Group' }) : avatarSrc(partner),
+        type);
 
-        isGroupCall = true;
-        groupParticipants = participants.filter(uid => !isSelf(uid));
-        callType = 'video';
-        callInProgress = true;
-        callDirection = 'out';
-        isHost = true;
-        hostUid = CU.id;
-        removedFromCall = false;
-        currentMeetingId = generateMeetingId();
-        const room = roomFromMeetingId(currentMeetingId);
-        currentCallRoom = room;
+    if (isGroupCall) renderGroupTiles();
+    await enableLocalMedia(type);
+    absorbExistingParticipants();
 
-        showCallUI('active', 'Conference', avatarSrc({ display_name: 'Group' }), 'video');
-        renderMeetingIdUI();
-        renderGroupTiles();
+    if (isGroupCall || callDirection === 'in') startTimer();
 
-        try {
-            for (const uid of groupParticipants) {
-                await cfApi('/notifications', 'POST', {
-                    to_uid: uid,
-                    from_name: UP.display_name,
-                    text: JSON.stringify({
-                        type: 'call_invite',
-                        from_uid: CU.id,
-                        from_name: UP.display_name,
-                        action: 'invite',
-                        call_type: 'video',
-                        room: room,
-                        is_group: true,
-                        host_uid: CU.id
-                    })
-                });
-            }
-            await joinLiveKitRoom(room, 'video', true);
-            startTimer();
-            toast(groupParticipants.length ?
-                `Conference started with ${groupParticipants.length} ${groupParticipants.length===1?'person':'people'}` :
-                `Conference started · ID ${currentMeetingId}`);
-        } catch (e) {
-            toast('Meeting failed: ' + e.message, 'error');
-            resetCallState();
-        }
+    if (callDirection === 'in' && !isGroupCall) {
+        aloneTimer = setTimeout(() => {
+            if (callInProgress && remoteIds().length === 0) { toast('The caller already left', 'info'); endCall(true); }
+        }, 10000);
     }
+    updateParticipantCount();
+    updateParticipantsPanel();
+}
 
-    // ============================================================
-    // ADD MEMBERS TO CALL
-    // ============================================================
-    window.openAddMembers = function() {
-        if (!callInProgress) { toast('No active meeting'); return; }
-        openContactsModal('add');
-        // Override for adding members
-        document.getElementById('contactsTitle').textContent = 'Add People';
-        document.getElementById('contactsSub').textContent = 'Invite more people to the meeting';
-        document.getElementById('contactsConfirmBtn').textContent = 'Add Selected';
-        contactsMode = 'add';
-        contactsSelected = new Set();
-        contactsExclude = new Set([CU.id, ...(isGroupCall ? groupParticipants : (chatPartner ? [chatPartner] : []))].filter(
-        Boolean));
-        renderContactsList('');
-    };
+// People who were in the room before I joined
+function absorbExistingParticipants() {
+    if (!lkRoom) return;
+    lkRoom.remoteParticipants.forEach(p => {
+        p.trackPublications.forEach(pub => {
+            if (pub.isSubscribed && pub.track) handleTrackSubscribed(pub.track, pub, p);
+        });
+    });
+    if (remoteIds().length) onFirstRemoteConnected();
+    updateRemoteStates();
+}
 
-    async function addMembersToCall(selected) {
-        if (!callInProgress) { toast('No active meeting'); return; }
+function bindRoomEvents(r, LK) {
+    const E = LK.RoomEvent;
+    const live = () => lkRoom === r;
 
-        if (!isGroupCall) {
-            isGroupCall = true;
-            groupParticipants = chatPartner && !isSelf(chatPartner) ? [chatPartner] : [];
-            document.getElementById('groupTiles').style.display = 'grid';
-            document.getElementById('stageHero').style.display = 'none';
+    r.on(E.ParticipantConnected, p => {
+        if (!live() || isSelf(p.identity)) return;
+        onFirstRemoteConnected();
+        if (isHost) {
+            sendData({ type: 'host_info', host_uid: CU.id, hands: Array.from(raisedHands) }, p.identity);
+        }
+        if (isGroupCall) {
+            toast(`${nameOf(p.identity)} joined`, 'info');
             renderGroupTiles();
-            updateCallTypePill();
-            if (localCamTrack) attachGroupVideo(CU.id, localCamTrack);
         }
-
-        let invited = 0;
-        for (const uid of selected) {
-            if (isSelf(uid) || groupParticipants.includes(uid)) continue;
-            await cfApi('/notifications', 'POST', {
-                to_uid: uid,
-                from_name: UP.display_name,
-                text: JSON.stringify({
-                    type: 'call_invite',
-                    from_uid: CU.id,
-                    from_name: UP.display_name,
-                    action: 'invite',
-                    call_type: 'video',
-                    room: currentCallRoom,
-                    is_group: true,
-                    host_uid: hostUid
-                })
-            });
-            invited++;
-        }
-        toast(`Invited ${invited} ${invited===1?'person':'people'}`);
-    }
-
-    // ============================================================
-    // LIVEKIT JOIN
-    // ============================================================
-    async function joinLiveKitRoom(room, type, isGroup) {
-        const LivekitClient = window.LivekitClient;
-        if (!LivekitClient) throw new Error('LiveKit library not loaded');
-
-        const token = await getLiveKitToken(room, CU.id);
-        lkRoom = new LivekitClient.Room({ adaptiveStream: true, dynacast: true });
-
-        lkRoom.on(LivekitClient.RoomEvent.ParticipantConnected, p => {
-            if (!isSelf(p.identity)) {
-                if (isGroup) addGroupParticipant(p);
-                setCallStatus('Connected ●');
-                updateParticipantsPanel();
-            }
-        });
-
-        lkRoom.on(LivekitClient.RoomEvent.ParticipantDisconnected, p => {
-            if (!isSelf(p.identity)) {
-                if (isGroup) removeGroupParticipant(p);
-                toast(`${p.name||'Someone'} left`);
-                updateParticipantsPanel();
-            }
-        });
-
-        lkRoom.on(LivekitClient.RoomEvent.TrackSubscribed, (track, pub, participant) => {
-            if (isSelf(participant.identity)) return;
-            if (track.kind === 'video') {
-                if (isGroup) {
-                    groupVideoTracks[participant.identity] = track;
-                    if (!attachGroupVideo(participant.identity, track)) renderGroupTiles();
-                } else {
-                    track.attach(document.getElementById('remoteVideo'));
-                    document.getElementById('callVideoWrap').style.display = 'block';
-                    document.getElementById('stageHero').style.display = 'none';
-                }
-            } else if (track.kind === 'audio') {
-                if (isGroup) {
-                    groupAudioTracks[participant.identity] = track;
-                    if (!attachGroupAudio(participant.identity, track)) renderGroupTiles();
-                } else {
-                    track.attach(document.getElementById('remoteAudio'));
-                }
-            }
-            updateParticipantsPanel();
-        });
-
-        lkRoom.on(LivekitClient.RoomEvent.TrackUnsubscribed, (track, pub, participant) => {
-            track.detach();
-            if (participant && !isSelf(participant.identity)) {
-                if (track.kind === 'video' && groupVideoTracks[participant.identity] === track) {
-                    delete groupVideoTracks[participant.identity];
-                    document.getElementById(groupTileId(participant.identity))?.classList.remove('has-video');
-                }
-                if (track.kind === 'audio' && groupAudioTracks[participant.identity] === track) {
-                    delete groupAudioTracks[participant.identity];
-                }
-            }
-            updateParticipantsPanel();
-        });
-
-        lkRoom.on(LivekitClient.RoomEvent.Disconnected, () => {
-            if (!removedFromCall) endCall(true);
-        });
-
-        lkRoom.on(LivekitClient.RoomEvent.DataReceived, (payload, participant) => {
-            try {
-                const msg = JSON.parse(new TextDecoder().decode(payload));
-                if (msg && msg.type === 'chat' && !isSelf(msg.from_uid)) {
-                    addChatMessage(msg, false);
-                }
-            } catch (e) {}
-        });
-
-        lkRoom.on(LivekitClient.RoomEvent.AudioLevelsUpdate, (levels) => {
-            if (!levels) return;
-            document.querySelectorAll('.group-tile').forEach(t => t.classList.remove('speaking'));
-            for (const [identity, level] of levels) {
-                if (identity === lkRoom.localParticipant.identity) continue;
-                if (level > 0.3) {
-                    const el = document.getElementById(groupTileId(identity));
-                    if (el) el.classList.add('speaking');
-                }
-            }
-        });
-
-        await lkRoom.connect(LIVEKIT_URL, token);
-
-        if (isGroup && lkRoom.remoteParticipants) {
-            lkRoom.remoteParticipants.forEach(p => {
-                if (!isSelf(p.identity) && !groupParticipants.includes(p.identity)) {
-                    groupParticipants.push(p.identity);
-                }
-            });
-            renderGroupTiles();
-            updateParticipantCount();
-        }
-
-        await lkRoom.localParticipant.setMicrophoneEnabled(true);
-
-        if (type === 'video') {
-            await lkRoom.localParticipant.setCameraEnabled(true);
-            const camPub = lkRoom.localParticipant.videoTrackPublications?.values().next().value;
-            if (camPub?.track) {
-                localCamTrack = camPub.track;
-                const lv = document.getElementById('localVideo');
-                camPub.track.attach(lv);
-                if (isGroup) attachGroupVideo(CU.id, camPub.track);
-                else {
-                    document.getElementById('callVideoWrap').style.display = 'block';
-                    document.getElementById('stageHero').style.display = 'none';
-                }
-            }
-        }
-
-        showCallUI('active', isGroup ? 'Conference' : (allUsers[chatPartner]?.display_name || 'User'),
-            isGroup ? avatarSrc({ display_name: 'Group' }) : avatarSrc(allUsers[chatPartner]), type);
-        startTimer();
         updateParticipantCount();
         updateParticipantsPanel();
-    }
+    });
 
-    // ============================================================
-    // GROUP TILES
-    // ============================================================
-    function addGroupParticipant(p) {
-        if (!groupParticipants.includes(p.identity) && !isSelf(p.identity)) {
-            groupParticipants.push(p.identity);
-            renderGroupTiles();
-            updateParticipantCount();
-        }
-    }
-
-    function removeGroupParticipant(p) {
-        groupParticipants = groupParticipants.filter(id => id !== p.identity);
+    r.on(E.ParticipantDisconnected, p => {
+        if (!live() || isSelf(p.identity)) return;
         delete groupVideoTracks[p.identity];
         delete groupAudioTracks[p.identity];
-        renderGroupTiles();
-        updateParticipantCount();
-    }
+        raisedHands.delete(p.identity);
+        if (pinnedParticipant === p.identity) pinnedParticipant = null;
+        if (screenTrackOwner === p.identity) hideScreenShare();
 
-    function attachGroupVideo(uid, track) {
-        const el = document.getElementById(groupVideoId(uid));
-        const tile = document.getElementById(groupTileId(uid));
-        if (!el || !tile) return false;
-        track.attach(el);
-        tile.classList.add('has-video');
-        return true;
-    }
-
-    function attachGroupAudio(uid, track) {
-        const el = document.getElementById(groupAudioId(uid));
-        if (!el) return false;
-        track.attach(el);
-        return true;
-    }
-
-    function renderGroupTiles() {
-        const wrap = document.getElementById('groupTiles');
-        if (!wrap) return;
-
-        const all = [CU.id, ...groupParticipants.filter(id => !isSelf(id))];
-        wrap.className = 'group-tiles count-' + all.length;
-
-        wrap.innerHTML = all.map(uid => {
-            const isMe = isSelf(uid);
-            const user = allUsers[uid];
-            const hasHand = raisedHands.has(uid);
-            const isPinned = pinnedParticipant === uid;
-            const tileIsHost = hostUid && uid === hostUid;
-
-            return `
-                <div class="group-tile ${isPinned ? 'pinned' : ''} ${hasHand ? 'raised-hand' : ''}"
-                     id="${groupTileId(uid)}"
-                     onclick="${isMe ? '' : `pinParticipant('${uid}')`}">
-                    <video id="${groupVideoId(uid)}" autoplay playsinline ${isMe ? 'muted' : ''}></video>
-                    <audio id="${groupAudioId(uid)}" autoplay ${isMe ? 'muted' : ''}></audio>
-                    <div class="g-avatar"><img src="${avatarSrc(user||{display_name:isMe?'You':uid})}"></div>
-                    <span class="g-name"><span class="hand-icon">✋</span>${escapeHTML(isMe ? 'You' : (user?.display_name||uid).split(' ')[0]||uid)}</span>
-                    <span class="g-mic-off"><i class="fa-solid fa-microphone-slash"></i></span>
-                </div>
-            `;
-        }).join('');
-
-        if (localCamTrack) attachGroupVideo(CU.id, localCamTrack);
-        Object.keys(groupVideoTracks).forEach(uid => attachGroupVideo(uid, groupVideoTracks[uid]));
-        Object.keys(groupAudioTracks).forEach(uid => attachGroupAudio(uid, groupAudioTracks[uid]));
-        updateGroupMicStatus();
-        updateParticipantsPanel();
-    }
-
-    function updateGroupMicStatus() {
-        const muted = document.getElementById('ctrlMic').classList.contains('active');
-        document.getElementById(groupTileId(CU.id))?.classList.toggle('mic-muted', muted);
-    }
-
-    window.pinParticipant = function(uid) {
-        if (isSelf(uid)) { pinnedParticipant = null; return; }
-        pinnedParticipant = pinnedParticipant === uid ? null : uid;
-        renderGroupTiles();
-    };
-
-    // ============================================================
-    // UI CONTROLS
-    // ============================================================
-    function showCallUI(state, name, avatar, type) {
-        callState = state;
-        document.getElementById('stageOverlay').classList.add('show');
-
-        updateCallTypePill();
-        renderMeetingIdUI();
-
-        document.getElementById('callName').textContent = name || '—';
-        document.getElementById('soloName').textContent = name || '—';
-        document.getElementById('callAvatar').src = avatar || '';
-        document.getElementById('stageHero').style.display = 'flex';
-        document.getElementById('callVideoWrap').style.display = 'none';
-        document.getElementById('groupTiles').style.display = 'none';
-
-        const ringBtns = document.getElementById('ringButtons');
-        const acceptBtn = document.getElementById('acceptBtn');
-
-        if (state === 'ringing-out') {
-            document.getElementById('callStatusText').textContent = callType === 'video' ? 'Starting video…' : 'Starting voice…';
-            document.getElementById('callSub').innerHTML = `<span class="ring-badge">Ringing…</span>`;
-            ringBtns.style.display = 'flex';
-            acceptBtn.style.display = 'none';
-            document.getElementById('stageDockWrap').classList.remove('show');
-            document.getElementById('quickSendBar').classList.remove('show');
-        } else if (state === 'ringing-in') {
-            document.getElementById('callStatusText').textContent = (callType === 'video' ? '📹' : '📞') + ' Incoming call';
-            document.getElementById('callSub').innerHTML = `<span class="ring-badge">Incoming ${callType==='video'?'video':'voice'} call</span>`;
-            ringBtns.style.display = 'flex';
-            acceptBtn.style.display = 'grid';
-            document.getElementById('stageDockWrap').classList.remove('show');
-            document.getElementById('quickSendBar').classList.remove('show');
-            startRingtone();
-        } else if (state === 'active') {
-            document.getElementById('callStatusText').textContent = 'Connected ●';
-            document.getElementById('callSub').innerHTML = '';
-            ringBtns.style.display = 'none';
-            document.getElementById('stageDockWrap').classList.add('show');
-            document.getElementById('stageDockWrap').classList.add('with-quickbar');
-            document.getElementById('quickSendBar').classList.add('show');
-
-            document.getElementById('hostChip').classList.toggle('show', isHost);
-            document.getElementById('endAllWrap').style.display = isHost ? 'flex' : 'none';
-            document.getElementById('hostDivider').style.display = isHost ? 'block' : 'none';
-
-            document.getElementById('ctrlMic').classList.remove('active');
-            document.getElementById('ctrlCam').classList.remove('active');
-            document.getElementById('ctrlHand').classList.remove('on');
-
-            if (isGroupCall) {
-                document.getElementById('groupTiles').style.display = 'grid';
-                document.getElementById('stageHero').style.display = 'none';
-            }
-        }
-    }
-
-    function setCallStatus(text) {
-        document.getElementById('callStatusText').textContent = text;
-    }
-
-    function updateCallTypePill() {
-        const pill = document.getElementById('callTypePill');
-        pill.classList.toggle('conf', isGroupCall);
-        pill.textContent = isGroupCall ? '👥 Conference' : (callType === 'video' ? '📹 1:1 Video' : '📞 1:1 Voice');
-    }
-
-    function updateParticipantCount() {
-        const all = [CU.id, ...groupParticipants.filter(id => !isSelf(id))];
-        document.getElementById('participantCount').textContent = `👥 ${all.length}`;
-    }
-
-    function startTimer() {
-        callSecs = 0;
-        if (callTimer) clearInterval(callTimer);
-        const timerEl = document.getElementById('callTimer');
-        timerEl.classList.add('show');
-        callTimer = setInterval(() => {
-            callSecs++;
-            const m = String(Math.floor(callSecs / 60)).padStart(2, '0');
-            const s = String(callSecs % 60).padStart(2, '0');
-            timerEl.textContent = `${m}:${s}`;
-        }, 1000);
-    }
-
-    // ============================================================
-    // MEETING ID
-    // ============================================================
-    function renderMeetingIdUI() {
-        const pill = document.getElementById('meetingIdPill');
-        if (isGroupCall && currentMeetingId) {
-            pill.classList.add('show');
-            document.getElementById('meetingIdText').textContent = currentMeetingId;
-            document.getElementById('meetingIdPopoverCode').textContent = currentMeetingId;
+        if (isGroupCall) {
+            toast(`${nameOf(p.identity)} left`, 'info');
+            if (p.identity === hostUid) electNewHost();
+            renderGroupTiles();
         } else {
-            pill.classList.remove('show');
+            setTimeout(() => {
+                if (callInProgress && lkRoom === r && remoteIds().length === 0) endCall(true);
+            }, 600);
         }
-    }
-
-    window.toggleMeetingIdPopover = function() {
-        document.getElementById('meetingIdPopover').classList.toggle('show');
-    };
-
-    window.copyMeetingId = async function() {
-        if (!currentMeetingId) return;
-        try {
-            await navigator.clipboard.writeText(currentMeetingId.replace(/\s+/g, ''));
-            toast('Meeting ID copied');
-        } catch (e) {
-            toast('Meeting ID: ' + currentMeetingId);
-        }
-        document.getElementById('meetingIdPopover').classList.remove('show');
-    };
-
-    document.addEventListener('click', function(e) {
-        const pop = document.getElementById('meetingIdPopover');
-        const pill = document.getElementById('meetingIdPill');
-        if (pop && pop.classList.contains('show') && !pop.contains(e.target) && e.target !== pill && !pill.contains(e
-            .target)) {
-            pop.classList.remove('show');
-        }
+        updateParticipantCount();
+        updateParticipantsPanel();
     });
 
-    // ============================================================
-    // RINGTONE
-    // ============================================================
-    function startRingtone() {
-        if (ringtoneActive) return;
-        ringtoneActive = true;
+    r.on(E.TrackSubscribed, (track, pub, participant) => {
+        if (!live() || isSelf(participant.identity)) return;
+        handleTrackSubscribed(track, pub, participant);
+    });
+
+    r.on(E.TrackUnsubscribed, (track, pub, participant) => {
+        if (!live() || !participant || isSelf(participant.identity)) return;
+        const id = participant.identity;
+        const isScreen = pub && (pub.source === LK.Track.Source.ScreenShare || pub.source === LK.Track.Source.ScreenShareAudio);
+        if (isScreen) {
+            if (track.kind === 'video' && screenTrackOwner === id) hideScreenShare();
+            track.detach().forEach(el => el.remove());
+        } else {
+            if (track.kind === 'video' && groupVideoTracks[id] === track) delete groupVideoTracks[id];
+            if (track.kind === 'audio' && groupAudioTracks[id] === track) delete groupAudioTracks[id];
+            try { track.detach(); } catch (e) {}
+        }
+        updateRemoteStates();
+        updateParticipantsPanel();
+    });
+
+    r.on(E.TrackMuted, () => { if (live()) { updateRemoteStates(); updateParticipantsPanel(); } });
+    r.on(E.TrackUnmuted, () => { if (live()) { updateRemoteStates(); updateParticipantsPanel(); } });
+
+    r.on(E.LocalTrackUnpublished, pub => {
+        if (live() && pub.source === LK.Track.Source.ScreenShare) stopShareUI();
+    });
+
+    r.on(E.ActiveSpeakersChanged, speakers => {
+        if (!live()) return;
+        document.querySelectorAll('.group-tile').forEach(t => t.classList.remove('speaking'));
+        (speakers || []).forEach(s => $(groupTileId(s.identity))?.classList.add('speaking'));
+    });
+
+    r.on(E.Reconnecting, () => { if (live()) { setCallStatus('Reconnecting…'); toast('Connection lost — reconnecting…', 'info'); } });
+    r.on(E.Reconnected, () => { if (live()) { setCallStatus('Connected ●'); toast('Reconnected'); } });
+
+    r.on(E.Disconnected, () => {
+        if (!live()) return;
+        if (!removedFromCall) endCall(true);
+    });
+
+    r.on(E.DataReceived, (payload, participant) => {
+        if (!live()) return;
+        let msg;
+        try { msg = JSON.parse(new TextDecoder().decode(payload)); } catch (e) { return; }
+        if (!msg || !msg.type) return;
+        const from = participant?.identity || msg.from_uid;
+        if (isSelf(from)) return;
+        handleDataMessage(msg, from);
+    });
+}
+
+function onFirstRemoteConnected() {
+    stopRingtone();
+    if (outRingTimer) { clearTimeout(outRingTimer); outRingTimer = null; }
+    if (aloneTimer) { clearTimeout(aloneTimer); aloneTimer = null; }
+    setCallStatus('Connected ●');
+    if (!isGroupCall) $('callSub').innerHTML = '';
+    if (!callTimer) startTimer();
+}
+
+function handleTrackSubscribed(track, pub, participant) {
+    const LK = window.LivekitClient;
+    const id = participant.identity;
+    const src = pub?.source;
+
+    if (src === LK.Track.Source.ScreenShare) {
+        if (track.kind === 'video') showScreenShare(id, track);
+        return;
+    }
+    if (src === LK.Track.Source.ScreenShareAudio) {
+        const el = track.attach();
+        el.style.display = 'none';
+        document.body.appendChild(el);
+        extraAudioEls.push(el);
+        return;
+    }
+
+    if (track.kind === 'video') {
+        groupVideoTracks[id] = track;
+        if (isGroupCall) { if (!attachGroupVideo(id, track)) renderGroupTiles(); }
+        else track.attach($('remoteVideo'));
+    } else if (track.kind === 'audio') {
+        groupAudioTracks[id] = track;
+        if (isGroupCall) { if (!attachGroupAudio(id, track)) renderGroupTiles(); }
+        else track.attach($('remoteAudio'));
+    }
+    updateRemoteStates();
+    updateParticipantsPanel();
+}
+
+async function enableLocalMedia(type) {
+    const lp = lkRoom.localParticipant;
+    try {
+        await lp.setMicrophoneEnabled(true);
+        setMicUI(true);
+    } catch (e) {
+        setMicUI(false);
+        toast('Microphone unavailable — check browser permission', 'error');
+    }
+
+    if (type === 'video') {
         try {
-            ringtoneCtx = ringtoneCtx || new(window.AudioContext || window.webkitAudioContext)();
-            if (ringtoneCtx.state === 'suspended') ringtoneCtx.resume().catch(() => {});
-        } catch (e) { ringtoneActive = false; return; }
-
-        const burst = () => {
-            if (!ringtoneActive || !ringtoneCtx) return;
-            const now = ringtoneCtx.currentTime;
-            [0, 0.4].forEach(offset => {
-                const o1 = ringtoneCtx.createOscillator();
-                const o2 = ringtoneCtx.createOscillator();
-                const g = ringtoneCtx.createGain();
-                o1.type = 'sine';
-                o2.type = 'sine';
-                o1.frequency.value = 480;
-                o2.frequency.value = 620;
-                g.gain.setValueAtTime(0, now + offset);
-                g.gain.linearRampToValueAtTime(0.18, now + offset + 0.05);
-                g.gain.setValueAtTime(0.18, now + offset + 0.32);
-                g.gain.linearRampToValueAtTime(0, now + offset + 0.38);
-                o1.connect(g);
-                o2.connect(g);
-                g.connect(ringtoneCtx.destination);
-                o1.start(now + offset);
-                o2.start(now + offset);
-                o1.stop(now + offset + 0.4);
-                o2.stop(now + offset + 0.4);
-            });
-        };
-        burst();
-        ringtoneTimer = setInterval(burst, 2000);
+            const pub = await lp.setCameraEnabled(true);
+            localCamTrack = pub?.track || null;
+            setCamUI(true);
+            if (localCamTrack) localCamTrack.attach($('localVideo'));
+        } catch (e) {
+            setCamUI(false);
+            toast('Camera unavailable — joined with audio only', 'error');
+        }
+    } else {
+        setCamUI(false);
     }
+    afterLocalCamChange();
+}
 
-    function stopRingtone() {
-        ringtoneActive = false;
-        if (ringtoneTimer) { clearInterval(ringtoneTimer);
-            ringtoneTimer = null; }
+function setMicUI(on) {
+    const btn = $('ctrlMic');
+    btn.classList.toggle('active', !on);
+    btn.innerHTML = on ? '<i class="fa-solid fa-microphone"></i>' : '<i class="fa-solid fa-microphone-slash"></i>';
+}
+function setCamUI(on) {
+    const btn = $('ctrlCam');
+    btn.classList.toggle('active', !on);
+    btn.innerHTML = on ? '<i class="fa-solid fa-video"></i>' : '<i class="fa-solid fa-video-slash"></i>';
+}
+const micOn = () => !$('ctrlMic').classList.contains('active');
+const camOn = () => !$('ctrlCam').classList.contains('active');
+
+function afterLocalCamChange() {
+    if (isGroupCall) {
+        if (localCamTrack && camOn()) attachGroupVideo(CU.id, localCamTrack);
+        updateTileStates();
+    } else {
+        update1to1Layout();
     }
+}
 
-    // ============================================================
-    // ACCEPT / CANCEL / DECLINE
-    // ============================================================
-    window.acceptCall = async function() {
-        stopRingtone();
-        if (!incomingCallData) return;
+// ============================================================
+// LAYOUT: 1:1 and GROUP
+// ============================================================
+function update1to1Layout() {
+    if (isGroupCall || callState !== 'active') return;
+    const p = lkRoom ? Array.from(lkRoom.remoteParticipants.values())[0] : null;
+    const remoteHasVideo = !!(p && p.isCameraEnabled && groupVideoTracks[p.identity]);
+    const showWrap = remoteHasVideo || (camOn() && !!localCamTrack);
+    const wrap = $('callVideoWrap');
+    wrap.style.display = showWrap ? 'block' : 'none';
+    wrap.style.background = remoteHasVideo ? '#000' : 'transparent';
+    $('remoteVideo').style.visibility = remoteHasVideo ? 'visible' : 'hidden';
+    $('soloName').style.display = remoteHasVideo ? 'block' : 'none';
+    $('stageHero').style.display = remoteHasVideo ? 'none' : 'flex';
+    $('localVideo').parentElement.style.display = (camOn() && localCamTrack) ? 'block' : 'none';
+}
 
+function attachGroupVideo(uid, track) {
+    const el = $(groupVideoId(uid));
+    const tile = $(groupTileId(uid));
+    if (!el || !tile) return false;
+    track.attach(el);
+    tile.classList.add('has-video');
+    return true;
+}
+
+function attachGroupAudio(uid, track) {
+    const el = $(groupAudioId(uid));
+    if (!el) return false;
+    track.attach(el);
+    return true;
+}
+
+function renderGroupTiles() {
+    const wrap = $('groupTiles');
+    if (!wrap) return;
+
+    // release old elements before rebuilding
+    Object.values(groupVideoTracks).forEach(t => { try { t.detach(); } catch (e) {} });
+    Object.values(groupAudioTracks).forEach(t => { try { t.detach(); } catch (e) {} });
+    if (localCamTrack) { try { localCamTrack.detach(); localCamTrack.attach($('localVideo')); } catch (e) {} }
+
+    const ids = allIds();
+    wrap.className = 'group-tiles count-' + ids.length;
+
+    wrap.innerHTML = ids.map(uid => {
+        const isMe = isSelf(uid);
+        const user = allUsers[uid];
+        const first = (isMe ? 'You' : ((user?.display_name || uid).split(' ')[0] || uid));
+        return `
+            <div class="group-tile ${isMe ? 'me' : ''}" id="${groupTileId(uid)}" data-uid="${escapeHTML(uid)}">
+                <video id="${groupVideoId(uid)}" autoplay playsinline ${isMe ? 'muted' : ''}></video>
+                ${isMe ? '' : `<audio id="${groupAudioId(uid)}" autoplay></audio>`}
+                <div class="g-avatar"><img src="${escapeHTML(avatarSrc(user || { display_name: isMe ? UP.display_name : uid }))}"></div>
+                <span class="g-name"><span class="hand-icon">✋</span>${escapeHTML(first)}${uid === hostUid ? ' 👑' : ''}</span>
+                <span class="g-mic-off"><i class="fa-solid fa-microphone-slash"></i></span>
+            </div>`;
+    }).join('');
+
+    if (localCamTrack && camOn()) attachGroupVideo(CU.id, localCamTrack);
+    Object.keys(groupVideoTracks).forEach(uid => attachGroupVideo(uid, groupVideoTracks[uid]));
+    Object.keys(groupAudioTracks).forEach(uid => attachGroupAudio(uid, groupAudioTracks[uid]));
+    updateTileStates();
+    updateParticipantsPanel();
+}
+
+$('groupTiles').addEventListener('click', function (e) {
+    const t = e.target.closest('.group-tile');
+    if (t) pinParticipant(t.dataset.uid);
+});
+
+// Toggle classes only (no re-render): hands, mutes, camera-off, pin
+function updateTileStates() {
+    if (!isGroupCall) return;
+    allIds().forEach(uid => {
+        const t = $(groupTileId(uid));
+        if (!t) return;
+        const p = getP(uid);
+        const isMe = isSelf(uid);
+        const muted = isMe ? !micOn() : !!(p && !p.isMicrophoneEnabled);
+        const hasVid = isMe ? (camOn() && !!localCamTrack) : !!(p && p.isCameraEnabled && groupVideoTracks[uid]);
+        t.classList.toggle('mic-muted', muted);
+        t.classList.toggle('has-video', hasVid);
+        t.classList.toggle('raised-hand', raisedHands.has(uid));
+        t.classList.toggle('pinned', pinnedParticipant === uid);
+    });
+}
+
+function updateRemoteStates() {
+    if (isGroupCall) updateTileStates();
+    else update1to1Layout();
+}
+
+window.pinParticipant = function (uid) {
+    pinnedParticipant = pinnedParticipant === uid ? null : uid;
+    updateTileStates();
+};
+
+// ============================================================
+// SCREEN SHARE
+// ============================================================
+function ensureScreenView() {
+    let v = $('screenShareView');
+    if (v) return v;
+    v = document.createElement('div');
+    v.id = 'screenShareView';
+    v.className = 'screen-share-view';
+    v.innerHTML = '<video id="screenShareVideo" autoplay playsinline></video><div class="ss-label" id="screenShareLabel"></div>';
+    $('stageRoot').appendChild(v);
+    return v;
+}
+
+function showScreenShare(uid, track) {
+    const v = ensureScreenView();
+    screenTrackOwner = uid;
+    track.attach($('screenShareVideo'));
+    $('screenShareLabel').textContent = `🖥 ${nameOf(uid)} is presenting`;
+    v.style.display = 'flex';
+}
+
+function hideScreenShare() {
+    screenTrackOwner = null;
+    const v = $('screenShareView');
+    if (v) {
+        v.style.display = 'none';
+        const vid = $('screenShareVideo');
+        if (vid) vid.srcObject = null;
+    }
+}
+
+function stopShareUI() {
+    isScreenSharing = false;
+    $('ctrlShare').classList.remove('sharing');
+}
+
+window.toggleScreenShare = async function () {
+    if (!lkRoom) return;
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) {
+        toast('Screen sharing is not supported on this device', 'error');
+        return;
+    }
+    const btn = $('ctrlShare');
+    try {
+        if (!isScreenSharing) {
+            const pub = await lkRoom.localParticipant.setScreenShareEnabled(true, { audio: true });
+            isScreenSharing = true;
+            btn.classList.add('sharing');
+            pub?.track?.mediaStreamTrack?.addEventListener('ended', stopShareUI);
+            toast('You are sharing your screen');
+        } else {
+            await lkRoom.localParticipant.setScreenShareEnabled(false);
+            stopShareUI();
+        }
+    } catch (e) {
+        stopShareUI();
+        if (e && e.name !== 'NotAllowedError') toast('Could not share screen', 'error');
+    }
+};
+
+// ============================================================
+// UI: SHOW CALL
+// ============================================================
+function showCallUI(state, name, avatar, type) {
+    callState = state;
+    $('stageOverlay').classList.add('show');
+    document.body.classList.add('in-call');
+
+    updateCallTypePill();
+    renderMeetingIdUI();
+
+    $('callName').textContent = name || '—';
+    $('soloName').textContent = name || '—';
+    $('callAvatar').src = avatar || '';
+    $('stageHero').style.display = 'flex';
+    $('callVideoWrap').style.display = 'none';
+    $('groupTiles').style.display = 'none';
+
+    const ringBtns = $('ringButtons');
+    const acceptBtn = $('acceptBtn');
+
+    if (state === 'ringing-out') {
+        $('callStatusText').textContent = callType === 'video' ? 'Starting video…' : 'Starting voice…';
+        $('callSub').innerHTML = `<span class="ring-badge">Calling…</span>`;
+        ringBtns.style.display = 'flex';
+        acceptBtn.style.display = 'none';
+        $('stageDockWrap').classList.remove('show');
+        $('quickSendBar').classList.remove('show');
+    } else if (state === 'ringing-in') {
+        $('callStatusText').textContent = (callType === 'video' ? '📹' : '📞') + ' Incoming call';
+        $('callSub').innerHTML = `<span class="ring-badge">Incoming ${isGroupCall ? 'conference' : (callType === 'video' ? 'video' : 'voice')} call</span>`;
+        ringBtns.style.display = 'flex';
+        acceptBtn.style.display = 'grid';
+        $('stageDockWrap').classList.remove('show');
+        $('quickSendBar').classList.remove('show');
+    } else if (state === 'active') {
+        $('callStatusText').textContent = 'Connected ●';
+        $('callSub').innerHTML = '';
+        ringBtns.style.display = 'none';
+        $('stageDockWrap').classList.add('show', 'with-quickbar');
+        $('quickSendBar').classList.add('show');
+        $('ctrlHand').classList.toggle('on', raisedHands.has(CU.id));
+        refreshHostUI(false);
+
+        if (isGroupCall) {
+            $('groupTiles').style.display = 'grid';
+            $('stageHero').style.display = 'none';
+        }
+        requestWakeLock();
+    }
+}
+
+function setCallStatus(text) { $('callStatusText').textContent = text; }
+
+function updateCallTypePill() {
+    const pill = $('callTypePill');
+    pill.classList.toggle('conf', isGroupCall);
+    pill.textContent = isGroupCall ? '👥 Conference' : (callType === 'video' ? '📹 1:1 Video' : '📞 1:1 Voice');
+}
+
+function updateParticipantCount() {
+    const n = callInProgress ? allIds().length : 1;
+    $('participantCount').textContent = `👥 ${n}`;
+    $('participantCount').classList.add('show');
+}
+
+function startTimer() {
+    if (callTimer) return;
+    callSecs = 0;
+    const timerEl = $('callTimer');
+    timerEl.textContent = '00:00';
+    timerEl.classList.add('show');
+    callTimer = setInterval(() => {
+        callSecs++;
+        const h = Math.floor(callSecs / 3600);
+        const m = String(Math.floor((callSecs % 3600) / 60)).padStart(2, '0');
+        const s = String(callSecs % 60).padStart(2, '0');
+        timerEl.textContent = h ? `${h}:${m}:${s}` : `${m}:${s}`;
+    }, 1000);
+}
+
+async function requestWakeLock() {
+    try {
+        if ('wakeLock' in navigator && !wakeLock) {
+            wakeLock = await navigator.wakeLock.request('screen');
+            wakeLock.addEventListener('release', () => { wakeLock = null; });
+        }
+    } catch (e) {}
+}
+function releaseWakeLock() {
+    try { wakeLock?.release(); } catch (e) {}
+    wakeLock = null;
+}
+
+// ============================================================
+// MEETING ID / INVITE LINK
+// ============================================================
+function renderMeetingIdUI() {
+    const pill = $('meetingIdPill');
+    if (isGroupCall && currentMeetingId) {
+        pill.classList.add('show');
+        $('meetingIdText').textContent = currentMeetingId;
+        $('meetingIdPopoverCode').textContent = currentMeetingId;
+    } else {
+        pill.classList.remove('show');
+    }
+}
+
+window.toggleMeetingIdPopover = function () { $('meetingIdPopover').classList.toggle('show'); };
+
+window.copyMeetingId = async function () {
+    if (!currentMeetingId) return;
+    try {
+        await navigator.clipboard.writeText(meetingIdDigits(currentMeetingId));
+        toast('Meeting ID copied');
+    } catch (e) { toast('Meeting ID: ' + currentMeetingId, 'info'); }
+    $('meetingIdPopover').classList.remove('show');
+};
+
+window.copyMeetingLink = async function () {
+    if (!currentMeetingId) return;
+    const link = location.origin + location.pathname + '?join=' + meetingIdDigits(currentMeetingId);
+    try {
+        if (navigator.share && /Mobi|Android/i.test(navigator.userAgent)) {
+            await navigator.share({ title: 'Join my Alphagram meeting', text: 'Join my meeting on Alphagram', url: link });
+        } else {
+            await navigator.clipboard.writeText(link);
+            toast('Invite link copied');
+        }
+    } catch (e) { toast(link, 'info'); }
+    $('meetingIdPopover').classList.remove('show');
+};
+
+document.addEventListener('click', function (e) {
+    const pop = $('meetingIdPopover'), pill = $('meetingIdPill');
+    if (pop && pop.classList.contains('show') && !pop.contains(e.target) && !pill.contains(e.target)) {
+        pop.classList.remove('show');
+    }
+});
+
+// ============================================================
+// RINGTONE / RINGBACK
+// ============================================================
+function startRingtone() { startTone('in'); }
+function startRingback() { startTone('out'); }
+
+function startTone(mode) {
+    if (ringtoneActive) return;
+    ringtoneActive = true;
+    try {
+        ringtoneCtx = ringtoneCtx || new (window.AudioContext || window.webkitAudioContext)();
+        if (ringtoneCtx.state === 'suspended') ringtoneCtx.resume().catch(() => {});
+    } catch (e) { ringtoneActive = false; return; }
+
+    const beep = (freqs, start, dur, vol) => {
+        const g = ringtoneCtx.createGain();
+        g.gain.setValueAtTime(0, start);
+        g.gain.linearRampToValueAtTime(vol, start + 0.05);
+        g.gain.setValueAtTime(vol, start + dur - 0.06);
+        g.gain.linearRampToValueAtTime(0, start + dur);
+        g.connect(ringtoneCtx.destination);
+        freqs.forEach(f => {
+            const o = ringtoneCtx.createOscillator();
+            o.type = 'sine';
+            o.frequency.value = f;
+            o.connect(g);
+            o.start(start);
+            o.stop(start + dur + 0.02);
+        });
+    };
+
+    const burst = () => {
+        if (!ringtoneActive || !ringtoneCtx) return;
+        const now = ringtoneCtx.currentTime;
+        if (mode === 'in') { beep([480, 620], now, 0.4, 0.18); beep([480, 620], now + 0.5, 0.4, 0.18); }
+        else beep([425], now, 1.0, 0.08);
+    };
+    burst();
+    ringtoneTimer = setInterval(burst, mode === 'in' ? 2000 : 3000);
+}
+
+function stopRingtone() {
+    ringtoneActive = false;
+    if (ringtoneTimer) { clearInterval(ringtoneTimer); ringtoneTimer = null; }
+}
+
+// ============================================================
+// INCOMING: ACCEPT / DECLINE
+// ============================================================
+function showIncomingCall(data) {
+    if (isSelf(data.from_uid)) return;
+    incomingCallData = data;
+    const name = data.from_name || nameOf(data.from_uid);
+    chatPartner = data.from_uid;
+    isGroupCall = !!data.is_group;
+    callType = data.type || 'voice';
+    callDirection = 'in';
+    isHost = false;
+    hostUid = data.host_uid || data.from_uid;
+
+    showCallUI('ringing-in', name, isGroupCall ? avatarSrc({ display_name: 'Group' }) : avatarSrc(allUsers[data.from_uid]), callType);
+    startRingtone();
+    if (navigator.vibrate) { try { navigator.vibrate([300, 200, 300]); } catch (e) {} }
+
+    if (incomingTimer) clearTimeout(incomingTimer);
+    incomingTimer = setTimeout(() => {
+        if (callState === 'ringing-in' && incomingCallData === data) missIncoming(data, 'Missed call from ' + name);
+    }, INCOMING_RING_MS);
+}
+
+function missIncoming(data, message) {
+    stopRingtone();
+    if (incomingTimer) { clearTimeout(incomingTimer); incomingTimer = null; }
+    if (!data.is_group) logCall(data.from_uid, data.type || 'voice', 0, 'in');
+    if (message) toast(message, 'info');
+    resetCallState();
+}
+
+window.acceptCall = async function () {
+    stopRingtone();
+    if (incomingTimer) { clearTimeout(incomingTimer); incomingTimer = null; }
+    if (!incomingCallData) return;
+
+    const data = incomingCallData;
+    incomingCallData = null;
+
+    chatPartner = data.is_group ? null : data.from_uid;
+    callType = data.type || 'voice';
+    callInProgress = true;
+    isGroupCall = !!data.is_group;
+    callDirection = 'in';
+    isHost = false;
+    hostUid = data.host_uid || data.from_uid;
+    removedFromCall = false;
+    currentCallRoom = data.room;
+    currentMeetingId = isGroupCall ? meetingIdFromRoom(data.room) : null;
+    if (isGroupCall) chatPartner = null;
+
+    try {
+        await joinLiveKitRoom(data.room, isGroupCall ? 'video' : callType);
+        toast('Call connected');
+    } catch (e) {
+        toast('Could not join: ' + e.message, 'error');
+        resetCallState();
+    }
+};
+
+window.cancelCall = function () {
+    stopRingtone();
+    if (callState === 'ringing-in' && incomingCallData) {
         const data = incomingCallData;
         incomingCallData = null;
-
-        chatPartner = data.from_uid;
-        callType = data.type || 'voice';
-        callInProgress = true;
-        isGroupCall = !!data.is_group;
-        callDirection = 'in';
-        isHost = false;
-        hostUid = data.host_uid || data.from_uid;
-        removedFromCall = false;
-        currentMeetingId = isGroupCall ? meetingIdFromRoom(data.room) : null;
-        renderMeetingIdUI();
-
-        try {
-            await joinLiveKitRoom(data.room, isGroupCall ? 'video' : callType, isGroupCall);
-            currentCallRoom = data.room;
-            toast('Call connected');
-        } catch (e) {
-            toast('Could not join: ' + e.message, 'error');
-            resetCallState();
-        }
-    };
-
-    window.cancelCall = function() {
-        stopRingtone();
-        if (callState === 'ringing-in' && incomingCallData) {
-            const data = incomingCallData;
-            incomingCallData = null;
-            if (!isSelf(data.from_uid)) {
-                sendControlMsg(data.from_uid, {
-                    type: 'call_invite',
-                    from_uid: CU.id,
-                    from_name: UP.display_name,
-                    action: 'decline',
-                    room: data.room
-                });
-            }
-            toast('Call declined');
-            resetCallState();
-            return;
-        }
-        endCall();
-    };
-
-    // ============================================================
-    // INCOMING CALL (from notification polling)
-    // ============================================================
-    function showIncomingCall(data) {
-        if (isSelf(data.from_uid)) return;
-        incomingCallData = data;
-        const name = data.from_name || allUsers[data.from_uid]?.display_name || 'Unknown';
-        chatPartner = data.from_uid;
-        isGroupCall = !!data.is_group;
-        callType = data.type || 'voice';
-        isHost = false;
-        hostUid = data.host_uid || data.from_uid;
-        showCallUI('ringing-in', name, avatarSrc(allUsers[data.from_uid]), callType);
-        startRingtone();
-        setTimeout(() => {
-            if (callState === 'ringing-in' && incomingCallData === data) cancelCall();
-        }, 30000);
-    }
-
-    // ============================================================
-    // CONTROLS
-    // ============================================================
-    window.toggleMic = function() {
-        if (!lkRoom) return;
-        const btn = document.getElementById('ctrlMic');
-        const muted = btn.classList.contains('active');
-        lkRoom.localParticipant.setMicrophoneEnabled(muted);
-        btn.classList.toggle('active');
-        btn.innerHTML = muted ? '<i class="fa-solid fa-microphone"></i>' : '<i class="fa-solid fa-microphone-slash"></i>';
-        if (isGroupCall) document.getElementById(groupTileId(CU.id))?.classList.toggle('mic-muted', !muted);
-        updateParticipantsPanel();
-    };
-
-    window.toggleCam = function() {
-        if (!lkRoom) return;
-        const btn = document.getElementById('ctrlCam');
-        const off = btn.classList.contains('active');
-        lkRoom.localParticipant.setCameraEnabled(off);
-        btn.classList.toggle('active');
-        btn.innerHTML = off ? '<i class="fa-solid fa-video"></i>' : '<i class="fa-solid fa-video-slash"></i>';
-        if (!isGroupCall) {
-            document.getElementById('callVideoWrap').style.display = off ? 'block' : 'none';
-            document.getElementById('stageHero').style.display = off ? 'none' : 'flex';
-        } else if (off) {
-            document.getElementById(groupTileId(CU.id))?.classList.add('has-video');
-        } else {
-            document.getElementById(groupTileId(CU.id))?.classList.remove('has-video');
-        }
-        updateParticipantsPanel();
-    };
-
-    window.toggleScreenShare = async function() {
-        if (!lkRoom) return;
-        const btn = document.getElementById('ctrlShare');
-        try {
-            if (!isScreenSharing) {
-                const stream = await navigator.mediaDevices.getDisplayMedia({ video: { cursor: 'always' }, audio: true });
-                screenStream = stream;
-                await lkRoom.localParticipant.publishTrack(stream.getVideoTracks()[0]);
-                isScreenSharing = true;
-                btn.classList.add('sharing');
-                stream.getVideoTracks()[0].onended = () => toggleScreenShare();
-            } else {
-                if (screenStream) { screenStream.getTracks().forEach(t => t.stop());
-                    screenStream = null; }
-                isScreenSharing = false;
-                btn.classList.remove('sharing');
-            }
-        } catch (e) {
-            toast('Screen share failed: ' + e.message, 'error');
-        }
-    };
-
-    window.toggleRaiseHand = function() {
-        const btn = document.getElementById('ctrlHand');
-        if (raisedHands.has(CU.id)) {
-            raisedHands.delete(CU.id);
-            btn.classList.remove('on');
-            toast('Hand lowered');
-        } else {
-            raisedHands.add(CU.id);
-            btn.classList.add('on');
-            toast('Hand raised ✋');
-        }
-        renderGroupTiles();
-        updateParticipantsPanel();
-    };
-
-    // ============================================================
-    // REACTIONS
-    // ============================================================
-    window.toggleReactions = function() {
-        const el = document.getElementById('reactionsPopup');
-        el.classList.toggle('show');
-        setTimeout(() => el.classList.remove('show'), 4000);
-    };
-
-    window.sendReaction = function(emoji) {
-        document.getElementById('reactionsPopup').classList.remove('show');
-        const stage = document.getElementById('callStage');
-        const el = document.createElement('div');
-        el.className = 'reaction-float';
-        el.textContent = emoji;
-        el.style.left = (20 + Math.random() * 60) + '%';
-        stage.appendChild(el);
-        setTimeout(() => el.remove(), 2400);
-
-        const targets = isGroupCall ? groupParticipants.filter(id => !isSelf(id)) : (chatPartner && !isSelf(chatPartner) ?
-            [chatPartner] : []);
-        targets.forEach(uid => {
-            sendControlMsg(uid, {
-                type: 'reaction',
-                from_uid: CU.id,
-                from_name: UP.display_name,
-                emoji,
-                room: currentCallRoom
-            });
+        if (incomingTimer) { clearTimeout(incomingTimer); incomingTimer = null; }
+        sendControlMsg(data.from_uid, {
+            type: 'call_invite', from_uid: CU.id, from_name: UP.display_name,
+            action: 'decline', room: data.room
         });
-    };
-
-    // ============================================================
-    // PANEL (Participants / Chat)
-    // ============================================================
-    window.togglePanel = function(tab) {
-        const panel = document.getElementById('stagePanel');
-        if (participantsPanelOpen && activePanelTab === tab) {
-            closePanel();
-            return;
-        }
-        participantsPanelOpen = true;
-        panel.classList.add('show');
-        switchPanelTab(tab);
-    };
-
-    window.closePanel = function() {
-        participantsPanelOpen = false;
-        document.getElementById('stagePanel').classList.remove('show');
-    };
-
-    window.switchPanelTab = function(tab) {
-        activePanelTab = tab;
-        document.getElementById('tabPeople').classList.toggle('active', tab === 'people');
-        document.getElementById('tabChat').classList.toggle('active', tab === 'chat');
-        document.getElementById('panelPeople').classList.toggle('active', tab === 'people');
-        document.getElementById('panelChat').classList.toggle('active', tab === 'chat');
-        document.getElementById('panelTitle').textContent = tab === 'chat' ? 'Chat' : 'Participants';
-        document.getElementById('panelCount').style.display = tab === 'chat' ? 'none' : 'inline';
-
-        if (tab === 'people') updateParticipantsPanel();
-        if (tab === 'chat') {
-            updateChatBadge();
-            scrollChatToBottom();
-            setTimeout(() => document.getElementById('chatInput').focus(), 50);
-        }
-    };
-
-    // ============================================================
-    // PARTICIPANTS PANEL
-    // ============================================================
-    function updateParticipantsPanel() {
-        const list = document.getElementById('participantsList');
-        const countEl = document.getElementById('panelCount');
-        const all = [CU.id, ...groupParticipants.filter(id => !isSelf(id))];
-        countEl.textContent = all.length;
-        document.getElementById('participantCount').textContent = `👥 ${all.length}`;
-
-        if (!all.length) {
-            list.innerHTML = `<div style="color:#8b93a3;padding:12px;font-size:12px;">No participants</div>`;
-            return;
-        }
-
-        list.innerHTML = all.map(uid => {
-            const isMe = isSelf(uid);
-            const user = allUsers[uid];
-            const name = isMe ? 'You' : (user?.display_name || uid);
-            const hasHand = raisedHands.has(uid);
-            const isMuted = isMe ? document.getElementById('ctrlMic').classList.contains('active') : false;
-            const tileIsHost = hostUid && uid === hostUid;
-
-            let tag = '';
-            if (tileIsHost) tag = `<span class="p-tag">👑 Host</span>`;
-            if (isMe && !tileIsHost) tag += ` <span class="p-tag you">You</span>`;
-
-            return `
-                <div class="participant-row">
-                    <img class="p-avatar" src="${avatarSrc(user||{display_name:name})}">
-                    <span class="p-name">${escapeHTML(name)} ${tag}</span>
-                    ${hasHand ? '<span style="color:#f5b942;">✋</span>' : ''}
-                    <button class="p-mic ${isMuted ? 'off' : ''}"><i class="fa-solid ${isMuted ? 'fa-microphone-slash' : 'fa-microphone'}"></i></button>
-                </div>
-            `;
-        }).join('');
-    }
-
-    // ============================================================
-    // CHAT
-    // ============================================================
-    function updateChatBadge() {
-        const dot = document.getElementById('chatBadgeDot');
-        const tabBadge = document.getElementById('chatTabBadge');
-        if (dot) dot.classList.toggle('show', unreadChatCount > 0 && activePanelTab !== 'chat');
-        if (tabBadge) {
-            tabBadge.textContent = unreadChatCount > 9 ? '9+' : String(unreadChatCount);
-            tabBadge.classList.toggle('show', unreadChatCount > 0 && activePanelTab !== 'chat');
-        }
-    }
-
-    function scrollChatToBottom() {
-        const el = document.getElementById('chatMessages');
-        if (el) el.scrollTop = el.scrollHeight;
-    }
-
-    function renderChatMessage(msg, isMe) {
-        const wrap = document.getElementById('chatMessages');
-        const empty = wrap.querySelector('.chat-empty');
-        if (empty) empty.remove();
-
-        const row = document.createElement('div');
-        row.className = 'chat-msg' + (isMe ? ' me' : '');
-        const time = new Date(msg.ts || Date.now());
-        const timeStr = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-        row.innerHTML = `
-            ${isMe ? '' : `<div class="chat-msg-meta">${escapeHTML(msg.from_name||'Someone')} · ${timeStr}</div>`}
-            <div class="chat-msg-bubble">${escapeHTML(msg.text)}</div>
-        `;
-        wrap.appendChild(row);
-        scrollChatToBottom();
-    }
-
-    // Floating "live comment" bubble that rises over the video for everyone —
-    // this is what makes the in-call chat feel alive instead of hidden in a tab.
-    function spawnLiveComment(msg, isMe) {
-        const rail = document.getElementById('liveCommentsRail');
-        if (!rail) return;
-
-        const el = document.createElement('div');
-        el.className = 'live-comment' + (isMe ? ' me' : '');
-        const avatarUrl = isMe ? avatarSrc(UP) : avatarSrc(allUsers[msg.from_uid] || { display_name: msg.from_name });
-
-        el.innerHTML = `
-            <img class="lc-avatar" src="${avatarUrl}" alt="">
-            <div class="lc-bubble">
-                <div class="lc-name">${escapeHTML(isMe ? 'You' : (msg.from_name || 'Someone'))}</div>
-                <div class="lc-text">${escapeHTML(msg.text)}</div>
-            </div>
-        `;
-        rail.appendChild(el);
-
-        // Cap how many float at once so the rail doesn't grow forever
-        while (rail.children.length > 8) rail.removeChild(rail.firstChild);
-
-        setTimeout(() => el.remove(), 5800);
-    }
-
-    function addChatMessage(msg, isMe) {
-        chatMessages.push(msg);
-        renderChatMessage(msg, isMe);
-        spawnLiveComment(msg, isMe);
-        if (!isMe && activePanelTab !== 'chat') {
-            unreadChatCount++;
-            updateChatBadge();
-        }
-    }
-
-    // `source` is 'panel' (full chat panel input) or 'quick' (always-on bar
-    // over the video) — either one works for every participant in the call.
-    window.sendChatMessage = function(source) {
-        const input = document.getElementById(source === 'quick' ? 'quickSendInput' : 'chatInput');
-        const text = input.value.trim();
-        if (!text) return;
-        if (!lkRoom) { toast('Not connected to the call yet'); return; }
-
-        const msg = { type: 'chat', from_uid: CU.id, from_name: UP.display_name, text, ts: Date.now() };
-        addChatMessage(msg, true);
-
-        try {
-            const data = new TextEncoder().encode(JSON.stringify(msg));
-            lkRoom.localParticipant.publishData(data, { reliable: true });
-        } catch (e) {
-            toast('Message failed to send', 'error');
-        }
-
-        document.getElementById('chatInput').value = '';
-        document.getElementById('quickSendInput').value = '';
-        input.focus();
-    };
-
-    document.getElementById('chatInput').addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') { e.preventDefault();
-            sendChatMessage('panel'); }
-    });
-
-    document.getElementById('quickSendInput').addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') { e.preventDefault();
-            sendChatMessage('quick'); }
-    });
-
-    // ============================================================
-    // END CALL
-    // ============================================================
-    window.endCall = function(fromRemote) {
-        const dur = callSecs;
-        const type = callType;
-        const dir = callDirection;
-        const partner = chatPartner;
-
-        if (lkRoom) {
-            try { lkRoom.disconnect(); } catch (e) {}
-            lkRoom = null;
-        }
-
-        if (screenStream) {
-            screenStream.getTracks().forEach(t => t.stop());
-            screenStream = null;
-        }
-
-        if (!fromRemote && !removedFromCall && partner && !isSelf(partner) && currentCallRoom) {
-            sendControlMsg(partner, {
-                type: 'call_invite',
-                from_uid: CU.id,
-                from_name: UP.display_name,
-                action: 'end',
-                room: currentCallRoom
-            });
-        }
-
-        if (partner && dur > 0 && !isSelf(partner)) {
-            logCall(partner, type, dur, dir);
-        }
-
+        toast('Call declined', 'info');
         resetCallState();
-        toast('Call ended');
-    };
-
-    window.endForAll = function() {
-        if (!isHost) return;
-        if (!confirm('End meeting for everyone?')) return;
-
-        const all = groupParticipants.filter(id => !isSelf(id));
-        if (chatPartner && !isSelf(chatPartner) && !all.includes(chatPartner)) all.push(chatPartner);
-
-        all.forEach(uid => {
-            sendControlMsg(uid, {
-                type: 'host_control',
-                action: 'end_all',
-                room: currentCallRoom,
-                from_uid: CU.id,
-                from_name: UP.display_name
-            });
-        });
-        endCall();
-    };
-
-    function resetCallState() {
-        if (callTimer) { clearInterval(callTimer);
-            callTimer = null; }
-        stopRingtone();
-
-        document.getElementById('stageOverlay').classList.remove('show');
-        document.getElementById('callVideoWrap').style.display = 'none';
-        document.getElementById('groupTiles').style.display = 'none';
-        document.getElementById('groupTiles').innerHTML = '';
-        document.getElementById('stagePanel').classList.remove('show');
-        document.getElementById('stageDockWrap').classList.remove('show');
-        document.getElementById('stageDockWrap').classList.remove('with-quickbar');
-        document.getElementById('quickSendBar').classList.remove('show');
-        document.getElementById('quickSendInput').value = '';
-        document.getElementById('liveCommentsRail').innerHTML = '';
-        document.getElementById('hostBanner').style.display = 'none';
-        document.getElementById('meetingIdPill').classList.remove('show');
-        document.getElementById('meetingIdPopover').classList.remove('show');
-        document.getElementById('chatMessages').innerHTML =
-            `<div class="chat-empty"><div>💬</div>No messages yet.<br>Say hi to the call!</div>`;
-        document.getElementById('chatBadgeDot').classList.remove('show');
-        document.getElementById('chatTabBadge').classList.remove('show');
-        document.getElementById('callTimer').classList.remove('show');
-
-        switchPanelTab('people');
-
-        callInProgress = false;
-        callSecs = 0;
-        currentCallRoom = null;
-        isScreenSharing = false;
-        isGroupCall = false;
-        groupParticipants = [];
-        groupVideoTracks = {};
-        groupAudioTracks = {};
-        localCamTrack = null;
-        callDirection = 'out';
-        callState = 'idle';
-        chatPartner = null;
-        incomingCallData = null;
-        pinnedParticipant = null;
-        raisedHands = new Set();
-        isHost = false;
-        hostUid = null;
-        removedFromCall = false;
-        currentMeetingId = null;
-        chatMessages = [];
-        unreadChatCount = 0;
-        activePanelTab = 'people';
-        participantsPanelOpen = false;
+        return;
     }
+    endCall();
+};
 
-    // ============================================================
-    // POLL NOTIFICATIONS
-    // ============================================================
-    function startCallPolling() {
-        if (callPollInterval) clearInterval(callPollInterval);
-        callPollInterval = setInterval(async () => {
-            try {
-                const data = await cfApi('/notifications');
-                const relevant = (data || []).filter(n => {
-                    if (!n.text || typeof n.text !== 'string' || !n.text.startsWith('{')) return false;
-                    try {
-                        const d = JSON.parse(n.text);
-                        return d && (d.type === 'call_invite' || d.type === 'reaction' || d.type === 'host_control');
-                    } catch (e) { return false; }
-                });
-
-                for (const n of relevant) {
-                    let payload;
-                    try { payload = JSON.parse(n.text); } catch (e) { continue; }
-
-                    if (payload.type === 'reaction') {
-                        if (!isSelf(payload.from_uid) && callInProgress) {
-                            const stage = document.getElementById('callStage');
-                            const el = document.createElement('div');
-                            el.className = 'reaction-float';
-                            el.textContent = payload.emoji || '❤️';
-                            el.style.left = (20 + Math.random() * 60) + '%';
-                            stage.appendChild(el);
-                            setTimeout(() => el.remove(), 2400);
-                        }
-                        continue;
-                    }
-
-                    if (payload.type === 'host_control') {
-                        if (!isSelf(payload.from_uid)) applyHostControl(payload);
-                        continue;
-                    }
-
-                    if (isSelf(payload.from_uid)) continue;
-
-                    const ageMs = Date.now() - new Date(n.created_at).getTime();
-                    if (payload.action === 'invite' && ageMs > 30000) continue;
-
-                    if ((payload.action === 'end' || payload.action === 'decline') && incomingCallData && payload.room ===
-                        incomingCallData.room) {
-                        stopRingtone();
-                        resetCallState();
-                        toast('Call cancelled');
-                        continue;
-                    }
-
-                    if (seenCallNotifIds.has(n.id)) continue;
-                    seenCallNotifIds.add(n.id);
-
-                    if (payload.action !== 'invite') continue;
-                    if (callInProgress) continue;
-                    if (isSelf(payload.from_uid)) continue;
-
-                    showIncomingCall({
-                        from_name: payload.from_name,
-                        from_uid: payload.from_uid,
-                        type: payload.call_type || 'voice',
-                        room: payload.room,
-                        is_group: payload.is_group || false,
-                        host_uid: payload.host_uid,
-                        notif_id: n.id
-                    });
-                    break;
-                }
-            } catch (e) { /* silent */ }
-        }, 3000);
+// ============================================================
+// IN-CALL CONTROLS
+// ============================================================
+window.toggleMic = async function () {
+    if (!lkRoom) return;
+    const wantOn = !micOn();
+    try {
+        await lkRoom.localParticipant.setMicrophoneEnabled(wantOn);
+        setMicUI(wantOn);
+    } catch (e) {
+        toast('Microphone unavailable — check browser permission', 'error');
+        setMicUI(false);
     }
+    updateTileStates();
+    updateParticipantsPanel();
+};
 
-    // ============================================================
-    // HOST CONTROLS
-    // ============================================================
-    function applyHostControl(payload) {
-        if (payload.room !== currentCallRoom || !callInProgress) return;
+window.toggleCam = async function () {
+    if (!lkRoom) return;
+    const wantOn = !camOn();
+    try {
+        const pub = await lkRoom.localParticipant.setCameraEnabled(wantOn);
+        if (wantOn) {
+            localCamTrack = pub?.track || null;
+            if (localCamTrack) localCamTrack.attach($('localVideo'));
+        } else {
+            localCamTrack = null;
+        }
+        setCamUI(wantOn);
+    } catch (e) {
+        toast('Camera unavailable — check browser permission', 'error');
+        setCamUI(false);
+    }
+    afterLocalCamChange();
+    updateParticipantsPanel();
+};
 
-        if (payload.action === 'mute') {
-            const btn = document.getElementById('ctrlMic');
-            if (!btn.classList.contains('active')) toggleMic();
-            showHostBanner(`${payload.from_name||'Host'} muted you`);
-        } else if (payload.action === 'remove') {
-            showHostBanner(`${payload.from_name||'Host'} removed you`);
-            removedFromCall = true;
-            setTimeout(() => endCall(), 900);
-        } else if (payload.action === 'end_all') {
-            showHostBanner(`${payload.from_name||'Host'} ended the meeting`);
+window.toggleRaiseHand = function () {
+    const btn = $('ctrlHand');
+    const raised = !raisedHands.has(CU.id);
+    if (raised) { raisedHands.add(CU.id); toast('Hand raised ✋'); }
+    else { raisedHands.delete(CU.id); toast('Hand lowered', 'info'); }
+    btn.classList.toggle('on', raised);
+    sendData({ type: 'hand', from_uid: CU.id, raised });
+    updateTileStates();
+    updateParticipantsPanel();
+};
+
+// ============================================================
+// REACTIONS (sent through the room, instant)
+// ============================================================
+window.toggleReactions = function () {
+    const el = $('reactionsPopup');
+    el.classList.toggle('show');
+    clearTimeout(el._t);
+    el._t = setTimeout(() => el.classList.remove('show'), 4000);
+};
+
+function floatReaction(emoji) {
+    const el = document.createElement('div');
+    el.className = 'reaction-float';
+    el.textContent = emoji || '❤️';
+    el.style.left = (20 + Math.random() * 60) + '%';
+    $('callStage').appendChild(el);
+    setTimeout(() => el.remove(), 2400);
+}
+
+window.sendReaction = function (emoji) {
+    $('reactionsPopup').classList.remove('show');
+    floatReaction(emoji);
+    sendData({ type: 'reaction', from_uid: CU.id, emoji });
+};
+
+// ============================================================
+// INCOMING DATA MESSAGES
+// ============================================================
+function handleDataMessage(msg, from) {
+    switch (msg.type) {
+        case 'chat':
+            addChatMessage({ ...msg, from_uid: from, from_name: msg.from_name || nameOf(from) }, false);
+            break;
+        case 'reaction':
+            floatReaction(msg.emoji);
+            break;
+        case 'hand':
+            if (msg.raised) { raisedHands.add(from); toast(`${nameOf(from)} raised a hand ✋`, 'info'); }
+            else raisedHands.delete(from);
+            updateTileStates();
+            updateParticipantsPanel();
+            break;
+        case 'host_info':
+            if (msg.host_uid === from && !isHost) {
+                hostUid = from;
+                (msg.hands || []).forEach(h => { if (!isSelf(h)) raisedHands.add(h); });
+                refreshHostUI(true);
+            }
+            break;
+        case 'host_control':
+            handleHostControl(msg, from);
+            break;
+    }
+}
+
+// ============================================================
+// HOST CONTROLS
+// ============================================================
+function refreshHostUI(rerender = true) {
+    $('hostChip').classList.toggle('show', isHost);
+    $('endAllWrap').style.display = isHost ? 'flex' : 'none';
+    $('hostDivider').style.display = isHost ? 'block' : 'none';
+    if (rerender && callInProgress) {
+        if (isGroupCall) renderGroupTiles();
+        updateParticipantsPanel();
+    }
+}
+
+function handleHostControl(msg, from) {
+    if (!callInProgress || from !== hostUid) return;
+    const hostName = nameOf(from);
+
+    switch (msg.action) {
+        case 'mute':
+            if (isSelf(msg.target) && micOn()) { toggleMic(); showHostBanner(`${hostName} muted you`); }
+            break;
+        case 'mute_all':
+            if (!isHost && micOn()) { toggleMic(); showHostBanner(`${hostName} muted everyone`); }
+            break;
+        case 'remove':
+            if (isSelf(msg.target)) {
+                showHostBanner(`${hostName} removed you from the meeting`);
+                removedFromCall = true;
+                setTimeout(() => endCall(true), 900);
+            }
+            break;
+        case 'make_host':
+            hostUid = msg.target;
+            isHost = isSelf(msg.target);
+            if (isHost) showHostBanner('You are now the host!');
+            refreshHostUI(true);
+            break;
+        case 'end_all':
+            showHostBanner(`${hostName} ended the meeting`);
             removedFromCall = true;
             setTimeout(() => endCall(true), 900);
-        } else if (payload.action === 'make_host') {
-            isHost = true;
-            hostUid = CU.id;
-            document.getElementById('hostChip').classList.add('show');
-            document.getElementById('endAllWrap').style.display = 'flex';
-            document.getElementById('hostDivider').style.display = 'block';
-            showHostBanner('You are now the host!');
-            renderGroupTiles();
-            updateParticipantsPanel();
-        }
+            break;
+    }
+}
+
+function showHostBanner(text) {
+    const el = $('hostBanner');
+    $('hostBannerText').textContent = text;
+    el.style.display = 'flex';
+    setTimeout(() => el.style.display = 'none', 3600);
+}
+
+function electNewHost() {
+    // Host dropped without handing over: everybody picks the same person (lowest id)
+    const next = allIds().sort()[0];
+    hostUid = next;
+    isHost = isSelf(next);
+    if (isHost) showHostBanner('You are now the host!');
+    refreshHostUI(false);
+}
+
+function hostAction(action, target) {
+    if (!isHost) return;
+    sendData({ type: 'host_control', action, target, from_uid: CU.id }, action === 'mute' || action === 'remove' ? target : undefined);
+    if (action === 'make_host') {
+        hostUid = target;
+        isHost = false;
+        refreshHostUI(true);
+        toast(`${nameOf(target)} is now the host`);
+    }
+    if (action === 'mute') toast(`Asked ${nameOf(target)} to mute`, 'info');
+    if (action === 'remove') toast(`Removed ${nameOf(target)}`, 'info');
+    if (action === 'mute_all') toast('Asked everyone to mute', 'info');
+}
+
+window.endForAll = async function () {
+    if (!isHost) return;
+    if (!confirm('End meeting for everyone?')) return;
+    await sendData({ type: 'host_control', action: 'end_all', from_uid: CU.id });
+    // 1:1 safety net in case the data message is missed
+    if (chatPartner && !isSelf(chatPartner)) {
+        sendControlMsg(chatPartner, { type: 'call_invite', from_uid: CU.id, from_name: UP.display_name, action: 'end', room: currentCallRoom });
+    }
+    setTimeout(() => endCall(true), 300);
+};
+
+// ============================================================
+// PANEL (Participants / Chat)
+// ============================================================
+window.togglePanel = function (tab) {
+    const panel = $('stagePanel');
+    if (participantsPanelOpen && activePanelTab === tab) { closePanel(); return; }
+    participantsPanelOpen = true;
+    panel.classList.add('show');
+    switchPanelTab(tab);
+};
+
+window.closePanel = function () {
+    participantsPanelOpen = false;
+    $('stagePanel').classList.remove('show');
+};
+
+window.switchPanelTab = function (tab) {
+    activePanelTab = tab;
+    $('tabPeople').classList.toggle('active', tab === 'people');
+    $('tabChat').classList.toggle('active', tab === 'chat');
+    $('panelPeople').classList.toggle('active', tab === 'people');
+    $('panelChat').classList.toggle('active', tab === 'chat');
+    $('panelTitle').textContent = tab === 'chat' ? 'Chat' : 'Participants';
+    $('panelCount').style.display = tab === 'chat' ? 'none' : 'inline';
+
+    if (tab === 'people') updateParticipantsPanel();
+    if (tab === 'chat') {
+        unreadChatCount = 0;
+        updateChatBadge();
+        scrollChatToBottom();
+        setTimeout(() => $('chatInput').focus(), 50);
+    }
+};
+
+function updateParticipantsPanel() {
+    const list = $('participantsList');
+    if (!list) return;
+    const ids = callInProgress ? allIds() : [];
+    $('panelCount').textContent = ids.length;
+    updateParticipantCount();
+
+    if (!ids.length) {
+        list.innerHTML = `<div style="color:#8b93a3;padding:12px;font-size:12px;">No participants</div>`;
+        return;
     }
 
-    function showHostBanner(text) {
-        const el = document.getElementById('hostBanner');
-        document.getElementById('hostBannerText').textContent = text;
-        el.style.display = 'flex';
-        setTimeout(() => el.style.display = 'none', 3600);
-        toast(text);
+    const showHostTools = isHost && isGroupCall && ids.length > 1;
+    let html = showHostTools ? `<button class="mute-all-btn" data-host-act="mute_all"><i class="fa-solid fa-microphone-slash"></i> Mute everyone</button>` : '';
+
+    html += ids.map(uid => {
+        const isMe = isSelf(uid);
+        const p = getP(uid);
+        const name = isMe ? 'You' : nameOf(uid);
+        const muted = isMe ? !micOn() : !!(p && !p.isMicrophoneEnabled);
+        const cam = isMe ? camOn() : !!(p && p.isCameraEnabled);
+        let tag = '';
+        if (uid === hostUid) tag += `<span class="p-tag">👑 Host</span>`;
+        if (isMe && uid !== hostUid) tag += ` <span class="p-tag you">You</span>`;
+        const tools = (isHost && !isMe && isGroupCall) ? `
+            <button class="p-act" title="Mute" data-host-act="mute" data-uid="${escapeHTML(uid)}"><i class="fa-solid fa-microphone-slash"></i></button>
+            <button class="p-act" title="Make host" data-host-act="make_host" data-uid="${escapeHTML(uid)}"><i class="fa-solid fa-crown"></i></button>
+            <button class="p-act danger" title="Remove" data-host-act="remove" data-uid="${escapeHTML(uid)}"><i class="fa-solid fa-user-xmark"></i></button>` : '';
+        return `
+            <div class="participant-row">
+                <img class="p-avatar" src="${escapeHTML(avatarSrc(allUsers[uid] || { display_name: name }))}">
+                <span class="p-name">${escapeHTML(name)} ${tag}</span>
+                ${raisedHands.has(uid) ? '<span style="color:#f5b942;">✋</span>' : ''}
+                <span class="p-mic ${cam ? '' : 'off'}" title="Camera"><i class="fa-solid ${cam ? 'fa-video' : 'fa-video-slash'}"></i></span>
+                <span class="p-mic ${muted ? 'off' : ''}" title="Mic"><i class="fa-solid ${muted ? 'fa-microphone-slash' : 'fa-microphone'}"></i></span>
+                ${tools}
+            </div>`;
+    }).join('');
+    list.innerHTML = html;
+}
+
+$('participantsList').addEventListener('click', function (e) {
+    const b = e.target.closest('[data-host-act]');
+    if (!b) return;
+    const act = b.dataset.hostAct, uid = b.dataset.uid;
+    if (act === 'remove' && !confirm(`Remove ${nameOf(uid)} from the meeting?`)) return;
+    if (act === 'make_host' && !confirm(`Make ${nameOf(uid)} the host? You will lose host controls.`)) return;
+    hostAction(act, uid);
+});
+
+// ============================================================
+// CHAT
+// ============================================================
+function updateChatBadge() {
+    const dot = $('chatBadgeDot'), tabBadge = $('chatTabBadge');
+    const show = unreadChatCount > 0 && !(participantsPanelOpen && activePanelTab === 'chat');
+    if (dot) dot.classList.toggle('show', show);
+    if (tabBadge) {
+        tabBadge.textContent = unreadChatCount > 9 ? '9+' : String(unreadChatCount);
+        tabBadge.classList.toggle('show', show);
+    }
+}
+
+function scrollChatToBottom() {
+    const el = $('chatMessages');
+    if (el) el.scrollTop = el.scrollHeight;
+}
+
+function renderChatMessage(msg, isMe) {
+    const wrap = $('chatMessages');
+    wrap.querySelector('.chat-empty')?.remove();
+    const row = document.createElement('div');
+    row.className = 'chat-msg' + (isMe ? ' me' : '');
+    const timeStr = new Date(msg.ts || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    row.innerHTML = `
+        ${isMe ? '' : `<div class="chat-msg-meta">${escapeHTML(msg.from_name || 'Someone')} · ${timeStr}</div>`}
+        <div class="chat-msg-bubble">${escapeHTML(msg.text)}</div>`;
+    wrap.appendChild(row);
+    scrollChatToBottom();
+}
+
+function spawnLiveComment(msg, isMe) {
+    const rail = $('liveCommentsRail');
+    if (!rail) return;
+    const el = document.createElement('div');
+    el.className = 'live-comment' + (isMe ? ' me' : '');
+    const avatarUrl = isMe ? avatarSrc(UP) : avatarSrc(allUsers[msg.from_uid] || { display_name: msg.from_name });
+    el.innerHTML = `
+        <img class="lc-avatar" src="${escapeHTML(avatarUrl)}" alt="">
+        <div class="lc-bubble">
+            <div class="lc-name">${escapeHTML(isMe ? 'You' : (msg.from_name || 'Someone'))}</div>
+            <div class="lc-text">${escapeHTML(msg.text)}</div>
+        </div>`;
+    rail.appendChild(el);
+    while (rail.children.length > 8) rail.removeChild(rail.firstChild);
+    setTimeout(() => el.remove(), 5800);
+}
+
+function addChatMessage(msg, isMe) {
+    chatMessages.push(msg);
+    renderChatMessage(msg, isMe);
+    spawnLiveComment(msg, isMe);
+    if (!isMe && !(participantsPanelOpen && activePanelTab === 'chat')) {
+        unreadChatCount++;
+        updateChatBadge();
+    }
+}
+
+window.sendChatMessage = function (source) {
+    const input = $(source === 'quick' ? 'quickSendInput' : 'chatInput');
+    const text = input.value.trim();
+    if (!text) return;
+    if (!lkRoom) { toast('Not connected to the call yet', 'info'); return; }
+
+    const msg = { type: 'chat', from_uid: CU.id, from_name: UP.display_name || nameOf(CU.id), text, ts: Date.now() };
+    addChatMessage(msg, true);
+    sendData(msg);
+
+    $('chatInput').value = '';
+    $('quickSendInput').value = '';
+    input.focus();
+};
+
+$('chatInput').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); sendChatMessage('panel'); } });
+$('quickSendInput').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); sendChatMessage('quick'); } });
+
+// ============================================================
+// END CALL
+// ============================================================
+window.endCall = async function (fromRemote) {
+    if (ending) return;
+    if (!callInProgress && callState === 'idle') return;
+    ending = true;
+
+    const dur = callSecs;
+    const type = callType;
+    const dir = callDirection;
+    const partner = chatPartner;
+    const room = currentCallRoom;
+    const wasGroup = isGroupCall;
+
+    try {
+        // Host leaving a meeting with other people: hand the host role over first
+        if (lkRoom && wasGroup && isHost && !fromRemote && !removedFromCall) {
+            const others = remoteIds().sort();
+            if (others.length) await sendData({ type: 'host_control', action: 'make_host', target: others[0], from_uid: CU.id });
+        }
+    } catch (e) {}
+
+    removedFromCall = true; // suppress the Disconnected handler
+    if (lkRoom) {
+        try { lkRoom.disconnect(); } catch (e) {}
+        lkRoom = null;
     }
 
-    // ============================================================
-    // ESCAPE KEY
-    // ============================================================
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            closeContactsModal();
-            closeJoinIdModal();
-            if (callState === 'ringing-in') cancelCall();
-            if (participantsPanelOpen) closePanel();
-            document.getElementById('meetingIdPopover').classList.remove('show');
+    if (!fromRemote && !wasGroup && partner && !isSelf(partner) && room) {
+        sendControlMsg(partner, { type: 'call_invite', from_uid: CU.id, from_name: UP.display_name, action: 'end', room });
+    }
+
+    if (!wasGroup && partner && !isSelf(partner) && (dur > 0 || dir === 'out')) {
+        logCall(partner, type, dur, dir);
+    }
+
+    resetCallState();
+    toast('Call ended', 'info');
+};
+
+function resetCallState() {
+    if (callTimer) { clearInterval(callTimer); callTimer = null; }
+    [outRingTimer, aloneTimer, incomingTimer].forEach(t => t && clearTimeout(t));
+    outRingTimer = aloneTimer = incomingTimer = null;
+    stopRingtone();
+    releaseWakeLock();
+
+    if (lkRoom) { try { lkRoom.disconnect(); } catch (e) {} lkRoom = null; }
+    extraAudioEls.forEach(el => el.remove());
+    extraAudioEls = [];
+    hideScreenShare();
+
+    $('stageOverlay').classList.remove('show');
+    document.body.classList.remove('in-call');
+    $('callVideoWrap').style.display = 'none';
+    $('remoteVideo').srcObject = null;
+    $('localVideo').srcObject = null;
+    $('remoteAudio').srcObject = null;
+    $('groupTiles').style.display = 'none';
+    $('groupTiles').innerHTML = '';
+    $('stagePanel').classList.remove('show');
+    $('stageDockWrap').classList.remove('show', 'with-quickbar');
+    $('quickSendBar').classList.remove('show');
+    $('quickSendInput').value = '';
+    $('liveCommentsRail').innerHTML = '';
+    $('hostBanner').style.display = 'none';
+    $('meetingIdPill').classList.remove('show');
+    $('meetingIdPopover').classList.remove('show');
+    $('reactionsPopup').classList.remove('show');
+    $('chatMessages').innerHTML = `<div class="chat-empty"><div>💬</div>No messages yet.<br>Say hi to the call!</div>`;
+    $('chatBadgeDot').classList.remove('show');
+    $('chatTabBadge').classList.remove('show');
+    $('callTimer').classList.remove('show');
+    $('callTimer').textContent = '00:00';
+    $('participantCount').classList.remove('show');
+    $('ctrlShare').classList.remove('sharing');
+    $('hostChip').classList.remove('show');
+    $('endAllWrap').style.display = 'none';
+    $('hostDivider').style.display = 'none';
+    setMicUI(true);
+    setCamUI(true);
+
+    switchPanelTab('people');
+
+    callInProgress = false;
+    callSecs = 0;
+    currentCallRoom = null;
+    isScreenSharing = false;
+    isGroupCall = false;
+    groupVideoTracks = {};
+    groupAudioTracks = {};
+    localCamTrack = null;
+    callDirection = 'out';
+    callState = 'idle';
+    chatPartner = null;
+    incomingCallData = null;
+    pinnedParticipant = null;
+    raisedHands = new Set();
+    isHost = false;
+    hostUid = null;
+    removedFromCall = false;
+    currentMeetingId = null;
+    chatMessages = [];
+    unreadChatCount = 0;
+    activePanelTab = 'people';
+    participantsPanelOpen = false;
+    ending = false;
+}
+
+// ============================================================
+// POLL INCOMING CALL INVITES
+// ============================================================
+function startCallPolling() {
+    if (callPollInterval) clearInterval(callPollInterval);
+    pollCalls();
+    callPollInterval = setInterval(pollCalls, 2500);
+}
+
+async function pollCalls() {
+    if (polling || !CF_TOKEN) return;
+    polling = true;
+    try {
+        const data = await cfApi('/notifications');
+        const items = (data || [])
+            .filter(n => typeof n.text === 'string' && n.text.startsWith('{'))
+            .map(n => { try { return { n, p: JSON.parse(n.text) }; } catch (e) { return null; } })
+            .filter(x => x && x.p && x.p.type === 'call_invite')
+            .sort((a, b) => a.n.id - b.n.id);
+
+        for (const { n, p } of items) {
+            if (seenCallNotifIds.has(n.id)) continue;
+            seenCallNotifIds.add(n.id);
+            cfApi('/notifications/' + n.id, 'DELETE').catch(() => {}); // consume it
+            if (isSelf(p.from_uid)) continue;
+
+            const age = Date.now() - parseTs(n.created_at);
+            handleCallSignal(p, age);
         }
-    });
+    } catch (e) { /* silent */ }
+    finally { polling = false; }
+}
 
-    // ============================================================
-    // INIT
-    // ============================================================
-    async function init() {
-        // Theme
-        const savedTheme = localStorage.getItem('alpha_theme') || 'light';
-        AlphaCommon.applyTheme(savedTheme);
-
-        // Auth
-        CF_TOKEN = localStorage.getItem('alpha_token') || null;
-        const savedUser = localStorage.getItem('alpha_user');
-
-        if (!CF_TOKEN || !savedUser) {
-            window.location.href = 'index.html';
+function handleCallSignal(p, age) {
+    if (p.action === 'invite') {
+        if (age > 35000) return; // stale
+        if (callState !== 'idle') {
+            // already busy
+            sendControlMsg(p.from_uid, { type: 'call_invite', from_uid: CU.id, from_name: UP.display_name, action: 'decline', reason: 'busy', room: p.room });
             return;
         }
-
-        try {
-            const parsed = JSON.parse(savedUser);
-            CU = parsed.CU || parsed;
-            UP = parsed.UP || {};
-        } catch (e) {}
-
-        updateMeMini();
-        await loadUsers();
-        updateMissedCount();
-
-        // When embedded in the Alpha app shell, the shell already polls for
-        // incoming calls globally (so ringing works on every page, not just
-        // this one) — starting a second poller here would double-ring and
-        // race the shell for the same invite. Only run our own poller (and
-        // handle direct deep-link params below) when this page is truly the
-        // top-level document, e.g. opened straight from a push notification.
-        const embedded = !!(window.parent && window.parent !== window && window.parent.AlphaShell);
-        if (!embedded) startCallPolling();
-
-        // Check for incoming call from URL params
-        const params = new URLSearchParams(window.location.search);
-        if (!embedded && params.get('accept_room')) {
-            const room = params.get('accept_room');
-            const type = params.get('accept_type') || 'voice';
-            const fromUid = params.get('accept_from');
-            const fromName = params.get('accept_name') || 'User';
-            const isGroup = params.get('accept_group') === '1';
-            const notifId = params.get('notif_id');
-
-            window.history.replaceState({}, '', 'calls.html');
-
-            if (fromUid && !isSelf(fromUid)) {
-                incomingCallData = {
-                    from_uid: fromUid,
-                    from_name: fromName,
-                    type,
-                    room,
-                    is_group: isGroup,
-                    notif_id: notifId
-                };
-                // Auto-accept after a short delay
-                setTimeout(() => acceptCall(), 500);
-            }
-        }
-
-        if (params.get('start_call')) {
-            const startUid = params.get('start_call');
-            const startType = params.get('start_type') || 'voice';
-            window.history.replaceState({}, '', 'calls.html');
-            if (startUid && !isSelf(startUid)) {
-                setTimeout(() => callUser(startUid, startType), 500);
-            }
-        }
-
-        // Back button
-        const ref = document.referrer;
-        const cameFromAlpha = ref && ref.indexOf(location.origin) === 0 && !/\/calls\.html([?#]|$)/.test(ref);
-        const backBtn = document.getElementById('page-back-btn');
-        if (backBtn) backBtn.style.display = cameFromAlpha ? 'flex' : 'none';
+        showIncomingCall({
+            from_name: p.from_name, from_uid: p.from_uid, type: p.call_type || 'voice',
+            room: p.room, is_group: !!p.is_group, host_uid: p.host_uid
+        });
+        return;
     }
 
-    document.addEventListener('DOMContentLoaded', init);
+    if (p.action === 'end') {
+        if (incomingCallData && incomingCallData.room === p.room) {
+            missIncoming(incomingCallData, 'Missed call from ' + nameOf(p.from_uid));
+        } else if (callInProgress && p.room === currentCallRoom && !isGroupCall && remoteIds().length === 0) {
+            endCall(true);
+        }
+        return;
+    }
+
+    if (p.action === 'decline') {
+        if (callInProgress && p.room === currentCallRoom) {
+            if (!isGroupCall) {
+                toast(p.reason === 'busy' ? `${nameOf(p.from_uid)} is on another call` : `${nameOf(p.from_uid)} declined`, 'info');
+                if (remoteIds().length === 0) endCall(true);
+                // log it as an outgoing call with no answer
+                logCall(p.from_uid, callType, 0, 'out');
+            } else {
+                toast(`${nameOf(p.from_uid)} declined the invite`, 'info');
+            }
+        }
+    }
+}
+
+// ============================================================
+// KEYBOARD + PAGE LIFECYCLE
+// ============================================================
+document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+        closeContactsModal();
+        closeJoinIdModal();
+        if (callState === 'ringing-in') cancelCall();
+        if (participantsPanelOpen) closePanel();
+        $('meetingIdPopover').classList.remove('show');
+        return;
+    }
+    if (!callInProgress || callState !== 'active') return;
+    const tag = (e.target.tagName || '').toLowerCase();
+    if (tag === 'input' || tag === 'textarea' || e.ctrlKey || e.metaKey || e.altKey) return;
+    if (e.key === 'm' || e.key === 'M') toggleMic();
+    else if (e.key === 'v' || e.key === 'V') toggleCam();
+    else if (e.key === 'h' || e.key === 'H') toggleRaiseHand();
+});
+
+window.addEventListener('beforeunload', function () {
+    if (lkRoom) { try { lkRoom.disconnect(); } catch (e) {} }
+});
+
+document.addEventListener('visibilitychange', function () {
+    if (!document.hidden && callInProgress && callState === 'active') requestWakeLock();
+});
+
+// ============================================================
+// INIT
+// ============================================================
+async function init() {
+    const savedTheme = localStorage.getItem('alpha_theme') || 'light';
+    if (window.AlphaCommon?.applyTheme) AlphaCommon.applyTheme(savedTheme);
+    else document.documentElement.setAttribute('data-theme', savedTheme);
+
+    CF_TOKEN = localStorage.getItem('alpha_token') || null;
+    const savedUser = localStorage.getItem('alpha_user');
+    if (!CF_TOKEN || !savedUser) { window.location.href = 'index.html'; return; }
+
+    try {
+        const parsed = JSON.parse(savedUser);
+        CU = parsed.CU || parsed;
+        UP = parsed.UP || {};
+    } catch (e) {}
+    if (!CU) CU = {};
+    if (!CU.id && CU.email) CU.id = CU.email;
+    if (!CU.id) { window.location.href = 'index.html'; return; }
+    UP = UP || {};
+
+    // Extra "Copy invite link" button inside the meeting-ID popover
+    const pop = $('meetingIdPopover');
+    if (pop && !$('copyLinkBtn')) {
+        const b = document.createElement('button');
+        b.id = 'copyLinkBtn';
+        b.textContent = 'Copy invite link';
+        b.style.cssText = 'width:100%;padding:10px;border-radius:10px;background:rgba(255,255,255,.08);color:#fff;font-weight:700;font-size:12px;margin-top:8px;';
+        b.onclick = copyMeetingLink;
+        pop.appendChild(b);
+    }
+
+    updateMeMini();
+    await loadUsers();
+    updateMissedCount();
+
+    const embedded = isEmbedded();
+    if (!embedded) startCallPolling();
+
+    const params = new URLSearchParams(window.location.search);
+
+    // Opened from a push notification: accept straight away
+    if (!embedded && params.get('accept_room')) {
+        const fromUid = params.get('accept_from');
+        const data = {
+            from_uid: fromUid,
+            from_name: params.get('accept_name') || 'User',
+            type: params.get('accept_type') || 'voice',
+            room: params.get('accept_room'),
+            is_group: params.get('accept_group') === '1',
+            host_uid: params.get('accept_host') || fromUid,
+            notif_id: params.get('notif_id')
+        };
+        window.history.replaceState({}, '', 'calls.html');
+        if (fromUid && !isSelf(fromUid)) {
+            incomingCallData = data;
+            callState = 'ringing-in';
+            setTimeout(() => acceptCall(), 400);
+        }
+    }
+
+    if (params.get('start_call')) {
+        const startUid = params.get('start_call');
+        const startType = params.get('start_type') || 'voice';
+        window.history.replaceState({}, '', 'calls.html');
+        if (startUid && !isSelf(startUid)) setTimeout(() => callUser(startUid, startType), 400);
+    }
+
+    // Invite link:  calls.html?join=123456789
+    const joinParam = meetingIdDigits(params.get('join'));
+    if (joinParam.length === 9) {
+        window.history.replaceState({}, '', 'calls.html');
+        setTimeout(() => joinMeetingById(formatMeetingId(joinParam)), 400);
+    }
+
+    const ref = document.referrer;
+    const cameFromAlpha = ref && ref.indexOf(location.origin) === 0 && !/\/calls\.html([?#]|$)/.test(ref);
+    const backBtn = $('page-back-btn');
+    if (backBtn) backBtn.style.display = cameFromAlpha ? 'flex' : 'none';
+}
+
+document.addEventListener('DOMContentLoaded', init);
+
 </script>
 
 </body>
