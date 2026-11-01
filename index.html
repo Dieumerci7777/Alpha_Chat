@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Alpha — Home</title>
+<title>Alphagram — Home</title>
 <meta name="theme-color" content="#2563eb">
-<meta name="description" content="Alpha — connect, create and belong.">
+<meta name="description" content="Alphagram — connect, create and belong.">
 <meta name="color-scheme" content="light dark">
 <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 <link rel="preconnect" href="https://alpha-auth.murwanashyakadieumerci540.workers.dev" crossorigin>
@@ -13,16 +13,17 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <link rel="stylesheet" href="home.css">
 <script src="alpha-common.js"></script>
+<link rel="stylesheet" href="alphagram.css">
 </head>
 <body>
-<noscript><p style="padding:24px;font-family:sans-serif">Alpha needs JavaScript to run.</p></noscript>
+<noscript><p style="padding:24px;font-family:sans-serif">Alphagram needs JavaScript to run.</p></noscript>
 
 <div class="app">
   <!-- LEFT NAV -->
   <aside class="left">
     <button class="brand" onclick="goHome()">
       <div class="logo">A</div>
-      <div class="brand-name-wrap"><div class="brand-name">Alpha</div><div class="brand-tag">Connect · Create · Belong</div></div>
+      <div class="brand-name-wrap"><div class="brand-name">Alphagram</div><div class="brand-tag">Social</div></div>
     </button>
     <nav class="nav">
       <div class="nav-section-label">Main</div>
@@ -54,18 +55,19 @@
         <button class="circle-btn" id="index-back-btn" onclick="goIndexBack()" title="Back" style="display:none;"><i class="fa-solid fa-arrow-left"></i></button>
         <button class="top-left" onclick="goHome()">
           <div class="top-icon-wrap"><i class="fa-solid fa-bolt"></i></div>
-          <div class="top-title-wrap"><div class="top-title">Alpha</div><div class="top-sub">Your social space</div></div>
+          <div class="top-title-wrap"><div class="top-title">Alphagram</div><div class="top-sub">Your social space</div></div>
         </button>
       </div>
       <div class="top-actions">
         <button class="circle-btn" id="search-toggle-btn" onclick="toggleSearchBar()" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
+        <button class="circle-btn" data-ag-appearance aria-label="Appearance" title="Colors and wallpaper"><i class="fa-solid fa-palette"></i></button>
         <button class="circle-btn" onclick="toggleTheme()" id="theme-toggle" aria-label="Toggle theme"><i class="fa-regular fa-circle-half-stroke"></i></button>
       </div>
     </div>
 
     <div class="search-bar-wrap" id="search-bar-wrap">
       <i class="fa-solid fa-magnifying-glass"></i>
-      <input id="nav-search-input" type="text" placeholder="Search Alpha, people, posts & #tags…" oninput="searchPosts(this.value)">
+      <input id="nav-search-input" type="text" placeholder="Search Alphagram, people, posts & #tags…" oninput="searchPosts(this.value)">
       <button class="clear-search" onclick="clearSearchBar()" aria-label="Clear"><i class="fa-solid fa-xmark"></i></button>
     </div>
 
@@ -111,17 +113,17 @@
   <aside class="right">
     <div class="panel">
       <div class="panel-title">Trending <span onclick="goToExplore()">See all</span></div>
-      <div class="trend" onclick="searchPosts('#Alpha')"><small>1 · Community</small><strong>#Alpha</strong><em>2.4K posts</em></div>
+      <div class="trend" onclick="searchPosts('#Alphagram')"><small>1 · Community</small><strong>#Alphagram</strong><em>2.4K posts</em></div>
       <div class="trend" onclick="searchPosts('#Kigali')"><small>2 · Rwanda</small><strong>#Kigali</strong><em>890 posts</em></div>
       <div class="trend" onclick="searchPosts('#Rwanda')"><small>3 · Rwanda</small><strong>#Rwanda</strong><em>543 posts</em></div>
       <div class="trend" onclick="searchPosts('#Tech')"><small>4 · Technology</small><strong>#Tech</strong><em>421 posts</em></div>
-      <div class="trend" onclick="searchPosts('#AlphaLaunch')"><small>5 · Alpha</small><strong>#AlphaLaunch</strong><em>312 posts</em></div>
+      <div class="trend" onclick="searchPosts('#AlphagramLaunch')"><small>5 · Alphagram</small><strong>#AlphagramLaunch</strong><em>312 posts</em></div>
     </div>
     <div class="panel"><div class="panel-title"><span class="dot-live"></span> Online Now</div><div id="online-list"></div></div>
     <div class="panel"><div class="panel-title">People <span onclick="viewAllPeople()">See all</span></div><div id="follow-list"></div></div>
     <div class="panel">
-      <div class="panel-title">Alpha</div>
-      <div style="font-size:11.5px;color:var(--text-muted);line-height:1.7">A place for meaningful conversations, creativity and communities.<br><br>© 2026 Alpha</div>
+      <div class="panel-title">Alphagram</div>
+      <div style="font-size:11.5px;color:var(--text-muted);line-height:1.7">A place for meaningful conversations, creativity and communities.<br><br>© 2026 Alphagram</div>
     </div>
   </aside>
 </div>
@@ -138,7 +140,7 @@
 <div class="mobile-menu-overlay" id="mobile-menu-overlay" onclick="if(event.target===this) closeMobileMenu()">
   <aside class="mobile-menu-sheet">
     <div class="mm-header">
-      <div class="brand"><div class="logo">A</div><div class="brand-name-wrap"><div class="brand-name">Alpha</div><div class="brand-tag">Connect · Create · Belong</div></div></div>
+      <div class="brand"><div class="logo">A</div><div class="brand-name-wrap"><div class="brand-name">Alphagram</div><div class="brand-tag">Social</div></div></div>
       <button class="mm-close" onclick="closeMobileMenu()"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <nav class="mm-nav">
