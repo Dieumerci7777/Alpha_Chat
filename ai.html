@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Alpha — AI</title>
+    <title>Alphagram — AI</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&display=swap" rel="stylesheet">
     <script src="alpha-common.js"></script>
@@ -30,11 +30,11 @@
             --radius-md: 16px;
             --radius-lg: 24px;
             --radius-full: 99px;
-            --primary: #4f46e5;
-            --primary-light: #818cf8;
+            --primary: var(--ag-primary);
+            --primary-light: var(--ag-primary);
             --primary-dark: #3730a3;
-            --primary-bg: rgba(79, 70, 229, 0.08);
-            --primary-bg-hover: rgba(79, 70, 229, 0.16);
+            --primary-bg: color-mix(in srgb, var(--ag-primary) 8%, transparent);
+            --primary-bg-hover: color-mix(in srgb, var(--ag-primary) 16%, transparent);
             --green: #22c55e;
             --red: #ef4444;
             --red-bg: rgba(239, 68, 68, 0.10);
@@ -58,8 +58,8 @@
             --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
             --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
             --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.5);
-            --primary-bg: rgba(79, 70, 229, 0.15);
-            --primary-bg-hover: rgba(79, 70, 229, 0.25);
+            --primary-bg: color-mix(in srgb, var(--ag-primary) 15%, transparent);
+            --primary-bg-hover: color-mix(in srgb, var(--ag-primary) 25%, transparent);
             --red-bg: rgba(239, 68, 68, 0.15);
         }
 
@@ -114,7 +114,7 @@
             background: var(--gradient-primary);
             display: flex; align-items: center; justify-content: center;
             color: #fff; font-size: 18px; font-weight: 800;
-            box-shadow: 0 6px 18px rgba(79, 70, 229, 0.30); flex-shrink: 0;
+            box-shadow: 0 6px 18px color-mix(in srgb, var(--ag-primary) 30%, transparent); flex-shrink: 0;
         }
         .brand-name-wrap { line-height: 1.2; }
         .brand-name {
@@ -266,9 +266,9 @@
         .send-btn {
             width: 44px; height: 44px; border-radius: var(--radius-md); background: var(--gradient-primary); color: #fff;
             font-size: 15px; display: flex; align-items: center; justify-content: center; transition: var(--transition); flex-shrink: 0;
-            box-shadow: 0 4px 14px rgba(79, 70, 229, 0.25);
+            box-shadow: 0 4px 14px color-mix(in srgb, var(--ag-primary) 25%, transparent);
         }
-        .send-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(79, 70, 229, 0.35); }
+        .send-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px color-mix(in srgb, var(--ag-primary) 35%, transparent); }
         .send-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
 
         /* ============================================================
@@ -322,6 +322,7 @@
             .hero-empty .greeting { font-size: 20px; }
         }
     </style>
+<link rel="stylesheet" href="alphagram.css">
 </head>
 <body>
 
@@ -332,7 +333,7 @@
         <button class="brand" onclick="goHome()">
             <div class="logo">A</div>
             <div class="brand-name-wrap">
-                <div class="brand-name">Alpha</div>
+                <div class="brand-name">Alphagram</div>
                 <div class="brand-tag">Social</div>
             </div>
         </button>
@@ -373,7 +374,7 @@
                 <div class="who">
                     <div class="avatar">A</div>
                     <div>
-                        <div class="title">Alpha AI</div>
+                        <div class="title">Alphagram AI</div>
                         <div class="status"><span class="dot"></span> Online</div>
                     </div>
                 </div>
@@ -425,7 +426,7 @@
 
             <div class="chat-input">
                 <div class="input-wrap">
-                    <textarea id="ai-input" rows="1" placeholder="Ask Alpha anything…" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendAI();}" oninput="autoResize(this)"></textarea>
+                    <textarea id="ai-input" rows="1" placeholder="Ask Alphagram anything…" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendAI();}" oninput="autoResize(this)"></textarea>
                     <div class="actions">
                         <button onclick="document.getElementById('file-input').click()" title="Attach file"><i class="fa-solid fa-paperclip"></i></button>
                         <button onclick="toggleVoice()" id="voice-btn" title="Voice input"><i class="fa-solid fa-microphone"></i></button>
