@@ -437,3 +437,272 @@
     compressImage: compressImage, toast: toast, confirm: confirmBox
   };
 })();
+
+
+/* ============================================================
+   INCOMING CALLS ON EVERY PAGE
+   Rings + shows Accept / Decline on any page except calls.html
+   (calls.html has its own listener). Accepting opens
+   calls.html?accept_room=… which joins the call automatically.
+   ============================================================ */
+(function () {
+    if (window.__alphaIncoming) return;
+    window.__alphaIncoming = true;
+    if (window.top !== window) return;                                   // embedded pages: the top page listens
+    var path = location.pathname.toLowerCase();
+    if (/\/calls(\.html)?$/.test(path)) return;                          // calls page handles its own calls
+    if (/\/(login|register)(\.html)?$/.test(path)) return;
+    // pages that are about to redirect into Shell.html: let the Shell listen instead
+    if (window.ALPHA_USE_SHELL === true && !/\/shell(\.html)?$/.test(path)) return;
+
+    var API = 'https://alpha-auth.murwanashyakadieumerci540.workers.dev';
+    var RING_MS = 30000, STALE_MS = 35000, POLL_MS = 2500;
+    var seen = new Set();
+    var cur = null, ringTimer = null, ringStop = null, polling = false, users = null;
+    var origTitle = document.title, titleT = null, notif = null;
+
+    // ---------- helpers ----------
+    function token() { try { return localStorage.getItem('alpha_token'); } catch (e) { return null; } }
+    function me() {
+        try {
+            var p = JSON.parse(localStorage.getItem('alpha_user') || 'null');
+            var c = p && (p.CU || p);
+            var id = c && (c.id || c.email);
+            return { id: id, name: (p && p.UP && p.UP.display_name) || (c && c.display_name) || id };
+        } catch (e) { return {}; }
+    }
+    function isMe(uid) { var m = me().id; return !!uid && !!m && String(uid).toLowerCase() === String(m).toLowerCase(); }
+    function prefs() { try { return JSON.parse(localStorage.getItem('alpha_call_prefs') || '{}'); } catch (e) { return {}; } }
+    function parseTs(ts) {
+        if (typeof ts === 'string' && !/[zZ]|[+-]\d\d:?\d\d$/.test(ts)) ts = ts.replace(' ', 'T') + 'Z';
+        return new Date(ts).getTime();
+    }
+    function api(path, method, body) {
+        var c = new AbortController(), t = setTimeout(function () { c.abort(); }, 12000);
+        return fetch(API + path, {
+            method: method || 'GET', signal: c.signal,
+            headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token() },
+            body: body ? JSON.stringify(body) : undefined
+        }).then(function (r) {
+            return r.json().catch(function () { return {}; }).then(function (d) {
+                if (!r.ok) throw new Error((d && d.error) || r.status);
+                return d;
+            });
+        }).then(function (d) { clearTimeout(t); return d; }, function (e) { clearTimeout(t); throw e; });
+    }
+    function sendSignal(to, payload) {
+        if (!to) return;
+        api('/notifications', 'POST', { to_uid: to, from_name: me().name, text: JSON.stringify(payload) }).catch(function () {});
+    }
+    function logMissed(c) {
+        try {
+            var k = 'alpha_calls_' + me().id;
+            var list = JSON.parse(localStorage.getItem(k) || '[]');
+            list.push({ id: 'c' + Date.now(), uid: c.from_uid, name: c.from_name, type: c.type, dur: 0, direction: 'in', ts: Date.now() });
+            localStorage.setItem(k, JSON.stringify(list.slice(-80)));
+        } catch (e) {}
+    }
+
+    // ---------- ringtone (uses the choice saved in call settings) ----------
+    var ctx = null;
+    function actx() {
+        if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
+        if (ctx.state === 'suspended') ctx.resume().catch(function () {});
+        return ctx;
+    }
+    ['pointerdown', 'keydown', 'touchstart'].forEach(function (ev) {
+        document.addEventListener(ev, function u() {
+            try { actx(); } catch (e) {}
+            if ('Notification' in window && Notification.permission === 'default') { try { Notification.requestPermission(); } catch (e) {} }
+            document.removeEventListener(ev, u, true);
+        }, true);
+    });
+    function note(c, f, t, d, v, type) {
+        var g = c.createGain();
+        g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(v, t + 0.03); g.gain.exponentialRampToValueAtTime(0.0001, t + d);
+        g.connect(c.destination);
+        f.forEach(function (x) { var o = c.createOscillator(); o.type = type || 'sine'; o.frequency.value = x; o.connect(g); o.start(t); o.stop(t + d + 0.05); });
+    }
+    var TONES = {
+        classic: { ms: 2200, play: function (c, t, v) { [0, 0.5].forEach(function (o) { note(c, [480, 620], t + o, 0.4, v * 0.3); }); } },
+        marimba: { ms: 2400, play: function (c, t, v) { [659, 784, 988, 784, 659, 988].forEach(function (f, i) { note(c, [f], t + i * 0.16, 0.3, v * 0.4, 'triangle'); }); } },
+        digital: { ms: 1800, play: function (c, t, v) { [0, 0.2, 0.4, 0.8, 1].forEach(function (o) { note(c, [1000], t + o, 0.1, v * 0.2, 'square'); }); } },
+        soft: { ms: 3000, play: function (c, t, v) { [523, 659, 784, 1046].forEach(function (f, i) { note(c, [f], t + i * 0.25, 1.1, v * 0.35); }); } }
+    };
+    function idbGet(k) {
+        return new Promise(function (res) {
+            try {
+                var q = indexedDB.open('alpha_pro', 1);
+                q.onupgradeneeded = function () { q.result.createObjectStore('f'); };
+                q.onsuccess = function () {
+                    try {
+                        var r = q.result.transaction('f').objectStore('f').get(k);
+                        r.onsuccess = function () { res(r.result || null); };
+                        r.onerror = function () { res(null); };
+                    } catch (e) { res(null); }
+                };
+                q.onerror = function () { res(null); };
+            } catch (e) { res(null); }
+        });
+    }
+    function startRing() {
+        stopRing();
+        var P = prefs(), vol = P.ringVol == null ? 0.8 : P.ringVol;
+        var on = true, timer = null, audio = null, url = null, vib = null;
+        ringStop = function () {
+            on = false; clearInterval(timer); clearInterval(vib);
+            try { navigator.vibrate(0); } catch (e) {}
+            if (audio) { try { audio.pause(); } catch (e) {} }
+            if (url) URL.revokeObjectURL(url);
+        };
+        if (P.vibrate !== false && navigator.vibrate) {
+            var v = function () { try { navigator.vibrate([500, 250, 500, 250, 500]); } catch (e) {} };
+            v(); vib = setInterval(v, 3000);
+        }
+        function builtIn() {
+            if (!on) return;
+            var tone = TONES[P.tone] || TONES.classic;
+            var run = function () { try { var c = actx(); tone.play(c, c.currentTime + 0.02, vol); } catch (e) {} };
+            run(); timer = setInterval(run, tone.ms);
+        }
+        if (P.tone === 'custom') {
+            idbGet('ringtone').then(function (blob) {
+                if (!blob || !on) return builtIn();
+                try {
+                    url = URL.createObjectURL(blob);
+                    audio = new Audio(url); audio.loop = true; audio.volume = vol;
+                    var pr = audio.play();
+                    if (pr && pr.catch) pr.catch(builtIn);
+                } catch (e) { builtIn(); }
+            });
+        } else builtIn();
+    }
+    function stopRing() { if (ringStop) { ringStop(); ringStop = null; } }
+
+    // ---------- UI ----------
+    var css = document.createElement('style');
+    css.textContent =
+        '#agIncoming{position:fixed;inset:0;z-index:2147483000;display:none;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;' +
+        'background:radial-gradient(circle at 20% 10%,rgba(99,102,241,.35),transparent 55%),#0b0d12;color:#fff;font-family:Inter,-apple-system,Segoe UI,Roboto,sans-serif;padding:24px}' +
+        '#agIncoming.show{display:flex;animation:agIn .25s ease}@keyframes agIn{from{opacity:0}to{opacity:1}}' +
+        '#agIncoming img{width:120px;height:120px;border-radius:50%;object-fit:cover;border:3px solid rgba(255,255,255,.12);animation:agPulse 1.6s infinite;background:#151b24}' +
+        '@keyframes agPulse{0%{box-shadow:0 0 0 0 rgba(34,197,94,.5)}100%{box-shadow:0 0 0 28px rgba(34,197,94,0)}}' +
+        '#agIncoming h2{font-size:26px;margin:10px 0 0}#agIncoming p{color:#94a3b8;font-size:14px;margin:0}' +
+        '#agIncoming .row{display:flex;gap:44px;margin-top:34px}' +
+        '#agIncoming button{width:64px;height:64px;border-radius:50%;border:0;color:#fff;font-size:24px;cursor:pointer;box-shadow:0 12px 30px rgba(0,0,0,.45);transition:.15s}' +
+        '#agIncoming button:hover{transform:scale(1.06)}#agIncoming .acc{background:#22c55e}#agIncoming .dec{background:#ef4444}' +
+        '#agIncoming span.l{display:block;font-size:11px;color:#94a3b8;margin-top:8px}' +
+        '#agMissed{position:fixed;left:50%;transform:translateX(-50%);top:16px;z-index:2147483001;background:#151b24;color:#fff;border:1px solid #ef444466;border-radius:14px;' +
+        'padding:10px 16px;font:600 13px Inter,sans-serif;box-shadow:0 12px 30px rgba(0,0,0,.4);display:none}';
+    (document.head || document.documentElement).appendChild(css);
+
+    var ov = document.createElement('div');
+    ov.id = 'agIncoming';
+    ov.innerHTML = '<img id="agAv" alt=""><h2 id="agName"></h2><p id="agKind"></p>' +
+        '<div class="row">' +
+        '<div><button class="dec" id="agDec" title="Decline" aria-label="Decline">\u2715</button><span class="l">Decline</span></div>' +
+        '<div><button class="acc" id="agAcc" title="Accept" aria-label="Accept">\uD83D\uDCDE</button><span class="l">Accept</span></div>' +
+        '</div>';
+    var missed = document.createElement('div'); missed.id = 'agMissed';
+
+    function wire() {
+        document.body.appendChild(ov); document.body.appendChild(missed);
+        document.getElementById('agAcc').onclick = accept;
+        document.getElementById('agDec').onclick = decline;
+    }
+    if (document.body) wire(); else document.addEventListener('DOMContentLoaded', wire);
+
+    function flashMissed(text) {
+        missed.textContent = text; missed.style.display = 'block';
+        setTimeout(function () { missed.style.display = 'none'; }, 5000);
+    }
+    function avatarFor(uid, name) {
+        var fallback = 'https://ui-avatars.com/api/?background=27272a&color=fff&bold=true&name=' + encodeURIComponent(name || 'Alphagram User');
+        var get = users ? Promise.resolve() : api('/users').then(function (list) { users = {}; (list || []).forEach(function (u) { users[u.email] = u; }); });
+        return get.then(function () { return (users[uid] && users[uid].avatar_url) || fallback; }, function () { return fallback; });
+    }
+    function show(c) {
+        cur = c;
+        document.getElementById('agName').textContent = c.from_name;
+        document.getElementById('agKind').textContent = c.is_group ? 'Incoming conference' : (c.type === 'video' ? 'Incoming video call' : 'Incoming voice call');
+        document.getElementById('agAv').src = 'https://ui-avatars.com/api/?background=27272a&color=fff&bold=true&name=' + encodeURIComponent(c.from_name || 'A');
+        avatarFor(c.from_uid, c.from_name).then(function (src) { if (cur === c) document.getElementById('agAv').src = src; });
+        ov.classList.add('show');
+        document.body.style.overflow = 'hidden';
+        startRing();
+        var flip = true;
+        titleT = setInterval(function () { document.title = flip ? '\uD83D\uDCDE ' + c.from_name + ' is calling\u2026' : origTitle; flip = !flip; }, 900);
+        try {
+            if (document.hidden && prefs().notify !== false && 'Notification' in window && Notification.permission === 'granted') {
+                notif = new Notification(c.from_name + ' is calling', {
+                    body: c.is_group ? 'Conference invite' : (c.type === 'video' ? 'Incoming video call' : 'Incoming voice call'),
+                    tag: 'alpha-call', renotify: true, requireInteraction: true, vibrate: [500, 250, 500], silent: false
+                });
+                notif.onclick = function () { window.focus(); notif.close(); };
+            }
+        } catch (e) {}
+        ringTimer = setTimeout(function () { if (cur === c) miss(c); }, RING_MS);
+    }
+    function hide() {
+        stopRing();
+        clearTimeout(ringTimer); clearInterval(titleT); document.title = origTitle;
+        try { if (notif) notif.close(); } catch (e) {}
+        notif = null;
+        ov.classList.remove('show'); document.body.style.overflow = ''; cur = null;
+    }
+    function miss(c) { logMissed(c); hide(); flashMissed('Missed call from ' + c.from_name); }
+    function accept() {
+        if (!cur) return;
+        var c = cur;
+        var q = new URLSearchParams({
+            accept_room: c.room, accept_from: c.from_uid, accept_name: c.from_name, accept_type: c.type,
+            accept_group: c.is_group ? '1' : '0', accept_host: c.host_uid || c.from_uid, notif_id: c.notif_id || ''
+        });
+        hide();
+        location.href = 'calls.html?' + q.toString();
+    }
+    function decline() {
+        if (!cur) return;
+        var c = cur;
+        sendSignal(c.from_uid, { type: 'call_invite', from_uid: me().id, from_name: me().name, action: 'decline', room: c.room });
+        hide();
+    }
+    document.addEventListener('keydown', function (e) { if (cur && e.key === 'Escape') decline(); });
+
+    // ---------- polling ----------
+    function poll() {
+        if (polling || !token() || !me().id) return;
+        polling = true;
+        api('/notifications').then(function (data) {
+            var items = (data || [])
+                .filter(function (n) { return typeof n.text === 'string' && n.text.charAt(0) === '{'; })
+                .map(function (n) { try { return { n: n, p: JSON.parse(n.text) }; } catch (e) { return null; } })
+                .filter(function (x) { return x && x.p && x.p.type === 'call_invite'; })
+                .sort(function (a, b) { return a.n.id - b.n.id; });
+
+            items.forEach(function (it) {
+                var n = it.n, p = it.p;
+                if (seen.has(n.id)) return;
+                seen.add(n.id);
+                api('/notifications/' + n.id, 'DELETE').catch(function () {});
+                if (isMe(p.from_uid)) return;
+
+                if (p.action === 'invite') {
+                    if (Date.now() - parseTs(n.created_at) > STALE_MS) return;
+                    if (cur) { sendSignal(p.from_uid, { type: 'call_invite', from_uid: me().id, from_name: me().name, action: 'decline', reason: 'busy', room: p.room }); return; }
+                    show({
+                        from_uid: p.from_uid, from_name: p.from_name || String(p.from_uid).split('@')[0], type: p.call_type || 'voice',
+                        room: p.room, is_group: !!p.is_group, host_uid: p.host_uid, notif_id: n.id
+                    });
+                } else if (p.action === 'end' && cur && cur.room === p.room) {
+                    miss(cur);
+                }
+            });
+        }).catch(function () {}).then(function () { polling = false; });
+    }
+    setInterval(poll, POLL_MS);
+    document.addEventListener('visibilitychange', function () { if (!document.hidden) poll(); });
+    window.addEventListener('online', poll);
+    window.addEventListener('focus', poll);
+    poll();
+})();
