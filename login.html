@@ -1,270 +1,223 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Alphagram — Login</title>
-<meta name="theme-color" content="#0f766e">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Alphagram — Home</title>
+<meta name="theme-color" content="#2563eb">
+<meta name="description" content="Alphagram — connect, create and belong.">
 <meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="preconnect" href="https://alpha-auth.murwanashyakadieumerci540.workers.dev" crossorigin>
 <link rel="icon" href="data:,">
-<script>try{var t=localStorage.getItem('alpha_theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');document.documentElement.dataset.theme=t}catch(e){}</script>
-<style>
-:root{--t1:#0f766e;--t2:#14b8a6;--t3:#2dd4bf;--card:#fff;--text:#0f2a2a;--mut:#5f7776;--line:#c9dcda;--soft:#e3f6f3;--bad:#dc2626;--badbg:#fdecec;--ease:cubic-bezier(.22,1,.36,1);--dur:.55s}
-[data-theme=dark]{--card:#0e1a1c;--text:#e8f4f3;--mut:#93aeac;--line:#27403f;--soft:#12302f;--badbg:#2a1517}
-*{box-sizing:border-box;margin:0}
-body{min-height:100vh;min-height:100dvh;display:grid;place-items:center;padding:24px 14px;color:var(--text);
- font:14px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;background:#0f766e}
-button,input{font:inherit;color:inherit}button{cursor:pointer;border:0;background:none}
-:focus-visible{outline:2px solid var(--t3);outline-offset:2px}
-.i{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
-
-/* ---------- Teal scene (pure CSS, zero downloads) ---------- */
-.scene{position:fixed;inset:0;z-index:-1;overflow:hidden;background:linear-gradient(135deg,#d9fbf6 0%,#6ee7d6 32%,#14b8a6 62%,#0b5e58 100%)}
-.scene i{position:absolute;border-radius:50%;will-change:transform}
-.s1{width:62vmax;height:62vmax;left:-34vmax;top:6vh;background:radial-gradient(circle at 70% 30%,#5eead4,#0f9488 55%,#0a5c56);box-shadow:inset -3vmax -3vmax 8vmax rgba(2,48,45,.45)}
-.s2{width:84px;height:84px;left:9%;top:58%;background:radial-gradient(circle at 30% 25%,#5eead4,#0a6b64 75%);box-shadow:8px 14px 24px rgba(2,48,45,.35);animation:fl 7s ease-in-out infinite}
-.s3{width:110px;height:110px;right:7%;top:22%;background:radial-gradient(circle at 30% 25%,#99f6e4,#0f8f85 70%);box-shadow:10px 16px 30px rgba(2,48,45,.35);animation:fl 9s ease-in-out infinite reverse}
-.s4{width:92px;height:92px;right:9%;bottom:12%;background:radial-gradient(circle at 30% 25%,#2dd4bf,#07524c 75%);box-shadow:8px 14px 26px rgba(2,48,45,.4);animation:fl 8s ease-in-out infinite}
-.arc{width:120vmax;height:120vmax;right:-70vmax;bottom:-84vmax;border:2px solid rgba(255,255,255,.35);background:radial-gradient(circle,rgba(255,255,255,.14),transparent 62%)}
-.arc.b{right:auto;left:-30vmax;bottom:auto;top:-96vmax;border-color:rgba(255,255,255,.28)}
-@keyframes fl{50%{transform:translateY(-14px)}}
-body[data-mode=register] .s1{transform:translate(6vmax,-4vmax) scale(1.06);transition:transform 1s var(--ease)}
-.s1{transition:transform 1s var(--ease)}
-
-/* ---------- Card ---------- */
-.card{width:min(100%,400px);border-radius:36px;overflow:hidden;position:relative;background:var(--card);
- border:2px solid rgba(255,255,255,.55);box-shadow:0 30px 80px rgba(2,48,45,.45);animation:in .7s var(--ease) both}
-@keyframes in{from{opacity:0;transform:translateY(22px) scale(.97)}}
-.hd{height:250px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding-bottom:30px;color:#fff;
- background:radial-gradient(120% 90% at 50% 0,#0f8a80 0,#0a5650 45%,#042f2c 100%);transition:height var(--dur) var(--ease)}
-.logo{width:92px;height:84px;transition:width var(--dur) var(--ease),height var(--dur) var(--ease);filter:drop-shadow(0 0 12px rgba(45,212,191,.8))}
-.brand{font-size:34px;font-weight:800;letter-spacing:-.8px;line-height:1.1;margin-top:4px;transition:font-size var(--dur) var(--ease)}
-.tag{font-size:14px;color:#9eeee2;max-height:24px;overflow:hidden;transition:max-height var(--dur) var(--ease),opacity var(--dur)}
-body[data-mode=register] .hd{height:180px;padding-bottom:34px}
-body[data-mode=register] .logo{width:50px;height:46px}
-body[data-mode=register] .brand{font-size:24px}
-body[data-mode=register] .tag{max-height:0;opacity:0}
-
-.bd{position:relative;margin-top:-30px;border-radius:34px 34px 0 0;background:var(--card);padding:46px 24px 26px}
-.switch{position:absolute;top:-22px;left:50%;translate:-50% 0;width:250px;display:grid;grid-template-columns:1fr 1fr;padding:4px;
- border-radius:99px;background:var(--card);box-shadow:0 6px 20px rgba(2,48,45,.25);border:1px solid var(--line)}
-.switch button{position:relative;z-index:1;padding:10px 0;font-weight:700;font-size:14px;color:var(--text);transition:color .35s}
-.switch button[aria-selected=true]{color:#fff}
-.thumb{position:absolute;top:4px;bottom:4px;left:4px;width:calc(50% - 4px);border-radius:99px;background:linear-gradient(90deg,#0b5e58,var(--t1));transition:transform var(--dur) var(--ease)}
-body[data-mode=register] .thumb{transform:translateX(100%)}
-
-/* ---------- Panels ---------- */
-.panels{position:relative;transition:height var(--dur) var(--ease)}
-.panel{position:absolute;top:0;left:0;width:100%;transition:transform var(--dur) var(--ease),opacity .4s,visibility 0s linear var(--dur)}
-.panel.is-hidden{opacity:0;visibility:hidden;pointer-events:none}
-#p-login.is-hidden{transform:translateX(-50px)}#p-register.is-hidden{transform:translateX(50px)}
-.panel:not(.is-hidden){transition-delay:.1s,.1s,0s}
-.panel:not(.is-hidden) .st{animation:rise .5s var(--ease) both}
-.st:nth-child(2){animation-delay:.06s!important}.st:nth-child(3){animation-delay:.1s!important}.st:nth-child(4){animation-delay:.14s!important}
-.st:nth-child(5){animation-delay:.18s!important}.st:nth-child(6){animation-delay:.22s!important}.st:nth-child(7){animation-delay:.26s!important}.st:nth-child(8){animation-delay:.3s!important}
-@keyframes rise{from{opacity:0;transform:translateY(10px)}}
-
-/* ---------- Form ---------- */
-.msg{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:12px;font-size:13px;margin-bottom:18px;background:var(--soft);color:var(--t1)}
-[data-theme=dark] .msg{color:var(--t3)}
-.msg.error{background:var(--badbg);color:var(--bad)}
-.field{margin-bottom:16px}.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-label{display:flex;align-items:center;gap:10px;font-weight:600;font-size:14px;margin-bottom:2px}
-label .i{width:18px;height:18px}
-.w{position:relative}
-input[type=email],input[type=password],input[type=text]{width:100%;padding:8px 34px 9px 28px;border:0;border-bottom:1.5px solid var(--t1);border-radius:0;background:transparent;outline:0;color:var(--text);transition:border-color .2s,box-shadow .2s}
-input::placeholder{color:var(--mut);opacity:.8}
-input:focus{border-bottom-color:var(--t3);box-shadow:0 1px 0 var(--t3)}
-input.ok{border-bottom-color:var(--t2)}input.bad{border-bottom-color:var(--bad);box-shadow:0 1px 0 var(--bad)}
-.eye{position:absolute;right:0;top:50%;translate:0 -50%;width:30px;height:30px;display:grid;place-items:center;color:var(--text);border-radius:8px}
-.eye .off{display:none}.eye.shown .on{display:none}.eye.shown .off{display:block}
-.bars{display:flex;gap:4px;margin-top:8px}.bars b{flex:1;height:3px;border-radius:4px;background:var(--line);transition:background .3s}
-.hint{margin-top:4px;font-size:12px;color:var(--mut)}
-.opts{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:2px 0 20px}
-.chk{display:flex;align-items:center;gap:10px;cursor:pointer;font-weight:500}
-.chk input{appearance:none;width:20px;height:20px;border-radius:6px;border:1.5px solid var(--t1);flex:none;display:grid;place-items:center;cursor:pointer;transition:background .2s}
-.chk input:checked{background:var(--t1)}
-.chk input:checked::after{content:"";width:10px;height:6px;border:2px solid #fff;border-top:0;border-right:0;rotate:-45deg;translate:0 -1px}
-.terms{align-items:flex-start;font-size:13px;margin-bottom:18px}.terms input{margin-top:1px}
-a{color:var(--t1);font-weight:700;text-decoration:none}[data-theme=dark] a{color:var(--t3)}a:hover{text-decoration:underline}
-.forgot{font-style:italic}
-.go{width:100%;display:flex;align-items:center;justify-content:center;gap:12px;padding:14px;border-radius:99px;color:#fff;font-weight:700;font-size:16px;
- background:linear-gradient(90deg,#0b5e58,var(--t1) 50%,var(--t2));box-shadow:0 8px 20px rgba(15,118,110,.35);transition:transform .15s,box-shadow .2s,opacity .2s}
-.go:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 12px 26px rgba(15,118,110,.45)}
-.go:active:not(:disabled){transform:scale(.98)}.go:disabled{opacity:.7;cursor:wait}
-.sp{display:none;width:18px;height:18px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite}
-.loading .sp{display:block}.loading .lb,.loading .i{display:none}@keyframes sp{to{rotate:360deg}}
-.or{display:flex;align-items:center;gap:14px;margin:20px 0 14px;color:var(--mut);font-size:13px}
-.or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
-.soc{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.soc button{display:flex;align-items:center;justify-content:center;gap:10px;padding:11px;border-radius:99px;border:1.5px solid var(--line);font-weight:600;transition:background .2s,border-color .2s}
-.soc button:hover{background:var(--soft);border-color:var(--t2)}.soc .i{fill:currentColor;stroke:none}.soc .g{fill:initial}
-.sw{margin-top:18px;text-align:center;color:var(--text)}.sw button{color:var(--t1);font-weight:800;font-size:16px;margin-left:6px}[data-theme=dark] .sw button{color:var(--t3)}.sw button:hover{text-decoration:underline}
-.shake{animation:shk .4s!important}@keyframes shk{20%,60%{translate:-6px 0}40%,80%{translate:6px 0}}
-@media(max-width:420px){.bd{padding:46px 18px 22px}.row{grid-template-columns:1fr;gap:0}.hd{height:230px}.s2,.s4{display:none}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:.01s!important}}
-</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="home.css">
+<script src="alpha-common.js"></script>
+<link rel="stylesheet" href="alphagram.css">
 </head>
-<body data-mode="login">
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
-<symbol id="mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></symbol>
-<symbol id="lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
-<symbol id="user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
-<symbol id="at" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"/></symbol>
-<symbol id="info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></symbol>
-<symbol id="login" viewBox="0 0 24 24"><path d="M10 17l5-5-5-5M15 12H3M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/></symbol>
-<symbol id="add" viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 14 0M19 8v6M16 11h6"/></symbol>
-<symbol id="eye" viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></symbol>
-<symbol id="eyeoff" viewBox="0 0 24 24"><path d="M17.9 17.9A10.9 10.9 0 0 1 12 19C5 19 1 12 1 12a18.5 18.5 0 0 1 5.1-5.9M9.9 5.2A9.9 9.9 0 0 1 12 5c7 0 11 7 11 7a18.6 18.6 0 0 1-2.2 3.2M1 1l22 22"/></symbol>
-</defs></svg>
+<body>
+<noscript><p style="padding:24px;font-family:sans-serif">Alphagram needs JavaScript to run.</p></noscript>
 
-<div class="scene" aria-hidden="true"><i class="s1"></i><i class="arc"></i><i class="arc b"></i><i class="s2"></i><i class="s3"></i><i class="s4"></i></div>
+<div class="app">
+  <!-- LEFT NAV -->
+  <aside class="left">
+    <button class="brand" onclick="goHome()">
+      <div class="logo">A</div>
+      <div class="brand-name-wrap"><div class="brand-name">Alphagram</div><div class="brand-tag">Social</div></div>
+    </button>
+    <nav class="nav">
+      <div class="nav-section-label">Main</div>
+      <button class="active" onclick="goHome()"><span class="nav-icon"><i class="fa-solid fa-house"></i></span> Home</button>
+      <button onclick="goToExplore()"><span class="nav-icon"><i class="fa-solid fa-compass"></i></span> Explore</button>
+      <button onclick="goToReels()"><span class="nav-icon"><i class="fa-solid fa-film"></i></span> Reels</button>
+      <button onclick="goToChat()"><span class="nav-icon"><i class="fa-solid fa-comment-dots"></i></span> Messages <span class="nav-badge" id="nav-msg-badge" style="display:none"></span></button>
+      <div class="nav-section-label">Activity</div>
+      <button onclick="goToCalls()"><span class="nav-icon"><i class="fa-solid fa-phone"></i></span> Calls</button>
+      <button onclick="goToStatus()"><span class="nav-icon"><i class="fa-solid fa-circle-dot"></i></span> Status</button>
+      <button onclick="goToEvents()"><span class="nav-icon"><i class="fa-solid fa-calendar-days"></i></span> Events</button>
+      <button onclick="viewSaved()"><span class="nav-icon"><i class="fa-solid fa-bookmark"></i></span> Saved</button>
+      <div class="nav-section-label">Workspace</div>
+      <button onclick="goToAI()"><span class="nav-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></span> AI</button>
+      <button onclick="goToVault()"><span class="nav-icon"><i class="fa-solid fa-shield-halved"></i></span> Vault</button>
+      <button onclick="goToSettings()"><span class="nav-icon"><i class="fa-solid fa-gear"></i></span> Settings</button>
+    </nav>
+    <div class="profile-mini">
+      <div class="avatar" id="me-mini-avatar">?</div>
+      <div class="name-wrap" onclick="goToSettings()"><div class="name" id="me-mini-name">You</div><small id="me-mini-handle">@you</small></div>
+      <button class="logout-btn" title="Sign out" onclick="doLogout()"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+    </div>
+  </aside>
 
-<main class="card" id="card">
- <header class="hd">
-  <svg class="logo" viewBox="0 0 64 60" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ccfbf1"/><stop offset="1" stop-color="#14b8a6"/></linearGradient></defs>
-   <path fill="url(#lg)" fill-rule="evenodd" stroke="#5eead4" stroke-width="1.5" stroke-linejoin="round" d="M30 3 6 57h13l4-10h14l4 10h13zM30 22l6 16H24z"/>
-   <g fill="none" stroke="#99f6e4" stroke-width=".9" stroke-linecap="round" opacity=".9"><path d="M20 44c14-4 22-14 36-26"/><path d="M22 47c14-2 24-10 38-18"/><path d="M26 49c12 0 24-4 34-10"/></g>
-   <g fill="#ccfbf1"><circle cx="56" cy="18" r="1.2"/><circle cx="60" cy="29" r="1.2"/><circle cx="60" cy="39" r="1.2"/></g></svg>
-  <div class="brand">Alphagram</div>
-  <div class="tag">Connect • Chat • Share</div>
- </header>
+  <!-- CENTER -->
+  <main class="center">
+    <div class="top">
+      <div class="top-left-group">
+        <button class="circle-btn" id="index-back-btn" onclick="goIndexBack()" title="Back" style="display:none;"><i class="fa-solid fa-arrow-left"></i></button>
+        <button class="top-left" onclick="goHome()">
+          <div class="top-icon-wrap"><i class="fa-solid fa-bolt"></i></div>
+          <div class="top-title-wrap"><div class="top-title">Alphagram</div><div class="top-sub">Your social space</div></div>
+        </button>
+      </div>
+      <div class="top-actions">
+        <button class="circle-btn" id="search-toggle-btn" onclick="toggleSearchBar()" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
+        <button class="circle-btn" data-ag-appearance aria-label="Appearance" title="Colors and wallpaper"><i class="fa-solid fa-palette"></i></button>
+        <button class="circle-btn" onclick="toggleTheme()" id="theme-toggle" aria-label="Toggle theme"><i class="fa-regular fa-circle-half-stroke"></i></button>
+      </div>
+    </div>
 
- <section class="bd">
-  <div class="switch" role="tablist" aria-label="Login or sign up">
-   <div class="thumb"></div>
-   <button type="button" role="tab" id="tab-login" aria-selected="true" data-mode="login">Login</button>
-   <button type="button" role="tab" id="tab-register" aria-selected="false" data-mode="register">Sign up</button>
+    <div class="search-bar-wrap" id="search-bar-wrap">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input id="nav-search-input" type="text" placeholder="Search Alphagram, people, posts & #tags…" oninput="searchPosts(this.value)">
+      <button class="clear-search" onclick="clearSearchBar()" aria-label="Clear"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <div class="people" id="stories-row"></div>
+
+    <div class="feed-control">
+      <div class="tabs" id="feed-tabs">
+        <button class="active" data-tab="trending" onclick="switchFeedTab('trending',this)">For You</button>
+        <button data-tab="following" onclick="switchFeedTab('following',this)">Following</button>
+        <button data-tab="recent" onclick="switchFeedTab('recent',this)">Latest</button>
+        <button data-tab="saved" onclick="switchFeedTab('saved',this)">Saved</button>
+      </div>
+      <button class="circle-btn" onclick="goToExplore()" title="Explore more"><i class="fa-solid fa-sliders"></i></button>
+    </div>
+
+    <div class="composer" id="compose-card">
+      <div class="compose-top">
+        <div class="compose-avatar" id="compose-avatar">?</div>
+        <textarea id="post-text" placeholder="Share something meaningful…" rows="2"></textarea>
+      </div>
+      <div class="compose-media-grid" id="compose-media-grid"></div>
+      <div class="poll-composer" id="poll-composer">
+        <div class="poll-opt-row"><input type="text" id="poll-opt-0" placeholder="Option 1" maxlength="60"></div>
+        <div class="poll-opt-row"><input type="text" id="poll-opt-1" placeholder="Option 2" maxlength="60"></div>
+        <button class="poll-add-opt" id="poll-add-btn" onclick="addPollOption()"><i class="fa-solid fa-plus" style="font-size:10px;"></i> Add option</button>
+      </div>
+      <div class="compose-bottom">
+        <div class="tools">
+          <input type="file" id="post-media-input" accept="image/*,video/*" multiple style="display:none" onchange="handleMediaSelect(this)">
+          <button class="tool" onclick="document.getElementById('post-media-input').click()" title="Add photos or videos"><i class="fa-solid fa-image"></i></button>
+          <button class="tool" id="poll-btn" onclick="togglePollComposer()" title="Add a poll"><i class="fa-solid fa-chart-simple"></i></button>
+          <button class="tool" id="mood-btn" onclick="cycleMood()" title="Mood"><i class="fa-solid fa-sun"></i></button>
+          <button class="tool" id="anon-btn" onclick="toggleAnon()" title="Post anonymously"><i class="fa-solid fa-user"></i></button>
+        </div>
+        <button class="post-btn" id="post-btn" onclick="createPost()"><i class="fa-solid fa-paper-plane"></i> Post</button>
+      </div>
+    </div>
+
+    <div id="posts-container"></div>
+  </main>
+
+  <!-- RIGHT PANEL -->
+  <aside class="right">
+    <div class="panel">
+      <div class="panel-title">Trending <span onclick="goToExplore()">See all</span></div>
+      <div class="trend" onclick="searchPosts('#Alphagram')"><small>1 · Community</small><strong>#Alphagram</strong><em>2.4K posts</em></div>
+      <div class="trend" onclick="searchPosts('#Kigali')"><small>2 · Rwanda</small><strong>#Kigali</strong><em>890 posts</em></div>
+      <div class="trend" onclick="searchPosts('#Rwanda')"><small>3 · Rwanda</small><strong>#Rwanda</strong><em>543 posts</em></div>
+      <div class="trend" onclick="searchPosts('#Tech')"><small>4 · Technology</small><strong>#Tech</strong><em>421 posts</em></div>
+      <div class="trend" onclick="searchPosts('#AlphagramLaunch')"><small>5 · Alphagram</small><strong>#AlphagramLaunch</strong><em>312 posts</em></div>
+    </div>
+    <div class="panel"><div class="panel-title"><span class="dot-live"></span> Online Now</div><div id="online-list"></div></div>
+    <div class="panel"><div class="panel-title">People <span onclick="viewAllPeople()">See all</span></div><div id="follow-list"></div></div>
+    <div class="panel">
+      <div class="panel-title">Alphagram</div>
+      <div style="font-size:11.5px;color:var(--text-muted);line-height:1.7">A place for meaningful conversations, creativity and communities.<br><br>© 2026 Alphagram</div>
+    </div>
+  </aside>
+</div>
+
+<!-- Mobile nav -->
+<nav class="mobile-nav">
+  <button class="active" onclick="goHome()"><span class="mobile-nav-icon"><i class="fa-solid fa-house"></i></span>Home</button>
+  <button onclick="goToExplore()"><span class="mobile-nav-icon"><i class="fa-solid fa-magnifying-glass"></i></span>Search</button>
+  <button onclick="goToChat()"><span class="mobile-nav-icon"><i class="fa-solid fa-comment-dots"></i></span>Messages</button>
+  <button onclick="goToReels()"><span class="mobile-nav-icon"><i class="fa-solid fa-film"></i></span>Reels</button>
+  <button onclick="openMobileMenu()"><span class="mobile-nav-icon"><i class="fa-solid fa-bars"></i></span>More</button>
+</nav>
+
+<div class="mobile-menu-overlay" id="mobile-menu-overlay" onclick="if(event.target===this) closeMobileMenu()">
+  <aside class="mobile-menu-sheet">
+    <div class="mm-header">
+      <div class="brand"><div class="logo">A</div><div class="brand-name-wrap"><div class="brand-name">Alphagram</div><div class="brand-tag">Social</div></div></div>
+      <button class="mm-close" onclick="closeMobileMenu()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <nav class="mm-nav">
+      <div class="nav-section-label">Main</div>
+      <button onclick="closeMobileMenu();goToExplore()"><span class="nav-icon"><i class="fa-solid fa-compass"></i></span> Explore</button>
+      <button onclick="closeMobileMenu();goToReels()"><span class="nav-icon"><i class="fa-solid fa-film"></i></span> Reels</button>
+      <button onclick="closeMobileMenu();goToGroups()"><span class="nav-icon"><i class="fa-solid fa-people-group"></i></span> Groups</button>
+      <div class="nav-section-label">Activity</div>
+      <button onclick="closeMobileMenu();goToCalls()"><span class="nav-icon"><i class="fa-solid fa-phone"></i></span> Calls</button>
+      <button onclick="closeMobileMenu();goToStatus()"><span class="nav-icon"><i class="fa-solid fa-circle-dot"></i></span> Status</button>
+      <button onclick="closeMobileMenu();goToEvents()"><span class="nav-icon"><i class="fa-solid fa-calendar-days"></i></span> Events</button>
+      <button onclick="closeMobileMenu();viewSaved()"><span class="nav-icon"><i class="fa-solid fa-bookmark"></i></span> Saved</button>
+      <div class="nav-section-label">Workspace</div>
+      <button onclick="closeMobileMenu();goToAI()"><span class="nav-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></span> AI</button>
+      <button onclick="closeMobileMenu();goToVault()"><span class="nav-icon"><i class="fa-solid fa-shield-halved"></i></span> Vault</button>
+      <button onclick="closeMobileMenu();goToSettings()"><span class="nav-icon"><i class="fa-solid fa-gear"></i></span> Settings</button>
+    </nav>
+    <div class="mm-footer"><button class="logout-btn" onclick="closeMobileMenu();doLogout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sign out</button></div>
+  </aside>
+</div>
+
+<div class="toast-wrap" id="toast-wrap"></div>
+
+<div class="modal-overlay" id="modal-overlay"><div class="modal" id="modal-box"><button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button></div></div>
+
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLB()"><i class="fa-solid fa-xmark"></i></button>
+  <div class="lb-counter" id="lb-counter" style="display:none"></div>
+  <button class="lb-nav lb-prev" id="lb-prev" onclick="lbNav(-1)" style="display:none"><i class="fa-solid fa-chevron-left"></i></button>
+  <div class="lb-stage"><img id="lb-img" src="" alt="" style="display:none"><video id="lb-video" controls playsinline style="display:none"></video></div>
+  <button class="lb-nav lb-next" id="lb-next" onclick="lbNav(1)" style="display:none"><i class="fa-solid fa-chevron-right"></i></button>
+</div>
+
+<!-- Story viewer -->
+<div class="story-viewer" id="storyViewer">
+  <button class="close-viewer" onclick="closeStoryViewer()"><i class="fa-solid fa-xmark"></i></button>
+  <button class="story-mute-toggle" id="storyMuteToggle" onclick="event.stopPropagation();toggleStoryMute()"><i class="fa-solid fa-volume-xmark" id="storyMuteIcon"></i></button>
+  <div class="progress-bar" id="storyProgress"></div>
+  <div class="story-user" id="storyUser"></div>
+  <div class="story-content" id="storyContent"></div>
+  <div class="story-heart-burst" id="storyHeartBurst"><i class="fa-solid fa-heart"></i></div>
+  <div class="story-caption" id="storyCaption"></div>
+  <div class="story-timer" id="storyTimer"></div>
+  <div class="story-viewers-pill" id="storyViewersPill" onclick="event.stopPropagation();openStoryViewersSheet()">
+    <div class="sv-avatars" id="storyViewersAvatars"></div><span id="storyViewersCount">0 views</span>
   </div>
-
-  <div class="panels" id="panels">
-   <div class="panel" id="p-login">
-    <form id="loginForm" novalidate>
-     <div class="msg st" id="loginMsg" role="status"><svg class="i"><use href="#info"/></svg><span></span></div>
-     <div class="field st"><label for="l-email"><svg class="i"><use href="#mail"/></svg>Email</label>
-      <div class="w"><input id="l-email" type="email" placeholder="you@example.com" autocomplete="username" required></div></div>
-     <div class="field st"><label for="l-pass"><svg class="i"><use href="#lock"/></svg>Password</label>
-      <div class="w"><input id="l-pass" type="password" placeholder="Password" autocomplete="current-password" required>
-       <button type="button" class="eye" data-t="l-pass" aria-label="Show password"><svg class="i on"><use href="#eye"/></svg><svg class="i off"><use href="#eyeoff"/></svg></button></div></div>
-     <div class="opts st"><label class="chk"><input type="checkbox" id="l-rem"> Remember me</label><a href="#" class="forgot" id="forgot">Forgot Password?</a></div>
-     <button class="go st" type="submit" id="loginBtn"><svg class="i"><use href="#login"/></svg><span class="lb">Login</span><span class="sp"></span></button>
-     <div class="or st">or continue with</div>
-     <div class="soc st">
-      <button type="button" data-soc="Google"><svg class="i g" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09a6.6 6.6 0 0 1 0-4.18V7.07H2.18a11 11 0 0 0 0 9.86l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>Google</button>
-      <button type="button" data-soc="Apple"><svg class="i" viewBox="0 0 24 24"><path d="M16.4 12.6c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.2-2.8.9-3.5.9s-1.8-.8-3-.8C6.9 7.5 5.4 8.4 4.6 9.8c-1.7 2.9-.4 7.2 1.2 9.6.8 1.2 1.8 2.5 3.1 2.5 1.200-.1 1.700-.8 3.200-.8s1.900.8 3.200.8c1.300 0 2.200-1.200 3-2.400.9-1.300 1.300-2.600 1.300-2.700-.1 0-2.600-1-2.700-3.900zM14.100 5.700c.7-.8 1.100-1.900 1-3-1 0-2.100.7-2.800 1.500-.6.700-1.200 1.800-1 2.900 1.100.1 2.100-.5 2.800-1.400z"/></svg>Apple</button>
-     </div>
-     <p class="sw st">Don't have an account?<button type="button" data-mode="register">Sign up</button></p>
-    </form>
-   </div>
-
-   <div class="panel is-hidden" id="p-register" inert>
-    <form id="regForm" novalidate>
-     <div class="msg st" id="regMsg" role="status"><svg class="i"><use href="#info"/></svg><span></span></div>
-     <div class="row st">
-      <div class="field"><label for="r-first"><svg class="i"><use href="#user"/></svg>First name</label><div class="w"><input id="r-first" type="text" placeholder="First name" autocomplete="given-name" required></div></div>
-      <div class="field"><label for="r-last"><svg class="i"><use href="#user"/></svg>Last name</label><div class="w"><input id="r-last" type="text" placeholder="Last name" autocomplete="family-name" required></div></div>
-     </div>
-     <div class="field st"><label for="r-user"><svg class="i"><use href="#at"/></svg>Username</label><div class="w"><input id="r-user" type="text" placeholder="yourusername" autocomplete="username" required></div></div>
-     <div class="field st"><label for="r-email"><svg class="i"><use href="#mail"/></svg>Email</label><div class="w"><input id="r-email" type="email" placeholder="you@example.com" autocomplete="email" required></div></div>
-     <div class="field st"><label for="r-pass"><svg class="i"><use href="#lock"/></svg>Password</label>
-      <div class="w"><input id="r-pass" type="password" placeholder="At least 8 characters" autocomplete="new-password" required>
-       <button type="button" class="eye" data-t="r-pass" aria-label="Show password"><svg class="i on"><use href="#eye"/></svg><svg class="i off"><use href="#eyeoff"/></svg></button></div>
-      <div class="bars" id="bars"><b></b><b></b><b></b><b></b></div><div class="hint" id="hint">Add numbers and symbols.</div></div>
-     <div class="field st"><label for="r-conf"><svg class="i"><use href="#lock"/></svg>Confirm password</label>
-      <div class="w"><input id="r-conf" type="password" placeholder="Repeat password" autocomplete="new-password" required>
-       <button type="button" class="eye" data-t="r-conf" aria-label="Show password"><svg class="i on"><use href="#eye"/></svg><svg class="i off"><use href="#eyeoff"/></svg></button></div></div>
-     <label class="chk terms st"><input type="checkbox" id="r-terms"><span>I agree to the <a href="#" id="terms">Terms</a> and <a href="#" id="privacy">Privacy Policy</a>.</span></label>
-     <button class="go st" type="submit" id="regBtn"><svg class="i"><use href="#add"/></svg><span class="lb">Create account</span><span class="sp"></span></button>
-     <p class="sw st">Already have an account?<button type="button" data-mode="login">Login</button></p>
-    </form>
-   </div>
+  <div class="story-quick-reacts" id="storyQuickReacts">
+    <button onclick="event.stopPropagation();sendQuickReact('❤️')">❤️</button>
+    <button onclick="event.stopPropagation();sendQuickReact('😂')">😂</button>
+    <button onclick="event.stopPropagation();sendQuickReact('😮')">😮</button>
+    <button onclick="event.stopPropagation();sendQuickReact('😢')">😢</button>
+    <button onclick="event.stopPropagation();sendQuickReact('👏')">👏</button>
+    <button onclick="event.stopPropagation();sendQuickReact('🔥')">🔥</button>
   </div>
- </section>
-</main>
+  <div class="story-footer" id="storyFooter" onclick="event.stopPropagation()">
+    <div class="story-reply-input-wrap">
+      <input type="text" class="story-reply-input" id="storyReplyInput" placeholder="Reply…" maxlength="300"
+        onfocus="pauseStoryTimer()" onblur="resumeStoryTimer()" onkeydown="if(event.key==='Enter'){sendStoryReply();}"
+        oninput="document.getElementById('storySendBtn').classList.toggle('active', this.value.trim().length>0)">
+      <button class="story-send-btn" id="storySendBtn" onclick="sendStoryReply()"><i class="fa-solid fa-paper-plane"></i></button>
+    </div>
+    <button class="story-react-btn" id="storyLikeBtn" onclick="toggleStoryLike()"><i class="fa-regular fa-heart"></i></button>
+    <button class="story-react-btn" onclick="toggleStoryQuickReacts()"><i class="fa-regular fa-face-smile"></i></button>
+  </div>
+</div>
+<div class="story-sheet-overlay" id="storySheetOverlay" onclick="if(event.target===this)closeStoryViewersSheet()">
+  <div class="story-sheet">
+    <button class="story-sheet-close" onclick="closeStoryViewersSheet()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="story-sheet-handle"></div>
+    <div class="story-sheet-tabs">
+      <button class="active" id="storySheetTabViews" onclick="switchStorySheetTab('views')"><i class="fa-solid fa-eye"></i> Viewed by <span id="storySheetViewsCount">0</span></button>
+      <button id="storySheetTabLikes" onclick="switchStorySheetTab('likes')"><i class="fa-solid fa-heart"></i> Liked by <span id="storySheetLikesCount">0</span></button>
+    </div>
+    <div class="story-sheet-list" id="storySheetList"></div>
+  </div>
+</div>
 
-<script>
-const API='https://alpha-auth.murwanashyakadieumerci540.workers.dev',TK='alpha_token',UK='alpha_user',HOME='index.html';
-const $=id=>document.getElementById(id);
-if(localStorage.getItem(TK)&&localStorage.getItem(UK))location.replace(HOME);
-
-/* mode switch */
-const panels=$('panels'),pm={login:$('p-login'),register:$('p-register')},titles={login:'Alphagram — Login',register:'Alphagram — Sign up'};
-let mode='login';
-const fit=()=>{panels.style.height=pm[mode].offsetHeight+'px'};
-function apply(){
- document.body.dataset.mode=mode;document.title=titles[mode];
- for(const k in pm){const on=k===mode;pm[k].classList.toggle('is-hidden',!on);on?pm[k].removeAttribute('inert'):pm[k].setAttribute('inert','')}
- $('tab-login').setAttribute('aria-selected',mode==='login');$('tab-register').setAttribute('aria-selected',mode==='register');
-}
-function setMode(m){if(m===mode)return;mode=m;apply();fit();try{history.replaceState(null,'',m==='register'?'register.html':'login.html')}catch(e){}}
-document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.mode)));
-const ro=new ResizeObserver(fit);Object.values(pm).forEach(p=>ro.observe(p));addEventListener('resize',fit);
-mode=/register/i.test(location.pathname)||new URLSearchParams(location.search).get('mode')==='register'?'register':'login';
-apply();panels.style.transition='none';fit();requestAnimationFrame(()=>requestAnimationFrame(()=>panels.style.transition=''));
-
-/* helpers */
-const DEF={loginMsg:'Welcome back! Sign in to continue.',regMsg:'Join Alphagram in a minute.'};
-function say(id,text,type){const el=$(id);el.className='msg st'+(type?' '+type:'');el.querySelector('span').textContent=text||DEF[id]}
-say('loginMsg');say('regMsg');
-const shake=()=>{const c=$('card');c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake')};
-document.querySelectorAll('.eye').forEach(b=>b.addEventListener('click',()=>{const i=$(b.dataset.t),s=i.type==='password';i.type=s?'text':'password';b.classList.toggle('shown',s);b.setAttribute('aria-label',s?'Hide password':'Show password')}));
-document.querySelectorAll('[data-soc]').forEach(b=>b.addEventListener('click',()=>say(mode==='login'?'loginMsg':'regMsg',b.dataset.soc+' sign-in is coming soon.')));
-async function post(path,body){
- const c=new AbortController(),t=setTimeout(()=>c.abort(),15000);
- try{
-  const r=await fetch(API+path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),signal:c.signal});
-  let d={};try{d=await r.json()}catch(e){}
-  if(!r.ok)throw new Error(d.error||d.message||'Request failed ('+r.status+')');return d;
- }catch(e){throw new Error(e.name==='AbortError'?'Connection too slow. Try again.':e.message)}finally{clearTimeout(t)}
-}
-function save(data,email,name){
- const token=data.token||data.access_token||data.jwt;if(!token)throw new Error('No token received.');
- localStorage.setItem(TK,token);const u=data.user||data;
- localStorage.setItem(UK,JSON.stringify({CU:{id:u.email||email,email:u.email||email},UP:{display_name:name||u.display_name||u.name||email.split('@')[0],bio:u.bio||'',avatar_color:u.avatar_color||'g2',avatar_url:u.avatar_url||null}}));
-}
-const busy=(b,on)=>{b.disabled=on;b.classList.toggle('loading',on)};
-
-/* login */
-const saved=localStorage.getItem('alphaRemember');if(saved){$('l-email').value=saved;$('l-rem').checked=true}
-$('forgot').addEventListener('click',e=>{e.preventDefault();say('loginMsg','Password reset is coming soon.')});
-$('loginForm').addEventListener('submit',async e=>{
- e.preventDefault();const email=$('l-email').value.trim(),pass=$('l-pass').value,b=$('loginBtn');
- if(!email){say('loginMsg','Enter your email.','error');shake();return $('l-email').focus()}
- if(pass.length<6){say('loginMsg','Password needs 6+ characters.','error');shake();return $('l-pass').focus()}
- busy(b,true);say('loginMsg');
- try{
-  save(await post('/login',{email,password:pass}),email);
-  $('l-rem').checked?localStorage.setItem('alphaRemember',email):localStorage.removeItem('alphaRemember');
-  say('loginMsg','Signed in. Opening…');setTimeout(()=>location.href=HOME,400);
- }catch(err){say('loginMsg',err.message||'Login failed.','error');shake();busy(b,false)}
-});
-
-/* register */
-const rp=$('r-pass'),rc=$('r-conf'),bars=document.querySelectorAll('#bars b');
-const cols=['var(--line)','#ef4444','#f59e0b','#14b8a6','#0f766e'],hints=['Add numbers and symbols.','Weak','Fair','Good','Strong'];
-function match(){if(!rc.value){rc.classList.remove('ok','bad');return}const s=rp.value===rc.value;rc.classList.toggle('ok',s);rc.classList.toggle('bad',!s)}
-rp.addEventListener('input',()=>{const v=rp.value;let n=0;if(v.length>=8)n++;if(/[A-Z]/.test(v))n++;if(/\d/.test(v))n++;if(/[^A-Za-z0-9]/.test(v))n++;
- bars.forEach((b,i)=>b.style.background=i<n?cols[n]:cols[0]);$('hint').textContent=v?hints[n]:hints[0];match()});
-rc.addEventListener('input',match);
-$('r-user').addEventListener('input',function(){this.value=this.value.replace(/\s/g,'').replace(/^@+/,'')});
-$('terms').addEventListener('click',e=>{e.preventDefault();say('regMsg','Terms coming soon.')});
-$('privacy').addEventListener('click',e=>{e.preventDefault();say('regMsg','Privacy Policy coming soon.')});
-$('regForm').addEventListener('submit',async e=>{
- e.preventDefault();const f=$('r-first').value.trim(),l=$('r-last').value.trim(),u=$('r-user').value.trim(),email=$('r-email').value.trim(),pass=rp.value,b=$('regBtn');
- const bad=(t,el)=>{say('regMsg',t,'error');shake();el&&el.focus()};
- if(!f||!l)return bad('Enter your full name.',$('r-first'));
- if(u.length<3)return bad('Username needs 3+ characters.',$('r-user'));
- if(!email)return bad('Enter your email.',$('r-email'));
- if(pass.length<8)return bad('Password needs 8+ characters.',rp);
- if(pass!==rc.value)return bad('Passwords don\'t match.',rc);
- if(!$('r-terms').checked)return bad('Accept the Terms to continue.');
- busy(b,true);say('regMsg');
- try{
-  const name=(f+' '+l).trim();
-  save(await post('/signup',{email,password:pass,display_name:name,username:u}),email,name);
-  say('regMsg','Account created. Opening…');setTimeout(()=>location.href=HOME,800);
- }catch(err){bad(err.message||'Sign up failed.');busy(b,false)}
-});
-</script>
+<script src="home.js" defer></script>
 </body>
 </html>
